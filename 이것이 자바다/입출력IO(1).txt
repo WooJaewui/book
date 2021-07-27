@@ -1,0 +1,370 @@
+
+ 입출력IO(1) - 1042page.
+
+
+
+ # 자바 입출력.
+
+자바에서 데이터 입출력은 Stream을 통해 이뤄진다. ( 단일방향으로 연속적으로 흘러가는 것 )
+java.io 패키지에 입출력에 관련된 API가 있다.
+
+
+
+ # Stream Class.
+
+종류.
+바이트 기반. ( 1바이트 )
+그림, 멀티미디어 문자 등 모든 종류의 데이터 입/출력 가능.
+최상위 클래스 : InputStream / OutputStream.
+기본 클래스형식. XXXInputStream / XXXOutputStream.
+
+문자 기반. ( 2바이트 )
+문자 데이터만 입/출력 가능.
+최상위 클래스 : Reader / Writer.
+기본 클래스 형식. XXXReader / XXXWriter.
+
+
+
+ # InputStream.
+
+설명.
+바이트 기반 입력 최상위 클래스이며, 추상클래스이다.
+
+구현클래스.
+FileInputStream, BufferedInputStream, DatainputStream.
+
+메소드.
+read( ) : 1byte로 읽어온 데이터를 4byte int로 반환한다.
+read( byte[ ] b ) : 매개변수 배열의 길이만큼 데이터를 읽고 매개변수 배열에 저장한다.
+close( ) : Stream을 닫아준다.
+
+주의사항.
+data보다 더 많은 read( )를 사용하면 null값을 의미하는 -1을 반환한다.
+
+
+
+ # OutputStream.
+
+설명.
+바이트 기반 출력 최상위 클래스이며, 추상클래스이다.
+
+구현클래스.
+FileOutputStream, PrintStream, BufferedOutputStream, DataOutputStream.
+
+메소드.
+write( int i ) : int data로 매개변수로 받아서 byte로 내보낸다.
+write( byte[ ] b ) : 매개변수 배열에 있는 모든 data를 출력한다.
+flush( ) : 출력스트림 내부에 존재하는 버퍼에 저장되어 있는 모든 data를 출력한다.
+close( ) : Stream을 닫아준다.
+
+주의사항.
+OutputStream은 내부에 버퍼가 존재해서 데이터가 출력되기 전에 잠시 저장된다.
+
+
+
+ # Reader.
+
+설명.
+문자 기반 입력 최상위 클래스이며, 추상클래스이다.
+
+구현클래스.
+FileReader, BufferedReader, InputStreamReader.
+
+메소드.
+read( ) : 2byte로 읽어온 문자 데이터를 4byte int로 반환한다.
+read( char[ ] c ) : 매개변수 배열의 길이만큼 데이터를 읽고 매개변수 배열에 저장한다.
+close( ) : Reader을 닫아준다.
+
+주의사항.
+data보다 더 많은 read( )를 사용하면 null값을 의미하는 -1을 반환한다.
+
+
+ # Writer.
+
+설명.
+문자 기반 출력 최상위 클래스이며, 추상클래스이다.
+
+구현클래스.
+FileWriter, PrintWriter, BufferedWriter, OutputStreamWriter.
+
+메소드.
+write( int i ) : int data로 매개변수로 받아서 2byte 문자형태로 출력한다.
+write( char[ ] b ) : 2바이트로 된 매개변수 배열에 있는 모든 data를 출력한다.
+write( String str ) : 매개변수 문자열 전체를 2byte 문자로 출력한다.
+flush( ) : 출력스트림 내부에 존재하는 버퍼에 저장되어 있는 모든 data를 출력한다.
+close( ) : Stream을 닫아준다.
+
+주의사항.
+Writer은 내부에 버퍼가 존재해서 데이터가 출력되기 전에 잠시 저장된다.
+
+
+
+ # 콘솔 입출력.
+
+데이터 입출력.
+System.in : 콘솔로부터 데이터를 입력받음.
+System.out : 콘솔에 데이터를 출력함.
+System.err : 콘솔에 에러를 출력함.
+
+입력사용.
+InputStream is = System.in;
+is.read( );
+
+한글입력.
+InputStream is = System.in;
+byte[ ] datas = new byte[100];
+int byte = is.read( datas );
+String str = new String( datas, 0, byte-2 );
+
+출력사용.
+OutputStream os = System.out;
+os.writer( int i );
+
+한글출력.
+OutputStream os = System.out;
+String hangle = "가나다라마바사";
+byte[ ] datas = hangel.getBytes( );
+os.write( datas );
+os.flush( );
+
+주의사항.
+System.in을 배열로 저장할시 length-2를 해줘야된다. ( Enter키에 캐리지리턴과 라인 피드를 빼야된다 )
+
+
+
+ # Console 클래스.
+
+설명.
+Console에서 입력받은 문자열을 쉽게 읽을 수 있도록 도와주는 클래스이다.
+
+사용.
+Console con = System.console( );
+
+메소드.
+readLint( ) : console에 입력받은 문자열을 읽어온다. String을 반환.
+readPassword( ) : console에 입력받은 문자열으 보여주지 않고 읽어온다. char[ ]을 반환.
+
+주의사항.
+이클립스 콘솔로 사용하면 console( )가 null을 리턴하기 때문에 반드시 명령 프롬프트에서 실행해야된다.
+
+
+
+ # Scanner 클래스.
+
+설명.
+기본형 타입을 Console로 읽어 올 수 있는 클래스이다. ( Console class는 문자열만 읽어온다 )
+Scanner의 매개값으로는 File, InpuStream, Path 등이 올 수 있다.
+
+사용.
+Scanner sc = new Scanner( System.in );
+
+메소드.
+nextLine( ) : String값을 읽는다.
+
+
+
+ # File 입출력.
+
+설명.
+파일 크기, 속성, 이름 등의 정보를 얻어는 기능과 파일 생성 삭제 기능을 가지고 있다.
+파일의 입출력은 할 수 없다. ( 스트림을 사용 )
+
+사용.
+File f = new File( 경로\파일이름 );
+
+메소드.
+createNewFile( ) : 새로운 파일 생성.
+mkdir( ) : 새로운 디렉토리 생성.
+delete( ) : 파일 또는 디렉토리 삭제.
+
+canExecute( ) : 실행할 수 있는지 확인.
+canRead( ) : 읽을 수 있는지 확인.
+getName( ) : 파일의 이름을 리턴.
+getParent( ) : 부모 디렉토리를 리턴.
+
+
+
+ # FileInputStream.
+
+설명.
+파일을 바이트 단위로 읽어들일 때 사용하는 입력 스트림이다.
+
+사용.
+1. FileInputStream fis = new FileInputStream( 경로\파일이름 );
+2. File file = new File( 경로\파일이름 );
+   FileInputStream fis = new FileInputSteam( file );
+
+주의사항.
+파일이 존재하지 않으면 FileNotFoundException발생. 예외처리해야된다.
+메소드 등은 InputStream과 같이 사용.
+
+
+ # FileOutputStream.
+
+설명.
+파일을 바이트 단위로 출력할 때 사용하는 출력 스트림이다.
+
+사용.
+1. FileOutputStream fos = new FileOutputStream( 경로\파일이름 );
+2. File file = new File( 경로\파일이름 );
+   FileOutputStream fos = new FileOutputStream( file );
+
+주의사항.
+기존에 파일이 존재하면 파일을 덮어쓰게 되므로 기존의 파일 내용이 사라진다.
+기존에 파일 내용에 추가하려면 new FileOutputStream( 경로\파일이름, true ); 를 하면 된다.
+메소드 등은 OutputStream과 같이 사용.
+
+
+
+ # FileReader.
+
+설명.
+텍스트 파일을 읽어올때 사용하는 문자 기반 스트림이다.
+
+사용.
+1. FileReader fr = new FileReader( 경로\파일이름 );
+2. File file = new File( 경로\파일이름 );
+   FileReader fr = new FileReader( file );
+
+주의사항.
+FileInputStream과 같다.
+
+
+
+ # FileWriter.
+
+설명.
+텍스트 데이터를 파일에 저장할 때 사용하는 문자 기반 스트림이다.
+
+사용.
+1. FileWriter fw = new FileWriter( 경로\파일이름 );
+2. File file = new File( 경로\파일이름 );
+   FileWriter fw = new FileWriter( file );
+
+주의사항.
+FileOutputStream과 같다.
+
+
+
+ # 보조 스트림.
+
+설명.
+스트림과 프로그램 사이에 연결되어 필터 역할을 하는 스트림이다.
+
+종류.
+성능 향상 보조 스트림.
+문자 변환 보조 스트림.
+
+
+사용.
+보조스트림 변수 = new 보조스트림( 주스트림 ); 
+
+주의사항.
+자체적으로 입출력을 할 수 없다.
+보조스트림에 다른 보조스트림을 연결해서 스트림 체인을 구성할 수 있다.
+
+
+
+ # InputStreamReader.
+
+설명.
+바이트 입력 스트림에 연결되어 2바이트 문자 형식으로 변환시키는 보조스트림이다.
+
+사용
+Reader reader = new InputStreamReader( 바이트 입력 스트림 );
+
+
+
+ # OutputStreamWriter.
+
+설명.
+바이트 출력 스트림에 연결되어 2바이트 문자 형식으로 변환시키는 보조스트림이다.
+
+사용.
+Writer writer = new OutputStreamWriter( 바이트 출력 스트림 );
+
+
+
+ # 입출력 스트림.
+
+프로그램의 실행 성능은 입출력이 가장 늦은 장치를 따라간다.
+
+
+
+ # BufferedInputStream과 BufferedReader.
+
+설명.
+바이트와 문자 기반의 스트림으로 입력 스트림과 연결되어 버퍼를 제공하는 보조스트림이다.
+외부 입력 소스를 직접 읽지않고 버퍼로부터 읽음으로써 읽기 성능이 향상된다.
+
+사용.
+BufferedInputStream bis = new BufferedInputStream( 바이트 입력 스트림 );
+BufferedReader br = new BufferedReader( 문자 입력 스트림 );
+
+
+
+ # BufferedOutputStream과 BufferedWriter.
+
+설명.
+바이트와 문자 기반의 스트림으로 출력 스트림과 연결되어 버퍼를 제공하는 보조스트림이다.
+
+사용.
+BufferedOutputStream bos = new BufferedOutputStream( 바이트 출력 스트림 );
+BufferedWriter bw = new BufferedWriter( 문자 출력 스트림 );
+
+주의사항.
+버퍼가 가득 찼을 떄만 출력을 하기 때문에 출력을 마친 후에는 flush( )를 사용해야 된다.
+
+
+
+ # DataInputStream, DataOutputStream.
+
+설명.
+바이트 타입의 스트림을 기본형 타입으로 입출력 할 수 있게 도와주는 보조스트림이다.
+
+사용.
+DataInputStream dis = new DataInputStream( 바이트 입력 스트림 );
+DataOutputStream dos = new DataOutputStream( 바이트 출력 스트림 );
+
+주의사항.
+데이터의 변환 순서를 잘 알고 있어야 문제 없이 사용가능하다.
+
+
+
+ # PrintStream, PrintWriter.
+
+설명.
+프린터와 유사하게 출력하는 메소드를 가지고 있는 보조 스트림이다. ( System.out도 PrintStream타입이다 )
+
+사용.
+PrintStream ps = new PrintStream( 바이트 출력 스트림 );
+PrintWriter pw = new PrintWriter( 문자 출력 스트림 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

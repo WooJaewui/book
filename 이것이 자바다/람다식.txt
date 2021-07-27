@@ -1,0 +1,289 @@
+
+ 람다식 - 720page.
+
+
+ # 람다식 Lambda Expression 용어설명.
+
+설명.
+함수형 프로그래밍( 메소드가 한개 )을 쉽게 표현하기 위한 방식으로 람다식이 개발되었다.
+
+사용.
+(매개변수) -> { 실행코드; }
+
+주의사항.
+메소드가 한개인 상황에서만 사용할 수 있다.
+매개변수가 없다면 ( )를 생략할 수 없다.
+매개변수가 하나만 있다면 ( )을 생략할 수 있다.
+실행코드가 하나만 있다면 { }을 생략할 수 있다. 
+실행코드에 return문만 있다면 return을 생략할 수 있다.
+
+
+ # @FunctionalInterface annotation.
+
+설명
+람다식을 사용할 수 있는 인터페이스는 추상 메소드가 한개인 인터페이스이다.
+이러한 인터페이스를 어노테이션으로 @FunctionalInterface라고 표시한다.
+
+용어.
+타겟타입 : 람다식이 대입될 수 있는 인터페이스를 의미한다.
+
+주의사항.
+@FunctionalInterface 어노테이션을 적으면 2개 이상의 추상메소드를 선언시 컴파일 에러가 발생한다.
+@FunctionalInterface는 선택사항이지만, 코드 실수나 가독성을 위해 작성해주는 것이 좋다.
+
+
+
+ # 람다식에서 클래스 멤버와 로컬 변수 사용.
+
+설명.
+람다식에서 클래스 멤버는 제약없이 사용가능하고, 로컬 변수를 사용하면 final로 적용된다.
+
+주의사항.
+람다식에서 this는 구현한 객체의 멤버가 아니라, 람다식을 실행한 객체의 멤버이다.
+람다식을 실행한 메소드 안에 지역변수를 사용하면 중첩 클래스가 되서 final 변수로 사용된다.
+( 변수 값 변경 불가 )
+
+
+
+ # 표준 API의 함수적 인터페이스.
+
+설명.
+java.util.function 표준 API 패키지에 빈번하게 사용되는 함수적 인터페이스를 모아놓았다.
+
+종류.
+Consumer : 매개값이 있고, 리턴값이 없음.
+Supplier : 매개값이 없고, 리턴값이 있음.
+Function : 매개값이 있고, 리턴값이 있음.
+Operator : 매개값이 있고, 리턴값이 있음.
+Predicate : 매개값은 있고, 리턴 타입은 boolean.
+
+
+
+ # Consumer 인터페이스.
+
+Consumer<T> c = ( t_var ) -> { 실행할 문장; }
+
+설명.
+매개변수를 받아서 아무것도 반환하지 않는 함수형인터페이스이다.
+
+메소드.
+accept( T t );
+
+종류.
+Consumer<T> : 기본형.
+BiConsumer<T, U> : 매개변수를 두개 받는 Consumer. 반환 X
+ObjConsumer<T> : 매개변수로 Object를 받는 Consumer. 반환 X.
+
+
+
+ # Supplier 인터페이스.
+
+Supplier<T> s = ( ) -> { return t_var; }
+
+설명.
+매개변수 없이 어떤 값을 반환하는 역할을 한다.
+
+메소드.
+get( );
+
+주의사항.
+리턴값은 언제나 하나이기 때문에 특별한 종류가 없다.
+
+
+
+ # Function 인터페이스.
+
+Function<T> f = ( var ) -> { return value; }
+
+설명.
+매개변수를 받아서 매개변수와 다른 타입으로 리턴하는 매핑 성질을 가지고 있다.
+
+메소드.
+apply( Var var );
+
+
+종류.
+Function<T> : 기본형
+BiFunction<T,U,R> : 매개변수가 T,U로 2개인 Function 인터페이스이다.
+
+주의사항.
+<> 지네릭이 없는 경우도 있는데 기본형 타입과 같이 이미 타입이 정해진 경우 지네릭을 쓸 수 없다.
+
+
+
+ # Operator 인터페이스.
+
+Operator<T> o = ( var1, var2 ) -> return var1 연산 var2; 
+
+설명.
+매개변수를 받아서 연산 후에 매개변수와 같은 타입으로 리턴하는 성질을 가지고 있다.
+
+메소드.
+apply( T t1, T t2 );
+
+종류.
+UnaryOperator<T> : 매개변수 1개를 가지고 연산 후에 값을 리턴.
+BinaryOperator<T> : 매개변수 2개를 가지고 연산 후에 값을 리턴.
+
+
+
+ # Predicate 인터페이스.
+
+Predicate<T> p = ( T t ) -> return boolean;
+
+설명.
+매개변수를 T t를 조사해서 boolean 값을 반환하는 함수인터페이스이다.
+
+메소드.
+test( T t );
+
+종류.
+Predicate<T> : 기본형.
+BiPredicate<T, U> : 매개 변수 2개를 받아서 비교 후 boolean값 반환.
+
+
+
+ # andThen( ) 메소드.
+
+설명.
+Consumer, Function, Operator 인터페이스에 구현되어있는 디폴트 메소드이다.
+
+사용.
+consumer1.andThen( consumer2 ).accept( var );
+Function1.andThen( Function2 ).apply( var );
+
+실행원리.
+Consumer : 매개변수 var를 받아서 cunsumer1이 실행되고, consumer2가 실행된다.
+Function/operator : 매개변수 var를 받아서 Fucntion이 실행되고 
+                         Function1의 반환된 값이 Function2에 매개변수로 들어가서 실행되고 값을 반환한다.
+
+주의사항.
+Function/operator를 사용할때는 Function1의 리턴 타입과 Function2의 매개변수 타입이 같아야 사용할 수 있다.
+
+
+
+ # compose( ) 메소드.
+
+설명.
+andThen( )와 반대로 interface2부터 실행하고, interface1을 실행한다.
+
+주의사항.
+Consumer에서는 사용할 수 없고, Operator/Function에서도 부분적으로 사용가능하다.
+
+
+ 
+ # and( ), or( ), negate( ) 메소드.
+
+설명.
+Predicate 종류의 인터페이스에서 있는 디폴트 메소드이다.
+
+종류.
+and( ) : test( )의 매개변수 t가 Predicate1와 Predicate2가 모두 true면 true.
+or( ) : test( )의 매개변수 t가 Predicate1와 Predicate2가 하나라도 true면 true.
+negate( ) : test( ) 매개변수 t가 Predicate1의 boolean값을 반대로 바꿔준다.
+isEqual( T t ) : test( )의 매개변수 t가 isEqual의 매개변수 t의 값과 같은지 확인해준다.
+
+사용.
+Predicate pre12 = pre1.and(pre2);
+pre12.test( t );
+
+Predicate pre12 = pre1.or(pre2);
+pre12.test( t );
+
+Predicate notPre1 = pre1.negate( );
+notPre1.test( t );
+
+Predicate pre2 = Predicate.isequal( t );
+pre2.test( t );   :  true반환.
+
+
+
+ # minBy( ), maxBy( ) 정적 메소드.
+
+설명.
+BinaryOperator<T>에서 두 개의 매개변수를 compare( )를 이용해서 최소값 최대값을 구하는 메소드이다.
+
+사용.
+BinaryOperator<T> bi = BinaryOperator.minBy( (t1,t2)-> Integer.compare( t1.value, t2.value) );
+T t = bi.apply( new T( value ), new T( value ) );
+t.getName( );
+
+주의사항.
+최대값, 최소값 등 data를 비교해야 되는 경우에는 compare( )를 재정의 해서 사용한다. ( 비교해야 되는 값 재정의 )
+
+
+
+ # 메소드 참조 Method References.
+
+설명.
+기존에 만들어져있는 메소드들을 참조해서 매개변수와 리턴타입을 활용하는 것을 말한다.
+불필요한 매개변수를 제거.
+
+사용.
+BiFunction bf = 클래스 :: 메소드;           static method.
+IntBinaryOperator op = Math :: max;   
+
+Function f = 참조변수 :: 메소드 ;           instance method.
+Function f = obj :: instanceMethod;       
+
+
+
+ # 매개 변수의 메소드 참조.
+
+설명.
+람다식에 매개변수를 활용한 실행코드를 작성했을때 사용하는 방식이다.
+
+사용.
+( a, b ) -> { a.instanceMethod( b ); }를 변형해서,
+A_Class :: instanceMethod;
+String :: toStrint( );
+
+주의사항.
+변수의 클래스의 메소드를 잘 인식하고, 다른 변수는 클래스의 메소드에 매개변수로 들어간다.
+제네릭을 잘 파악해서 사용해야된다.
+
+
+
+ # 생성자 참조.
+
+설명.
+생성자도 메소드처럼 참조해서 객체를 생성할 수 있다.
+
+사용.
+( a, b ) -> { return new 클래스( a, b ); }를 변형해서,
+클래스 :: new;
+Function<String, Member> fun1 = Member :: new;
+
+주의사항.
+제네릭을 잘 파악해서 사용해야 된다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

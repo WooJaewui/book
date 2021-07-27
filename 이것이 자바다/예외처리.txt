@@ -1,0 +1,188 @@
+
+ 예외처리.
+
+
+ # 오류 - 예외와 에러.
+
+Error : JVM 실행에 문제가 생겼다는 뜻이다. ( 개발자가 할 수 있는 것이 없음 )
+Exception : 사용자의 조작실수 또는 개발자의 잘못된 코딩으로 발생한 오류.
+예외처리 : 프로그램을 종료하지 않고 정상 실행 상태를 유지할 수 있게 해줌.
+
+
+ # 예외의 종류.
+
+Exception : 일반 예외. ( 컴파일 과정에서 예외 발생 )
+RuntimeException : 컴파일은 성공하고 실행할때 발생하는 예외이다.
+
+Exception종류는 Exception을 상속받고,
+RuntimeException종류는 RuntimeException을 상속받는다.
+
+주의사항.
+Exception은 이클립스에서 자동으로 오류로 인식하여주지만,
+Exception은 실행하기 전까지 알 수 없기 때문에 테스트를 해봐야된다.
+
+
+ # NullPointerException.
+
+빈번하게 발생하는 RuntimeException종류 중 하나이다.
+null을 참조하고 있는 변수를 사용했을때 발생한다.
+
+
+
+ # ArrayIndexOutOfBoundsException.
+
+배열에서 인덱스 범위를 초과하여 사용할 경우 발생하는 RuntimeException이다.
+배열을 사용하기 전에 배열의 길이를 먼저 확인하고 사용하는 것이 좋다.
+
+
+
+ # NumberFormatException.
+
+숫자로 변할 수 없는 데이터를 숫자로 형변환하려고 할때 발생하는 RuntimeException이다.
+
+
+
+ # ClassCastException.
+
+형변환 할 수 없는 타입으로 강제형변환을 했을때 발생하는 RuntimeException이다.
+instanceof 연산자를 통해 확인 후에 casting을 해야된다.
+
+
+
+ # 예외처리코드.
+
+원리.
+예외가 발생했을 경우 프로그램의 갑작스러운 종료를 막고,
+정상 실행을 유지할 수 있도록 처리하는 코드.
+
+사용.
+try { 예외가 발생할 수 있는 문장; }
+catch ( 예외클래스 var ) { 예외 발생시 실행할 문장; }
+finally { 예외발생 여부와 상관없이 실행할 문장; } 
+
+주의사항.
+try { } 안에 여러 문장을 넣을 수 있고, n번째 문장에서 예외가 발생하면 
+try에 n번째 이후 문장은 실행되지 않고 catch 문장, finally 문장이 실행된다.
+
+
+
+ # 다중 catch.
+
+설명.
+try 내부에서 실행하는 문장이 다양한 예외를 발생시킬 수 있다.
+예외에 따라 다른 문장을 실행하여 주기 위해 사용한다.
+
+사용.
+try { 예외가 발생할 수 있는 문장; } 
+catch ( 예외클래스1 var ) { 예외1 발생시 실행할 문장; }
+catch ( 예외클래스2 var ) { 예외2 발생시 실행할 문장; }
+
+catch블록의 순서.
+코드를 위에서부터 실행하기 때문에 상위 Exception을 아래쪽에 위치시켜야 구분이 가능하다.
+다형성 성질 때문이다. ( 부모Exception에 자식Exception을 대입 할 수 있기 때문 )
+
+주의사항.
+하나의 try 문장이 실행될때 동시에 여러예외가 발생하지 않고, 
+하나의 예외 발생시 catch문이 실행되기 때문에 한 번에 단 하나의 catch블록만 실행된다.
+
+
+
+# 멀티 catch
+
+설명.
+하나의 catch 블록에서 여러가지 Exception을 처리 할 수 있도록 만든 기능이다.
+
+사용.
+try { 예외가 발생할 수 있는 문장; } 
+catch ( 예외클래스1 | 예외클래스2 var ) { 예외1, 예외2가 발생시 실행할 문장; }
+
+
+
+ # 예외 떠넘기기.
+
+원리.
+메소드 내부에서 예외가 발생할 수 있는 코드를 작성할 때 try-catch를 통해 예외처리를 하지 않고,
+method 이름 옆에 throws ExceptionName을 통해 메소드를 호출한 곳에서 처리하도록 넘길 수 있다.
+
+사용.
+method( 매개변수 ) throws ExceptionName1, ExceptionName2 { 실행할 문장; }
+
+주의사항.
+method를 호출하는 다른 클래스에서는 try-catch를 통해 예외처리를 하거나 다시 throws해야된다.
+main메소드에서는 throws를 사용하지 않는 것이 좋다.
+
+
+
+ # 사용자 정의 Exception.
+
+설명.
+자바 표준 API에서 제공하는 예외만으로 표현할 수 없는 예외들이 있어서 내가 예외를 제작할 수 있다.
+
+사용.
+public class NameException extends Exception or RuntimeException { 
+	public NameException ( ) { };
+       	public NameException ( String message ) { super(message); }
+}
+
+주의사항.
+Exception을 상속받으면 컴파일러가 체크되는 예외가 발생한다.
+RuntimeException을 상속받으면 실행시 예외가 발생한다.
+
+
+ # 예외발생시키기.
+
+설명.
+사용자 정의 예외 또는 자바 표준 API 예외를 내가 원하는 상황에 발생시키기 위한 기능이다.
+
+사용.
+throw new ExceptionClass( );
+thorw new ExceptionClass("메시지");
+
+주의사항.
+예외를 발생시키면 예외처리 또는 예외떠넘기기를 해야된다.
+
+
+
+ # 예외 정보 얻기.
+
+설명.
+예외에 대한 정보를 얻기 위한 기능이다.
+예외를 발생시킬때 작성했던 ExceptionClass("메시지")에 "메시지"도 함께 얻을 수 있다.
+
+메소드.
+getMessage( ) : ExceptionClass가 생성될때 작성할 메시지를 얻는 메소드이다.
+printStackTrace( ) : 어떤 예외가 어디서 발생했는지 자세히 알려준다. ( 메시지도 출력 )
+
+사용.
+try{ }
+catch( 예외클래스 e ) { 
+	String message = e.getMessage( );
+	e.printStackTrace( );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

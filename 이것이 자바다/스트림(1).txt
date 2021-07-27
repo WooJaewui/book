@@ -1,0 +1,137 @@
+
+
+ 스트림(1) - 797page.
+
+
+ # Stream.
+
+용어설명.
+Stream : 배열, 컬렉션의 저장요소를 하나씩 참조해서 람다식으로 처리할 수 있도록 해주는 반복자이다.
+
+사용.
+ArrayList<T> list = new ArrayList<>( );
+Stream<T> steam = list.stream( );
+stream.forEach( var -> System.out.println( var ) );
+
+메소드.
+stream( ) : 컬렉션을 Stream으로 바꿔주는 메소드.
+forEach( Consumer<T> action ) : Consumer interface를 매개변수로 받아서 아무것도 반환하지 않고, 
+		                 Consumer를 구현한 메소드만 실행한다.
+
+
+
+ # forEach( ).
+
+이해.
+stream.forEach( Consumer<T> c ); 를 호출할 경우, 
+stream에 데이터 갯수만큼 반복해서 Consumer에서 구현한 메소드를 호출한다.      
+
+
+
+ # Stream의 특징.
+
+1. 컬렉션에 저장된 데이터를 Function을 통해 가공 후 처리 할 수 있다.
+2. 스트림은 컬렉션 내부에서 요소를 반복시키는 내부반복자로 병렬 처리가 쉽다.
+3. 중간처리(매핑, 필터링, 정렬)와 최종처리(반복, 카운팅, 평균 등)을 할 수 있다.
+ 
+
+
+ # 내부반복자, 외부반복자.
+
+용어.
+내부반복자 : 컬렉션 내부에서 반복이 일어나는 경우로, stream이 대표적이다.
+외부반복자 : 컬렉션 외부에서 순차적으로 반복을 일어나는 경우로, for문-iterator-while문이 있다.
+
+설명.
+내부반복자가 병렬처리에서 훨씬 효율적이다.
+
+
+
+ # Stream의 종류.
+
+설명.
+java.util.stream 패키지에 stream과 관련된 API들이 저장되어있다.
+
+종류.
+BaseSteam : 모든 스트림을 상속하는 부모 Stream 인터페이스로, 공통 메소드들이 정의되어있다.
+Stream : 객체 요소를 처리하는 Stream이다.
+IntStream : Int 요소를 처리하는 Stream이다.
+LongStream : Long 요소를 처리하는 Stream이다.
+DoubleStream : Double 요소를 처리하는 Stream이다.
+
+사용.
+Stream<T> stream = list.stream( );
+Stream<T> stream = Arrays.stram(arr);
+Intstream<T> stream = IntStream.range( 1, 100 );
+
+
+
+ # 파일로부터 스트림 얻기.
+
+과정.
+1. 파일 위치 경로 확인.
+2. 파일의 문자셋 설정 및 데이터 얻기.
+3. stream으로 활용.
+
+사용.
+Path path = Paths.get( "c:\\path1\\path2\\file.txt" );
+Stream<String> stream = Files.lines( path, Charset.defaultCharset( ) );
+stream.forEach( System.out :: println );
+
+
+
+ # 디렉토리로부터 스트림 얻기.
+
+과정.
+1. 디렉토리 위치 경로 확인.
+2. 디렉토리 경로에 데이터 얻기.
+3. stream으로 활용.
+
+사용.
+Path path = Paths.get( "c:\\path1\\path2\\finalPath" );
+Stream<Path> stream = Files.list( path );
+stream.forEach( System.out :: println );
+
+
+
+ # 중간처리와 최종처리의 의미.
+
+설명.
+stream으로 생성된 data를 여러개의 중간처리와 한 개의 최종처리를 통해 가공할 수 있다.
+forEach( )도 최종처리 중 한가지이다.
+
+주의사항.
+중간처리만 있으면 data를 처리 하지 않고, 최종처리가 있어야 data처리를 진행한다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

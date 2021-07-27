@@ -1,0 +1,73 @@
+
+ 기본 API
+
+
+ # java.lang과 java.util.
+
+java.lang 패키지.
+
+자바 프로그램의 기본적인 클래스를 담고 있는 패키지이다.
+import 없이 사용할 수 있다.
+
+java.util 패키지.   
+
+자바 프로그램 개발에 조미료 같은 역할을 한다. ( 거의 대부분이 컬렉션 클래스 )
+
+
+
+ # Object 클래스.
+
+자바의 최상위 부모 클래스이다.
+모든 클래스는 Object 클래스의 자식이거나 자손클래스이다.
+Class가 extends를 사용하지 않으면 암묵적으로 상속되는 클래스이다.
+
+
+
+ # Object를 비교하는 방법.
+
+1. hashCode( ) 값을 비교한다.
+2. hashCode( ) 값이 같으면 equals( ) 값을 비교한다.
+3. 둘 다 true가 나오면 같은 객체이다.
+
+compare( ) 메소드를 통해서도 비교할 수 있다.
+
+
+ # Object 객체 복제.
+
+얕은 복제 : 기본형 필드값을 복제하고, 참조형은 객체 주소를 복제하는 것을 말한다.
+깊은 복제 : 기본형은 필드값을 복제하고, 참조형은 새로운 객체를 생성한다.
+
+깊은 복제는 clone( )메소드를 재정의해서 사용.
+
+
+
+ # Object의 finalize( ).
+
+객체가 소멸되기 전에 마지막으로 실행되는 메소드이며,
+오버라이딩을 통해 소멸되기 전에 문장을 실행시킬 수 있다.
+
+
+
+ # Object의 hash( ), hashCode( ).
+
+hash( Object ... values ) : 매개값으로 주어진 값들을 이용해서 해시코드를 작성하는 역할.
+hashCode( Object o ) : 해시로 작성된 해시값을 비교.
+
+
+
+ # Object의 toString( ).
+
+toString( str ) : "str"
+toString( str , "nullDefault" ) : str이 null이면 nullDefault에 적은 String 반환된다.
+  
+
+
+
+
+
+
+
+
+
+
+                   

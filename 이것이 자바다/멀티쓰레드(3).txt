@@ -1,0 +1,201 @@
+
+ 멀티쓰레드(3) - 650page.
+
+
+ # 데몬쓰레드.
+
+설명.
+주 쓰레드의 작업을 돕는 보조적인 역할을 수행하는 쓰레드이다.
+
+사용.
+thread.setDaemon(true);
+thread.isDaemon( );
+
+
+주의사항.
+start( ) 메소드를 호출하고 setDaemon( )을 호출하면 IllegalThreadStateException이 발생한다.
+
+
+
+ # 쓰레드그룹.
+
+설명.
+여러개의 쓰레드를 한 번에 제어할 수 있도록 도와주는 기능이다.
+
+쓰레드그룹 이름 확인.
+ThreadGroup group = Thread.currentThread( ).getThreadGroup( );
+String groupName = group.getName( );
+
+쓰레드그룹 생성.
+ThreadGroup tg = new ThreadGroup( String name );
+ThreadGroup tg = new ThreadGroup( ThreadGroup parent, String groupName );
+
+쓰레드에 그룹 지정.
+Thread t = new Thread( ThreadGroup group, Runnable target );
+Thread t = new Thread( ThreadGroup group, Runnable target, String threadName );
+
+메소드.
+tg.intterup( ) : 그룹에 속한 쓰레드의 interrupt( )를 호출한다. ( Exception은 따로 처리 해야된다 )
+tg.getName( ) : 현재 그룹의 이름을 리턴한다.
+tg.isDaemon( ) : 현재 그룹이 데몬 그룹인지 여부를 리턴한다.
+tg.Daemon( true ) : 현재 그룹을 데몬 그룹으로 설정한다.
+tg.list( ) : 현재 그룹에 포함된 쓰레드와 하위 그룹에 대한 정보를 출력한다.
+
+
+
+ # 쓰레드풀.
+
+설명.
+쓰레드가 증가하여 병렬 작업처리가 많아지면 애플리케이션 성능의 저하가 오는데,
+이런 병렬처리의 문제점을 쓰레드풀을 통해 제어한다.
+
+쓰레드풀 생성.
+1. ExecutorService executorService = Excutors.newCachedThreadPool( );
+2. ExecutorService executorService = Excutors.newFixedThreadPool( 
+            		           Runtime.getRuntime( ).availableProcessors( ) - CPU 코어 수만큼 설정 );
+
+쓰레드풀 종료 메소드.
+executorService.shutdown( ) : 작업 큐에 대기하고 있는 몯느 작업을 처리한 후 종료.
+executorService.shutdownNow( ) : 쓰레드를 interrupt해서 종료하고, 미처리된 작업을 반환한다.
+executorService.awaitTermination( long timeout, TimeUnit unit ) 
+: shutdown( ) 후 시간안에 작업 처리를 완료하면 true, 못하면 interrupt하고 false를 반환.
+
+
+
+ # 작업 생성
+
+작업 생성.
+1. Runnable task = new Runnable( ) { 
+	@override
+	public void run( ) { 쓰레드가 처리할 작업 내용; }
+   } 
+
+2. Callable<T> task = new Callable<T>( ) { 
+	@override
+      	public <T> call( ) { 
+	       쓰레드가 처리할 작업 내용;
+                   return T;
+            }
+  } 
+
+두 작업의 차이점.
+Runnable은 리턴값이 없고, Callable은 리턴값이 있다.
+
+
+
+ # 작업처리.
+
+설명.
+위와 같이 만든 작업들을 ExecutorService( 쓰레드풀 )에 작업큐에 넣는 것을 의미한다.
+
+메소드.
+executorService.execute( Runnable task ) : 작업 처리 결과를 받지 못한다.
+executorService.submit( Runnable task, V result ) : Future<V>를 통해 작업 처리 결과를 반환한다.
+executorService.submit( Callable<V> task ) : Future<V>를 통해 작업 처리 결과를 반환한다.
+
+차이점.
+1. 반환값 : execute( )는 리턴이 없고, submit( )은 Future<V>를 반환한다.
+2. 예외 발생시 : execute( )는 Thread를 종료하고 새로운 Thread를 만든다.
+                   submit( )은 Thread를 계속 사용한다. 
+
+주의사항.
+예외 발생시 생성자 오버헤더를 줄이기 위해 submit( )을 사용하는 것이 좋다.
+
+
+
+ # Future 클래스.
+
+설명.
+Future클래스는 작업이 완료될 때까지 기다렸다가 최종결과를 얻는데 사용한다.
+
+용어설명.
+지연완료 pending completion : 작업이 완료될때까지 기다렸다가 사용하는 객체.
+
+사용.
+Future<T> future = executorService.submit( task );
+future.get( ) : 작업이 완료될 때까지 기다렸다가 처리 결과 V를 리턴한다.
+
+주의사항.
+작업 안에 future.get( )을 호출하면 작업이 완료되기 전에 처리결과를 기다려서
+작업이 처리 되지 않는 오류가 발생할 수 있다. 
+결과 값이 없는 경우 future.get( Runnable task )하면 null을 반환한다.
+Future<T>의 지네릭 <T>의 값을 유의하여야한다.
+
+
+
+ # 외부 객체에 작업 결과 저장.
+
+설명.
+두 개 이상의 쓰레드 작업을 취합하여 사용할 수 있는 방법이다.
+
+사용.
+결과를 저장하는 Result Class를 생성한다.
+Result result = future.get( );
+
+주의사항.
+어떤 방식으로 작업 결과를 취합할지 생각해서 Result Class를 생성하여 사용한다.
+
+
+
+ # 작업 완료순서.
+
+설명.
+작업 요청 순서대로 작업 처리가 완료되는 것이 아니다.
+결과를 순서대로 사용할 필요가 없다면 작업 처리가 완료된 것부터 결과를 이용하는 것이 효율적이다.
+
+사용.
+CompletionSerivce<V> c = new ExecutorCompletionService<V>( ExecutorService var );
+c.submit( Callable<V> task );
+c.submit( Runnable task, V result );
+
+메소드.
+c.poll( ) : 완료된 작업의 Future를 가져옴. 없다면 null을 리턴.
+c.take( ) : 완료된 작업의 Future를 가져옴. 없다면 있을때까지 블로킹.
+
+
+
+ # 콜백 방식 작업 완료 통보.
+
+설명.
+작업 처리가 끝나면 특정 메소드를 자동 실행하는 기법을 의미한다.
+
+사용.
+CompletionHandler<V, A> callback = new CompletionHandler<V, A>( ) { 
+	@override
+	public void completed( V result, A attachment ) { 완료시 실행할 문장; }
+	@override
+	public void faild( Throwable exc, A attachment ) { 오류시 실행할 문장; }
+};
+
+Runnable task = new Runnable ( ) { 
+	@override
+	public void run( ) { V result = .... ; callback.completed( result, null ); }
+}
+
+주의사항.
+V는 결과값의 타입이고, A는 첨부값의 타입이다. ( A가 필요없다면 Void로 지정 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

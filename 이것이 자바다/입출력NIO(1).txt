@@ -1,0 +1,148 @@
+
+ 입출력 NIO - 
+
+
+
+ # 스트림 vs 채널.
+
+스트림 : 입력 스트림, 출력 스트림을 구분해서 생성하고, 사용해야된다.
+채널 : 입력 / 출력 구분없이 하나로 사용가능하다.
+
+
+
+ # 버퍼 vs 넌 버퍼.
+
+넌버퍼 : 버퍼가 없으면 입력한 만큼만 출력이 가능해서 프로그램이 느리다.
+버퍼 : 버퍼에 데이터를 저장했다가 한 번에 입/출력이 가능해서 프로그램이 빠르다.
+
+
+
+ # 블로킹 vs 넌블로킹.
+
+블로킹 : read( ), write( ) 등의 메소드를 호출하면 데이터가 입/출력되기 전까지 블로킹( 대기 상태 ) 된다.
+          ( close( )하면 예외발생으로 블로킹 상태를 빠져 나올 수 있다 )
+넌블로킹 : 입출력 작업 시 쓰레드가 블로킹되지 않는 것을 의미한다.
+            ( NIO - 입/출력시 필요에 따라 빠져나올 수 있고, 작업 준비가 완료된 data만 입/출력한다. ) 
+
+
+
+ # 동기 vs 비동기.
+
+동기 synchronized : 하나의 작업이 실행되면 다른 쓰레드는 대기하고 기다려야된다. ( 동시 작업 불가 )
+비동기 asynchronized : 하나의 작업이 실행될 때 다른 쓰레드가 작업을 실행하면 같이 실행된다. ( 동시 작업 )
+
+
+
+ # IO와 NIO의 차이.
+
+IO Input/Output : 스트림 방식, 넌버퍼, 동기화 지원 안함, 블로킹 방식만 지원. ( java.io 패키지 )
+NIO New Input/Output :  채널 방식, 버퍼, 동기화 지원, 블로킹 / 넌블로킹 지원. ( java.nio 패키지 )
+
+정리.
+NIO : - 무조건 data를 버퍼에 저장하는 방식으로 적은 양의 데이터를 입/출력 할 때 유리하다. 
+       - 비동기화와 넌블로킹 현상을 통해 불특정 다수의 클라이언트와 연결에 유리하다.
+IO : - 연결 클라이언트가 적고, 전송되는 데이터가 대용량이며, 순차적으로 처리해야될 때 사용한다.
+
+
+
+ # Path 인터페이스.
+
+설명.
+NIO API에서 파일의 경로를 지정하기 위한 인터페이스이다.
+
+사용.
+Path path = Paths.get( String str1, String str2 , ... );
+Path path = Paths.get( Uri uri );
+Path path = Paths.get( 경로\파일이름 );
+
+
+
+ # FileSystem 추상 클래스.
+
+설명.
+운영체제의 파일 시스템을 얻을 수 있는 추상 클래스이다. ( 객체 생성 X )
+
+사용.
+FileSystem fs = FileSystems.getDefault( );
+
+메소드.
+getTotalSpace( ) : 드라이버 전체 공간 크기 바이트 리턴.
+isReadOnly( ) : 읽기 전용 여부.
+name( ) : 드라이브명 리턴.
+
+
+
+ # WatchService 인터페이스. ( 따로 더 공부하기 )
+
+설명.
+디렉토리 내부에서 파일 생성, 삭제 수정 등의 내용 변화를 감시하는데 사용.
+
+사용.
+WatchService watch = FileSystems.getDefault( ).newWatchService( );
+
+
+
+ # 버퍼.
+
+2가지 분류.
+1. 데이터 타입에 따른 버퍼 : ByteBuffer, CharBuffer, ShortBuffer ... 등.
+2. 넌다이렉트, 다이렉트 버퍼 : - 넌다이렉트 : JVM의 힙 메모리, 버퍼 생성이 빠르다, 입출력 성능이 안 좋다.
+                                      - 다이렉트 : 운영체제의 메모리, 버퍼 생성이 느리다, 입출력 성능이 좋다.
+
+메소드.
+allocate( ) : 넌다이렉트 버퍼 객체 생성.
+allocateDirect( ) : 다이렉트 버퍼 객체 생성.
+wrap( ) : data를 래핑해서 Buffer 객체를 생성한다.
+
+객체 생성.
+ByteBuffer dbb = ByteBuffer.allocateDirect( 용량 );
+ByteBuffer bb = ByteBuffer.allocate( 용량 );
+byte[ ] arr = new byte[100];
+ByteBuffer bb = ByteBuffer.wrap( arr );
+
+주의사항.
+다이렉트는 한 번 생성해놓고 재사용하는 것이 적합하다. ( 만드는 데 시간이 오래 걸림 )
+
+
+
+ 
+ # FileChannel 클래스.
+
+설명.
+파일 읽기와 쓰기를 할 수 있는 클래스이다.
+
+객체 생성.
+FileChannel file = FileChannel.open( path, option1, option2, ... );
+
+사용.
+file.write( buffer );
+file.read( 같은 타입 배열 ); 
+
+
+
+ # AsynchronousFileChannel 인터페이스.
+
+설명.
+read( )를 호출했을때 쓰레드 작업큐에서 작업을 실행하고 read( )는 바로 리턴된다.
+콜백 함수를 통해 작업큐에서 작업이 끝났을 때 결과값을 얻을 수 있다.
+
+객체생성.
+AsynchronousFileChannel afc = AsynchronousFileChannel.open( path, optins1, options2, .. );
+
+메소드.
+afc.write( buffer );
+afc.read( 같은 타입 배열 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+

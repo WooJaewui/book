@@ -1,0 +1,68 @@
+
+  입출력 NIO(2) 마무리.
+
+
+
+ # TCP 채널.
+
+설명.
+NIO를 통해 애플리케이션을 개발하려면 블로킹 / 넌블로킹 / 비동기 구현 방식 중 하나를 선택해야 된다.
+구현 방식이 달라진다.
+
+
+
+ # TCP 블로킹 채널.
+
+객체 생성.
+ServerSocketChannel ssc = ServerSocketChannel.open( );
+ssc.configureBlocking( true );
+ssc.bind( new InetSocketAddress( port ));
+
+연결.
+SocketChannel sc = ssc.accept( );
+sc.close( );
+ssc.closee( );
+
+사용.
+Charset charset = Charset.forName("UTF-8");
+ByteBuffer bb = charset.encode("Hello world");
+sc.write( bb );
+
+ByteBuffer bb2 = ByteBuffer.allocate(100);
+int bb1 = sc.read( bb2 );
+bb2.flip( );
+String message = charset.decode( bb1 ).toString( );
+
+
+
+ # TCP 비동기 채널.
+
+특징.
+다른 채널에서 블로킹 됐을 메소드들이 즉시 리턴된다. ( 쓰레드풀이 대신 실행 후 콜백 메소드 호출 )
+
+
+
+ # UDP 채널.
+
+사용.
+DatagramChannel dc = DatagramChannel.open( StandardProtocolFamil.INET );
+
+
+
+자세한 내용은 나중에 다시 공부하자.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

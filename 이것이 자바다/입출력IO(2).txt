@@ -1,0 +1,265 @@
+
+ 입출력(2) - 1100page
+
+
+ # ObjectInputStream, ObjectOutputStream.
+
+설명.
+객체를 직렬화/역직렬화해서 바이트 스트림으로 입출력 할 수 있게 도와주는 보조 스트림이다.
+
+사용.
+ObjectInputStream ois = new ObjectInputStream( 바이트 입력 스트림 );
+ObjectOutputStream oos = new ObjectOutputStream( 바이트 출력 스트림 );
+객체타입 변수 = ois.readObject( 객체 );
+객체타입 변수 = oos.writeObject( 객체 );
+
+
+
+ # Serializable 인터페이스.
+
+설명.
+Serializable을 구현한 클래스만 직렬화 할 수 있다.
+메소드가 없는 빈 인터페이스이다.
+
+사용.
+public class ClassName implements Serializable {  } 
+
+부모 객체가 Serializable을 구현하지 않을때.
+1. 부모 객체에 Serializable을 implements 한다.
+2. writeObject( )와 readObject( )메소드 안에서 부모 객체를 Serializable한다.
+
+주의사항.
+객체를 직렬화하면 바이트로 변환되는 것은 변수들이고, 생성자 및 메소드는 직렬화 X.
+static과 transient가 붙어 있는 변수는 직렬화가 되지 않는다.
+writeObject( )는 직렬화 할 때 자동호출, readObject( )는 역직렬화 할 때 자동호출된다.
+
+
+ 
+ # SerialVersionUID 변수.
+
+설명.
+Class를 입출력할때, 입력하는 곳과 출력하는 곳의 Class가 달라지면 예외가 발생한다.
+그 때 Class가 같은지 확인하는 것이 SerialVersionUID이다.
+
+용어.
+Unique IDentifier : 고유 식별자.
+User IDentifier : 사용사 식별자.
+
+원리.
+Serializable을 구현한 class가 직렬화되면 자동으로 SerialVersionUID가 생성되고,
+클래스의 내용을 바꾸고 재컴파일 하면 SerialVersionUID가 달라지게 된다. ( 예외 발생 )
+불가피하게 클래스의 내용을 바꿔야 된다면 SerialVersionUID 변수를 만들어서 지정해주면 된다.
+
+
+
+ # 네트워크.
+
+용어.
+네트워크 : 여러 대의 컴퓨터를 통신 회선으로 연결한 것.
+서버 : 서비스를 제공하는 프로그램.
+클라이언트 : 서비스를 받는 프로그램.
+P2P ( peer to peer ) : 1:1로 연결되는 방식으로, 컴퓨터 하나가 서버도 되고 클라이언트도 될 수 있다.
+
+원리.
+1. 서버와 클라이언트가 연결되야 한다.
+2. 연결된 클라이언트가 요청( request )하면 서버가 응답( response )한다.
+
+
+
+ # IP주소와 포트.
+
+용어.
+IP( Internet Protocal ) : 컴퓨터에 고유한 주소이다. - 네트워크 어댑터(LAN)마다 하나씩 할당된다.
+                             콘솔에서 ipconfig /all로 확인가능.
+DNS( Domain Name System ) : 숫자로 된 IP주소를 쉽게 파악하기 위해 이름을 붙인 것이다.
+port : IP에 연결된 여러 서버들 중 어느 서버랑 연결할 지 결정해 준다.
+port binding : 서버가 시작될 때 고정적인 포트 번호를 가지고 실행하는 것. ( web - 80, FTP-21 )
+
+
+
+ # InetAddress로 IP 주소 얻기.
+
+설명.
+java.net 패키지로 java에서 IP주소를 얻는 방법이다.
+
+사용.
+1. InetAddress ia = InetAddress.getLocalHost(  );
+2. InetAddress ia = InetAddress.getByName( String host );
+3. InetAddress[ ] iaArr = InetAddress.getAllByName( String host );
+
+3번은 하나의 도메인에 여러 IP 주소를 가질 경우 여러 개의 IP주소를 배열로 한 번에 얻는다.
+
+
+
+ # TCP 네트워킹.
+
+설명.
+Transmission Control Protocal로 클라이언트와 서버가 연결된 상태에서 데이터를 주고 받는 형태이다.
+
+장점.
+고정적인 통신 선로를 통해 정확하고 안정적이다.
+
+단점.
+연결이 형성되어야 한다 ( 연결하는데 시간이 오래 걸린다 )
+고정된 통신 선로가 최적화 된 선로가 아닐 경우 UDP보다 데이터 전송 속도가 느릴 수 있다.
+
+
+
+
+ # 서버 ServerSocket, Socket
+
+설명.
+java.net 패키지로 TCP 네트워킹을 위한 클래스이다. 
+
+기능.
+ServerSocket 클래스 : 클라이언트의 연결 요청에 응답해서 연결 수락을 담당.
+Socket 클래스 : 연결된 클라이언트와 통신을 담당.
+
+ServerSocket 사용.
+1. ServerSocket ss = new ServerSocket( port );
+2. ServerSocket ss = new ServerSocket( );
+   ss.bind( new InetSocketAddress( port ));
+3. ServerSocket ss = new ServerSocket( );
+   ss.bind( new InetSocketAddress( ip_add, port ));
+
+서버로 멀티 IP가 있을 경우, 특정 IP로 접속할 때만 연결하고 싶을때 3번을 사용한다.
+
+Socket 사용.
+Socket s = ss.accept( );
+s.close( );
+ss.close( );
+
+
+
+ # 클라이언트 Socket.
+
+설명.
+클라이언트가 서버에 연결하기 위한 클래스이다.
+
+사용.
+1. Socket s = new Socket( ip_add, port );
+2. Socket s = new Socket( new InetSocketAddress( ip_add, port );
+3. Socket s = new Socket( );
+   s.connect( new InetSocketAddress( ip_add, port ));
+   s.close( );
+
+주의사항.
+다른 클라이언트에서 Socket으로 연결되면 close( )하기 전까지 블로킹된다. ( 연결 X )
+
+
+
+ # Socket을 통해 입출력하기.
+
+설명.
+서버와 클라이언트 연결을 끝내면 Socket으로 부터 입출력을 할 수 있다.
+
+클라이언트 사용.
+Socket s = new Socket( ip_add, port );
+OutputStream os = s.getOutputStream( );
+os.write( data );
+
+서버 사용.
+ServerSocket ss = new ServerSocket( );
+ss.bind( new InetSocketAddres( ip_add, port ));
+Socket s = ss.accept( );
+InputStream is = s.getInputStream( );
+is.read( );
+
+read( )메소드의 블로킹 해제 경우.
+1. 상대방이 데이터를 보냄 : 읽어온 데이터를 반환.
+2. 상대방이 close( )를 호출 : -1을 반환.
+3. 상대방이 비정상적으로 종료 : IOException발생.
+
+주의사항.
+data는 byte 형식으로 입출력되기 때문에 형변환을 해야된다.
+read( )메소드 해제 3번이 발생한 경우 예외처리로 close( )를 호출해야된다.
+
+
+
+ # 서버 병렬 처리.
+
+설명.
+accept( ), connect( ), read( ), write( )는 블로킹을 하게 되므로 병렬 처리 하는 것이 효율적이다.
+
+사용순서.
+1. 쓰레드풀 생성.
+2. ServerSocket 생성.
+3. Runnable 객체를 생성해서 ServerSocket, Socket.accept( ).
+4. 연결된 Socket을 통해 read( ), write( ).
+5. Socket, ServerSocket close( ).
+6. 쓰레드풀에 Runnable을 구현한 객체 넣기.
+
+
+
+ # 클라이언트 병렬 처리.
+
+설명.
+서버에는 다수의 클라이언트가 연결되기 때문에 클라이언트에 데이터를 관리해야된다.
+
+사용순서.
+1. 클라이언트 클래스 생성. ( Socket변수, receive( )메소드, send( ) 메소드 만들기 )
+2. 쓰레드풀 생성.
+3. Runnable 객체를 생성해서 클라이언트 객체 생성, 클라이언트 객체에 Socket 연결.
+4. 연결된 클라이언트에 Socket을 통해 receive( ), send( )를 호출해서 사용. ( read( ), write( ) )
+5. Socket close( ).
+6. 쓰레드풀에 Runnable을 구현한 객체 넣기.
+
+
+
+ # UDP 네트워킹.
+
+설명.
+User Datagram Protocal으로 연결 절차를 거치지 않고 발신자가 일방적으로 데이터를 보내는 방식이다.
+
+장점.
+TCP보다 빠른 전송이 가능하다.
+
+단점.
+데이터의 신뢰성이 떨어진다.
+
+주의사항.
+패킷을 통해 나눠서 데이터를 보낼때 전송 선로에 따라 나중에 보낸 패킷이 먼저 도착할 수 있다.
+잘못된 선로를 통해 데이터를 보내면 데이터가 전송되지 않을 수 있다.
+
+
+ 
+ # DatagramSocket 발신자 구현 - 클라이언트.
+
+사용.
+DatagramSocket ds = new DatagramSocket( );
+DatagramPacket packet = new DatagramPacket( byte[ ], length, port );
+ds.send( packet );
+ds.close( );
+
+
+ # DatagramSocket 수신자 구현 - 서버.
+
+사용.
+DatagramSocket ds = new DatagramSocket( port );
+ds.receive( packet );
+packet.getSocketAddres( );
+ds.close( );
+
+
+
+ # TCP, UDP 방식.
+
+주의사항.
+TCP : 클라이언트를 먼저 실행하고, 서버를 실행한다.
+UDP : 수신자(서버)를 먼저 실행하고, 발신자(클라이언트)를 실행한다.
+
+
+
+ # 일반 data를 문자열 데이터로 바꾸는 경우.
+
+사용.
+byte[ ] byteArr = data.getBytes( "UTF-8" );
+
+
+
+
+
+
+
+
+
