@@ -1,0 +1,117 @@
+
+ 오라클과 데이터베이스 - 
+
+
+
+ # Oracle DBMS.
+
+용어정리.
+Data : 정보.
+DB DataBase : 여러가지의 정보를 담고 있는 것.
+DBMS DataBase Management System : 연관성 있는 데이터들의 집합을 구성한 소프트웨어들의 집합체.
+SQL Structured Query Language : 관계형 데이터베이스를 조작하기 위한 표준 언어이다.
+
+Oracle DBMS의 특성.
+데이터베이스를 조작할 수 있다. ( CRUD )
+권한이 없는 사용자로부터 데이터를 안전하게 보호한다.
+동시에 여러 사용자가 데이터베이스를 접근하는 것을 제어.
+
+
+
+ # 데이터 타입.
+
+CHAR : 고정 길이 문자 데이터. ( 길이가 같은 데이터에 사용 - 주민번호 )
+VARCHAR2 : 가변 길이 문자 데이터. ( 길이가 바뀌는 데이터에 사용 )
+NVARCHAR2 : 국가별 문자 집합에 따른 데이터. ( 영어 이외에 다른 문자 데이터에 사용 - 한글 )
+
+NUMBER : 숫자 데이터 타입. 
+
+DATE : 날짜 형식 데이터 타입. 
+TIMESTAMP : DATA 데이터 타입의 확장된 형태.
+
+
+
+ # 데이터 무결성 제약 조건.
+
+설명.
+무결성은 데이터의 정확성과 일관성을 유지하고 보증하는 것을 의미한다.
+
+NOT NULL.
+데이터를 저장할 때 NULL을 저장할 수 없게 설정하는 것을 의미한다. ( 어떤 값이 반드시 들어간다 )
+
+기본키 ( Primary Key )
+한 테이블 내에서 기본키로 설정한 것은 같은 값을 가질 수 없다. ( 유일한 값이다 )
+
+외래키 
+다른 테이블에 기본키를 의미하며, 다른 테이블과 연결하기 위해 많이 사용된다.
+
+
+
+ # 사용자 계정.
+
+SYS : 오라클 Super 사용자 계정이며 모든 문제를 처리할 수 있는 권한이 있다.
+SYSTEM : 데이터베이스를 유지보수 관리할 때 사용하는 계정이다.
+HR : 실습을 위해 만들어 놓은 교육용 계정이다.
+
+
+
+ # 계정 잠금 풀기.
+
+잠금 풀기.
+alter user UserName account unlock;
+
+
+
+ # Select 구문.
+
+사용.
+select distinct * from TableName where column='data';
+distinct : 중복 제거.
+
+SELECT절 구문 순서.
+select -> distinct -> from -> where -> group by -> having -> order by.
+
+
+
+ # 산술연산자.
+
++, - , * , / : 사칙연산자.
+
+
+
+ # nvl 함수.
+
+설명.
+값이 null일 경우 default값을 제공한다.
+
+사용.
+select nvl(commision, 10), b from TableName;
+
+
+
+ # Column에 별칭.
+
+3가지 방법.
+1. Column 뒤에 공백 후에 별칭을 붙인다 : Column 별칭.
+2. Column 뒤에 as 후에 별칭을 붙인다 : Column as 별칭.
+3. " " 안에 별칭을 넣어준다 : " 별칭 " ; 
+
+팁.
+3번은 예약어나 특수문자를 변수, 별칭으로 사용해야 될 때 쓰인다.
+
+
+
+ # Dual 테이블.
+
+설명.
+실행한 결과를 확인해 보기 위해 오라클에서 만들어놓은 테이블이다.
+Dummy라는 Column 하나만 존재한다.
+
+사용.
+select 1+1 from dual;
+
+
+
+
+
+
