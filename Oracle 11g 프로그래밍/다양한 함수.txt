@@ -1,0 +1,91 @@
+
+ 다양한 함수.  page140
+
+
+
+ # 대소문자 변환함수.
+
+Upper( '문자' ) : 대문자로 변환.
+lower( '문자' ) : 소문자로 변환.
+INITCAP( '문자' ) : 첫글자만 대문자로, 나머지는 소문자로 변환.
+
+주의사항.
+upper, lower를 사용해서 데이터를 저장하면 검색이 안 될 수 있다.
+where id = 'data'로 검색 X , where lower(id) = 'data' O.
+
+
+
+ # 문자 관련 함수.
+
+길이 관련.
+Length( '문자' ) : 문자 길이를 반환. ( 한글 1byte )
+LengthB( '문자' ) : 문자 길이를 반환. ( 한글 2byte )
+
+문자 조작.
+CONCAT( '문자' ) : 문자의 값을 연결한다.
+SUBSTR( '문자', 시작위치, 갯수 ) : 문자를 잘라 추출한다. ( 한글 1byte )
+SUBSTRB( '문자', 시작위치, 갯수 ) : 문자를 잘라 추출한다. ( 한글 2byte )
+INSTR( '문자', 찾을글자, 시작위치, 몇 번째 ) : 특정 문자의 위치 값을 반환한다. ( 한글 1byte )
+INSTRB( '문자', 찾을글자, 시작위치, 몇 번째 ) : 특정 문자의 위치 값을 반환한다. ( 한글 2byte )
+LPAD, RPAD( column, 글자수, 공백에 넣을 문자 ): 입력 받은 문자열과 기호를 정렬하여 특정 길이의 문자로 반환한다.
+TRIM( '문자' ) : 여백 부분을 없앤다.
+
+
+
+ # 숫자 관련 함수.
+
+ROUND( 대상, 자릿수 ) : 반올림.
+TRUNC( 대상, 자릿수 ) : 버림.
+MOD( 대상, 나눌 수 ) : 대상을 나누고 난 후 나머지 값을 반환한다.
+
+
+
+ # 날짜 관련 함수.
+
+함수.
+SYSDATE : 시스템에 저장된 현재 날짜를 반환한다.
+MONTHS_Between : 두 날짜 사이가 몇 개월인지 반환한다.
+ADD_MONTHS : 특정 날짜에 개월 수를 더한다.
+LAST_DAY : 해당 달의 마지막 날짜를 반환한다.
+
+연산.
+DATA +,- number : 날짜에 일수를 숫자만큼 빼서 계산한다.
+
+format.
+yyyy-MM-dd hh:mi:ss 등의 형식으로 표현.
+
+
+
+ # 형변환 함수.
+
+TO_CHAR( data ) : 날짜형 혹은 숫자형을 문자형으로 변환한다. ( VARCHAR2로 변환 )
+TO_DATE( 'data', format ) : 문자형을 날짜형으로 변환한다. ( 기본포맷 - YY/MM/DD ) 
+TO_NUMBER( 'data' ) : 문자형을 숫자형으로 변환한다. 
+
+주의사항.
+날짜형태는 숫자형태로 바꿀 수 없다.
+
+
+
+ # 일반함수.
+
+NVL( COLUMN, COLUMN이 null일때 저장될 값 ) : 값이 NULL일 때 저장될 default 값이다.
+NVL2( COLUMN, COLUMN이 null일때, COLUMN이 null이 아닐 때 ) : 값이 NULL<일 때, NULL이 아닐 때 나눠서 사용.
+NULLIF( A, B ) : A와 B가 같으면 null, 다르면 A를 반환.
+
+coalesce( a, b, c , ... ) : 많은 데이터 중에 앞에서부터 null인 값을 확인해서 null이 아닌 첫 번째 값을 반환.
+decode( data, 조건1, 결과1, 조건2, 결과2, .. ) : switch문처럼 data가 조건에 맞으면 결과를 반환.
+case( data case when 조건1 then 결과1 , ... ) : data가 조건에 맞으면 결과를 반환.
+
+
+
+
+
+
+
+
+
+
+
+
+
