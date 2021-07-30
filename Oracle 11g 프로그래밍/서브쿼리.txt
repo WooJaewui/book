@@ -1,0 +1,61 @@
+
+ 서브쿼리 - 204page.
+
+
+ # 서브쿼리.
+
+용어.
+메인쿼리 : 일반적인 전체적인 쿼리문을 의미한다.
+서브쿼리 : 메인쿼리 안에 만들어진 쿼리문을 의미한다.
+
+종류.
+단일 행 서브쿼리 : 서브쿼리 결과가 로우 1개인 경우.
+다중 행 서브쿼리 : 서브쿼리 결과가 로우 여러개인 경우.
+
+사용.
+SELECT * from ( select rownum from table1 where column = data ) ;
+
+
+
+ # 단일 행 서브 쿼리.
+
+설명.
+서브쿼리 결과가 로우 1개인 경우.
+
+사용.
+SELECT * from table where = ( select min( column ) from table2 ) ;
+
+주의사항.
+where = 을 사용하려면 단일 행 서브 쿼리여야만 한다. ( 여러개 일 경우 사용 X )
+서브쿼리 안에 group by 등 사용 X ( 다중 행 서브 쿼리가 될 수 있다 )
+
+
+
+ # 다중 행 서브 쿼리.
+
+설명.
+서브쿼리 결과가 로우 여러개인 경우.
+
+연산자.
+in : 다중 행 서브 쿼리 중에 맞는 값이 있으면 SELECT 한다.
+
+<any : 결과 값들 중에 최대값보다 작음.
+>any : 결과 값들 중에 최소값보다 큼.
+=any : in과 동일.
+
+<all : 결과 값들 중에 최대값보다 큼.
+>all : 결과 값들 중에 최소값보다 작음.
+
+
+사용.
+SELECT * from table1 where in ( select min( column1 ) from table2 group by column2 = data ) ;
+SELECT * from table1 where <any ( select min( column1 ) from table2 group by column2 = data ) ;
+SELECT * from table1 where >all ( select min( column1 ) from table2 group by column2 = data ) ;
+
+
+
+
+
+
+
+

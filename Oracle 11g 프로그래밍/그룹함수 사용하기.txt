@@ -1,0 +1,61 @@
+
+ 그룹함수 사용하기 - 160page.
+
+
+
+ # 그룹 함수.
+
+SUM( 그룹 ) : 그룹의 총합.
+AVG( 그룹 ) : 그룹의 평균. 
+COUNT( 그룹 ) : 그룹의 총 갯수. ( row의 갯수 ) 
+MAX( 그룹 ) : 그룹의 최대값. 
+MIN( 그룹 ) : 그룹의 최솟값. 
+
+주의사항.
+일반 함수는 NULL과 연산하면 NULL을 반환 하지만,
+그룹 함수는 NULL 값을 제외하고 계산한다.
+COUNT( distinct 그룹 ) 그룹함수를 사용할때 중복 제거를 하려면 distinct를 사용해야된다.
+그룹 함수와 일반 데이터를 SELECT문을 같이 사용할 수 없다. ( 그룹문의 row는 1 일반 데이터는 n개 )
+
+
+
+ # GROUP BY.
+
+사용.
+SELECT column2, avg(column1) from table group by column2;
+
+주의사항.
+그룹 함수를 select 할 때 group by에서 그룹화한 column은 select에서 사용할 수 있다. 
+( 그룹화한 만큼 그룹함수가 생성된다 )
+
+
+
+ # HAVING절.
+
+설명.
+GROUP by에서 그룹화한 데이터를 조건을 사용해서 제한 할 수 있다.
+
+사용.
+SELECT column1, avg(column2) from table group by column1 having avg(column2) > 50 ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

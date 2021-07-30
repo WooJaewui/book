@@ -1,0 +1,81 @@
+
+ 테이블 조인하기 - 186page.
+
+
+
+ # 카다시안 곱 Cartesian Product.
+
+설명.
+조인에 아무 조건 없이 실행 했을 때 생성되는 모든 조합.
+중복되는 Column이 생성될 수 있고, ( Table1_column x Table2_column )이 된다.
+
+
+
+ # EQUI join.
+
+설명.
+공통 Column을 '=' 비교를 통해 같은 값을 갖는 행을 연결하여 결과를 생성하는 조인 방법.
+
+사용.
+SELECT * from table1, table2 where table1.column1 = table2.column2;
+SELECT * from table1, table2 
+where table1.column1 = table2.column2 and column = data ;
+SELECT * from table1 t1, table2 t2
+where t1.column1 = t2.column2 ;
+
+주의사항.
+table1과 table2의 column 이름이 다르면 table1, table2를 생략해도 된다. ( 모호성 방지 )
+table1과 table2에 별칭을 써서 간단히 표시할 수 있다. 
+EQUI join을 하려는 column은 null 값이 있어서는 안된다. ( join 불가 )
+
+
+
+ # EQUI join - JOIN ON.
+
+사용.
+SELECT * from table1 t1 
+join table2 t2 on t1.column = t2.column where column = data ; 
+
+
+
+ # NON EQUI join.
+
+설명.
+같은 column이 없을 때 사용하는 방법으로 특정 범위 내에 있는지를 조사할 때 사용한다.
+
+사용.
+SELECT * from table1 where column between table2.columnA and table2.columnB ;
+
+
+
+ # SELF join.
+
+설명.
+하나의 테이블에 있는 column끼리 연결해야 하는 경우에 사용한다.
+
+사용.
+SELECT * from table t1 , table t2 where t1.column1 = t2.column2;
+
+
+
+ # Outer join.
+
+설명.
+일반 EQUI join은 null값이 있을 경우 join이 되지 않는데, 그럴때 Outer join을 사용한다.
+left outer join : t1의 값에 null이 있을때 사용.
+right outer join : t2의 값에 null이 있을때 사용.
+
+사용.
+SELECT * from table1 t1 left outer join t2 on t1.column1 = t2.column2 ; 
+
+
+
+
+
+
+
+
+
+
+
+
