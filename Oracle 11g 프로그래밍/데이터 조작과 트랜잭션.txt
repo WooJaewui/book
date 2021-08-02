@@ -1,0 +1,79 @@
+
+ 데이터 조작과 트랜잭션 - 245page.
+
+
+
+ # insert 문.
+
+기본형.
+insert into tableName(column1, column2, ... ) values( data1, data2, ... );
+
+주의사항.
+1. INSERT문은 한 번에 하나의 ROW만 생성한다.
+2. INTO절에 칼럼을 명시하지 않으면 TABLE에 구조 순서대로 모든 data를 넣어야된다.
+3. 데이터를 입력하지 않거나, 값을 모를때 자동으로 null이 입력된다. ( 직접 입력 가능 )
+4. 서브쿼리를 통해 다른 데이터를 입력 할 수 있다. insert into table subquery;
+5. 모든 실행이 끝난 후에는 commit을 해야 데이터가 생성된다.
+
+
+
+ # update 문.
+
+기본형.
+update tableName set column1=data1 where column2 = data2 ;
+
+주의사항.
+1. where 절을 생략하면 모든 column의 data가 바뀐다.
+2. 모든 실행이 끝난 후에는 commit을 해야 데이터가 변경된다.
+
+
+
+ # delete 문.
+
+기본형.
+delete from tableName where column = data ;
+
+주의사항.
+1. where 절을 생략하면 테이블의 모든 data가 삭제된다.
+2. 모든 실행이 끝난 후에는 commit을 해야 데이터가 삭제된다.
+
+
+
+ # 트랜잭션
+
+용어.
+트랜잭션 : 데이터 처리에서 논리적으로 하나의 작업 단위를 의미한다.
+
+설명.
+DDL, DCL은 하나의 명령어가 하나의 트랜잭션으로 구성된다.
+DML은 데이터를 일관성 있게 변경하기 위해서 하나 이상의 DML문이 트랜잭션이 된다.
+
+종류.
+commit : 여러개의 DML을 하나의 트랜잭션으로 구분하여 실행시켜 저장하는 명령이다.
+rollback : 여러개의 DML을 하나의 트랜잭션으로 구분하여 실행전으로 되돌리는 명령이다.
+
+트랜잭션이 종료되는 순간.
+1. DDL, DCL 문이 실행되는 경우. ( 자동 commit )
+2. commit, rollback이 실행되는 경우. 
+3. 오라클이 종료되는 경우. ( 자동 rollback ) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
