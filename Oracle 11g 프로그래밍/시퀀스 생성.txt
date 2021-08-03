@@ -1,0 +1,126 @@
+
+ 시퀀스 생성 - 302page.
+
+
+
+ # 시퀀스.
+
+정의.
+시퀀스 : 테이블 내의 값을 자동으로 생성해준다.
+
+사용.
+create sequence sequenceName 옵션1, 옵션2, ... ;
+
+
+
+ # 시퀀스 옵션.
+
+START WITH : 시퀀스 번호의 시작을 지정.
+INCREMENT BY n : 시퀀스 번호의 증가치를 지정.
+MAXVALUE : 시퀀스의 최대값을 지정.
+MINVALUE : 시퀀스의 최솟값을 지정.
+CYCLE : 시퀀스 값이 최대값까지 증가하고 나면 시작 값부터 다시 시작한다.
+CACHE : 시퀀스 값을 기억하고 관리한다. ( 기본값 20 )
+
+
+
+ # CURRVAL, NEXTVAL.
+
+설명.
+CURRVAL : 시퀀스에 현재 값을 나타낸다.
+NEXTVAL : 시퀀스에 다음 값을 나타낸다.
+
+사용.
+select sequence.currval from dual;
+select sequence.nextval from dual;
+
+사용가능.
+서브 쿼리가 아닌 SELECT 문.
+INSERT 문의 SELECT 절.
+INSERT 문의 VALUES 절.
+UPDATE 문의 SET 절.
+
+사용불가.
+VIEW의 SELECT 절.
+DISTINCT 키워드가 있는 SELECT 문.
+GROUP BY, HAVING, ORDER BY 절이 있는 SELECT 문.
+SELECT, DELETE UPDATE의 서브 쿼리.
+CREATE TABLE ALTER TABLE 명령의 DEFAULT 값.
+
+팁.
+nextval를 조회할 때마다 시퀀스의 값이 계속 증가한다.
+
+
+
+ # 시퀀스 수정/ 제거 하기.
+
+수정.
+alter sequence sequence_name 옵션1, 옵션2, ... ;
+
+제거.
+drop sequence sequence_name 
+
+주의사항.
+생성되어서 사용 중인 시퀀스의 시작 값을 변경할 수 없다.
+
+
+
+ # 인덱스 index.
+
+설명.
+검색 속도를 향상시키기 위해 사용한다. ( 기본키나, 유일 키는 인덱스가 자동으로 생성 )
+
+사용.
+create index index_name on table_name( column_name ) ;
+drop index index_name ;
+
+인덱스를 사용해야 되는 경우.
+테이블에 행의 수가 많을때.
+SQL문에 자주 사용되는 COLUMN일 때.
+
+인덱스를 사용하지 말아야 하는 경우.
+테이블에 행의 수가 적을 때.
+SQL문에 자주 사용되지 않는 COLUMN일 때.
+
+
+
+ # 인덱스의 종류.
+
+종류.
+고유 인덱스 : 기본키나 유일키처럼 유일한 값을 갖는 칼럼에 대해 생성하는 인덱스.
+비고유 인덱스 : 일반 인덱스. 
+결합 인덱스 : 두 개 이상의 칼럼으로 인덱스를 구성하는 것.
+함수 기반 인덱스 : 수식이나 함수를 적용하여 만든 인덱스.
+
+고유 인덱스.
+create unique index index_name table_name( column_name ) ;
+
+결합 인덱스.
+create index index_name table_name( column_name1, column_name2, ... ) ;
+
+함수 기반 인덱스.
+create index index_name table_name( column_name + 20 ) ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
