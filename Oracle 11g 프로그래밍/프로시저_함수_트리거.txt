@@ -1,0 +1,130 @@
+
+ 프로시저 / 함수 / 트리거 - 380page.
+
+
+ PL / SQL 프로그램 종류.
+
+1. 프로시저 Procedure.
+2. 함수 Function.
+3. 트리거 Trigger.
+
+
+
+ # 프로시저.
+
+설명.
+일련의 작업들을 하나로 묶어서 저장해 두었다가 호출하여 실행.
+복잡한 SQL 문을 단순화시켜 준다는 장점이 있다.
+한 번 생성한 프로시저는 여러번 반복 가능하다.
+
+프로시저 생성.
+create or replace procedure procedureName
+is 
+variable table.column%type ;
+begin
+    실행할 문장 ;
+end ; 
+
+프로시저 확인.
+select name,text 
+from user_source
+where name like ( '%procedureName%' ) ; 
+
+프로시저 실행.
+execute procedureName ;
+
+프로시저 제거.
+drop procedure procedureName ;
+
+주의사항.
+create or replace procedure procedureName ( 매개변수1, 매개변수 2 )로 
+매개 변수를 받아서 데이터를 사용할 수 있다.
+
+
+
+ # 프로시저 매개변수.
+
+설명.
+procedure를 생성할 때 매개변수를 작성하면 execute할 때마다 매개변수를 넣어줘야된다.
+
+종류.
+변수 in 타입 : 프로시저 내부에서 로컬 변수처럼 사용.
+변수 out 타입 : 프로시저에서 처리한 결과 값을 내보내기 위한 변수로 사용.
+
+
+
+ # 함수.
+
+설명.
+함수는 반드시 하나의 값을 돌려준다.
+OUT 매개변수를 여러 개 사용할 수 있다.
+
+함수 생성.
+create or replace function functionName( 변수 in/out type , 변수 in/out type )
+return type
+is
+variable table.column%type ;
+begin
+    실행할 문장 ;
+    ...
+    return variableName ;
+end ; 
+
+함수 실행. ( 결과 변수에 담기 )
+execute : variableName := functionName( argument , ... ) ; 
+
+함수 제거.
+drop function functionName ;
+
+
+
+ # 트리거.
+
+설명.
+어떤 이벤트가 발생했을 때 내부적으로 실행되도록 데이터베이스에 저장된 프로시저.
+이벤트는 DML문이 발생하여 테이블에 변화가 발생하는 것을 의미한다.
+
+종류.
+ALTER 트리거 : 테이블에 INSERT, UPDATE, DELETE 등의 작업이 일어난 후에 작동. ( 테이블 O , 뷰 X ) 
+BEFORE 트리거 : 테이블에 INSERT, UPDATE, DELETE 등의 작업이 일어나기 전에 작동. ( 테이블 , 뷰 O )
+
+트리거의 유형.
+문장 레벨 트리거 : 이벤트가 발생하면 딱 한 번만 실행. ( for Each ROW를 생략 )
+행 레벨 트리거 : 이벤트가 행에 영향을 줄때마다 실행. ( for each row를 적음 )
+
+트리거 생성.
+create trigger trigger_name timing before/after event insert/update/delete 
+on tableName
+[ for each row ]
+[ when conditions ] 
+begin
+    실행할 문장;
+    ... ;
+end ;
+
+
+
+ # 행 레벨 트리거.
+
+설명.
+for each row를 적으면 행 레벨 트리거가 된다.
+
+사용법.
+:new.column : 변경 후의 값.
+:old.column : 변경 전의 값. 
+
+사용.
+create or replace trigget trigger_name1 after insert 
+on tableName
+for each row
+begin
+    if inserting then 
+        insert into otherTable
+            values( :new.column1, :new.column2, ... );
+    end if ;
+end ; 
+
+
+
+
+

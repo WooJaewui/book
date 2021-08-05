@@ -1,0 +1,225 @@
+
+ PL / SQL - 363page.
+
+
+ # PL / SQL Oracle's Procedural Language extension to SQL.
+
+설명.
+오라클에서 절차적 프로그래밍 기능을 사용할 수 있도록 개발한 기능이다.
+
+기능.
+선언부 Declare : PL / SQL에서 사용하는 모든 변수, 상수를 선언. 
+실행부 Begin  : 절차적 형식으로 제어문, 반복문, 함수 등 로직을 기술하는 부분.
+예외처리부 Exception : PL / SQL에서 발생하는 예외를 처리 하는 부분.
+
+주의사항.
+PL / SQL에서 출력되는 내용을 보여주기 위해서는 SET SERVEROUTPUT ON 해줘야된다.
+
+
+
+ # 변수 선언.
+
+용어.
+identifier : 일반 변수.
+constant : 상수.
+datatype : 자료형.
+expression : 표현식.
+
+종류.
+스칼라 : 데이터 타입이 숫자, 문자, 날짜, BOOLEAN.
+레퍼런스 : 기존에 있는 테이블에 행, 열의 타입을 참조해서 사용하는 것.
+
+사용.
+declare 
+    변수이름 datatype ;
+    변수이름 constance datatype ;
+    변수이름 table%rowtype : 행의 모든 데이터 타입을 참조.
+    변수이름 table.column.%type : 열의 테이터 타입을 참조.
+begin
+    ....
+
+
+
+ # 변수 값 대입.
+
+사용.
+begin
+    변수이름 := expression.
+
+주의사항.
+begin 문, declare 문에서 사용할 수 있다.
+
+
+
+ # Select 문을 통한 대입.
+
+사용.
+begin.
+    select column, column into idetifier1, identifer2
+    from table
+    where column = data ;
+
+주의사항.
+into절에 identifier는 하나의 행만을 저장할 수 있다.
+
+
+
+ # IF문.
+
+설명.
+if ( 조건 ) then : 조건이 true이면 문장 실행.
+elsif( 조건 ) then : 조건이 true이면 문장 실행.
+else : 위에 조건이 모두 false이면 문장 실행.
+end if : if 문을 끝냄.
+
+사용.
+begin
+    if ( 조건 ) then 
+	실행할 문장 ;
+    elsif( 조건 ) then
+	실행할 문장 ;
+    else
+  	실행할 문장 ;
+    end if ;
+
+
+
+ # LOOP문.
+
+설명.
+여러 번 반복적으로 수행되는 문장이 있을 경우 사용한다.
+
+종류.
+BASIC LOOP : 조건 없이 반복 작업을 위해 사용.
+FOR LOOP : COUNT를 기본으로 한 반복 작업을 위해 사용.
+WHILE LOOP : 조건을 비교해서 반복 작업에 사용.
+EXIT : 반복문을 종료.
+
+
+
+ # BASIC LOOP.
+
+사용.
+begin
+    loop
+        실행할 문장 ;
+        .... ;
+        if ( 조건 ) then
+              exit ;
+    end loop;
+end ;
+
+설명.
+loop에서 시작되서 exit ; 가 실행될 때까지 반복한다. ( 보통 if문과 함께 사용된다 )
+
+
+
+ # FOR LOOP.
+
+설명.
+for index_counter in [reverse] lower_index ... upper_index Loop 
+index_counter의 값이 lower_index 또는 upper_index를 벗어날때까지 증가 또는 감소한다.
+reverse : index_counter 1씩 감소. 생략시 1씩 증가.
+
+
+사용.
+declare
+    dan number := 2;
+    i number := 1;
+begin
+    for i in 1..9 loop
+        i * dan ;
+    end loop ;
+end ;
+
+
+
+
+ # WHILE LOOP.
+
+설명.
+조건이 false가 될 때까지 반복한다.
+
+사용.
+begin
+    WHILE 조건 loop
+        실행할 문장;
+    end loop ;
+end ;
+
+
+
+ # 커서.
+
+설명.
+결과값이 여러 개의 로우 값일 때, 모든 로우에 대해 처리 하기위한 방법.
+
+커서의 4단계.
+CURSOR : 커서 생성.
+OPEN : 커서 열기.
+FETCH : 커서 실행.
+CLOSE : 커서 닫기.
+
+커서 상태창.
+%NOTFOUND : 커서 영역의 자료가 모두 FETCH 되었다면 true.
+%FOUND : 커서 영역에 FETCH되지 않은 자료가 있다면 true.
+%ISOPEN : 커서가 OPEN된 상태이면 true.
+%ROWCOUNT : 커서가 얻어 온 레코드의 개수.
+
+
+
+ # CURSOR.
+
+사용.
+cursor cursor_name
+is
+selsect * from tableName ;
+
+주의사항.
+SELECT 문장에는 INTO 절을 포함하지 않아야 한다. ( 다른 변수 X ) 
+
+
+
+ # OPEN.
+
+사용.
+open cursor_name ;
+
+주의사항.
+cursor에 모든 로우 SET이 구해지고 첫 번째 로우를 가리키게 된다.
+
+
+
+ # FETCH.
+
+사용.
+fetch cursor_name into variable1, variable2, ... ;
+
+반복문과 사용.
+loop
+    fetch cursor_name into variable1, variable2, ... ;
+    exit when cursor_name%notfound ;
+end loop ; 
+
+주의사항.
+모든 로우 값을 얻으려면 반복문으로 처리해야된다.
+상태값 cursor_name%notfound를 통해 exit를 한다.
+
+
+
+ # CLOSE.
+
+사용.
+close cursor_name ;
+
+
+
+
+
+
+
+
+
+
+
+
