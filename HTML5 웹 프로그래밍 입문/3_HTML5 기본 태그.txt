@@ -1,0 +1,111 @@
+
+ HTML5 기본 태그
+
+
+
+ # 글자 태그.
+
+종류.
+<h1></h1> : heading을 의미하고 1~6까지 글자 크기를 나타낸다.
+<p></p> : 본문 문단 생성을 의미한다. 줄바꿈 기능을 가지고 있다. ( paragraph )
+<br> : 줄바꿈을 의미한다. ( break )
+<hr> : 수평 줄을 의미한다. ( horizontal rule )
+
+특수문자.
+&nbsp; : 공백 ( non-breaking space )
+&lt ; : <.
+&gt ; : >.
+&amp ; : & ( ampersand )
+
+
+
+ # 앵커 태그.
+
+설명.
+<a></a>로 anchor를 의미하며 특정 위치로 이동할 때 사용한다.
+
+사용.
+<a href="이동할위치">하이퍼링크 글자</a>
+
+응용.
+<input type="hidden" id="url" value="www.naver.com">
+<a href="#url">하이퍼링크 글자</a>
+ 
+
+
+ # 글자 모양 태그.
+
+종류.
+<b></b> : 굵은 글자. ( bold )
+<i></i> : 기울어진 글자. ( italic )
+<small></small> : 작은 글자.
+<sub></sub> : 아래 첨자. ( subscript )
+<sup></sup> : 위 첨자. ( superscript ) 
+<ins></ins> : 밑줄 글자. ( insert ) 
+<del></del> : 취소선이 그어진 글자. ( delete )
+
+
+
+ # 목록 태그.
+
+종류.
+<ul><ul> : 번호가 없는 목록 생성.
+<ol></ol> : 번호가 있는 목록 생성.
+<li></li> : 목록 요소 생성.
+
+팁.
+중첩 목록도 가능하다.
+
+
+
+ # 테이블 태그.
+
+종류.
+<table></table> : 테이블 생성.
+<th></th> : 표의 제목 셀 생성. ( 공백 )
+<tr></tr> : 행 생성.
+<td></td> : 열 생성.
+
+속성.
+<table border="숫자"> : 표의 테두리를 지정하는 속성.
+<td colspan ="숫자" rowspan="숫자"> : colspan = 셀의 너비 지정, rowspan = 셀의 높이 지정.
+
+
+
+ # 미디어 태그.
+
+<img> 태그 속성.
+src : 파일의 경로 지정.
+alt : 이미지가 없을 때 나오는 글자 지정.
+width : 이미지의 너비 지정.
+height : 이미지의 높이 지정.
+
+<audio>, <video> 태그 속성.
+src : 파일의 경로 지정.
+preload : 준비 중일 때 데이터를 미리 모두 불러올지 여부 지정. 
+autoplay : 자동 재생 여부 지정.
+loop : 반복 여부 지정.
+controls : 재생 도구 출력 여부 지정.
+
+<video>에만 있는 속성.
+poster : 동영상을 불러오는 동안 사용자에게 보여줄 이미지 설정.
+
+<source> 태그.
+audio나 video 태그 내부에 입력하여 src 역할과 type 속성을 통해 확장자를 확인.
+
+<source> 사용.
+< source src="파일명.mp4" type="audio/mp4" >
+< source src="파일명.webm" type="video/webm" >
+
+
+
+
+
+
+
+
+
+
+
+
+
