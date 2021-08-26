@@ -1,0 +1,110 @@
+
+ CSS3 기초 : 선택자와 단위.
+
+
+
+ # 선택자의 용도와 사용법.
+
+CSS3.
+특정 HTML 태그를 선택할 때는 선택자를 사용한다.
+
+예시.
+<style> h1 { color : red ; } </style>
+h1은 선택자고, color는 스타일 속성, red는 스타일 값이다.
+
+
+
+ # CSS 선택자.
+
+선택자 종류.
+* : 전체 선택자.
+<태그> : 태그 선택자.
+#아이디 : 태그 속성 id 선택자.
+.클래스 : 태그 속성 class 선택자.
+선택자 선택자 : 선택자 안에 선택자. ( 후손 선택자 )
+선택자 > 선택자 : 자손 선택자.
+기타 많은 선택자들.
+
+
+
+ # 기본 선택자 예시.
+
+전체 선택자.
+<style> * { color : red ; } </style> : 모든 태그의 color 색상이 빨강색.
+
+태그 선택자.
+<style> h1 { color : red ; } </style> : h1 태그의 color 색상이 빨강색.
+
+아이디 선택자.
+<style> #IDName { color : red ; } </style> : id가 "IDName"인 태그의 color 색상이 빨강색.
+<h1 id="IDName">글자<h1> 
+
+클래스 선택자.
+<style> .className { color : red ; } </style> : class가 "className"인 태그의 color 색상이 빨강색.
+<h1 class="className">글자1</h1>
+<p class="className"> 글자2</p>
+
+주의사항.
+ID 값은 중복되지 않게 사용해야된다. ( JS에서 문제가 발생 할 수 있다 ) 
+class의 값은 중복되게 사용할 수 있다. ( 한번에 여러 태그를 묶어서 사용 )
+
+
+ 
+ # 속성 선택자 예시.
+
+속성 선택자.
+<style> input[type="text"] { color : red ; } </style> : type 속성이 text인 태그의 color 색상이 빨강색.
+<input type="text">
+
+
+
+ # 후손 선택자 예시.
+
+후손 선택자.
+<style> ul li, ul p { color : red ; } </style> : ul 태그 안에 li 태그와 p 태그의 color 색상이 빨강색.
+<ul>
+	<li>내용1</li>
+	<p>내용2</p>
+</ul>
+
+주의사항.
+여러개를 묶어서 사용할 경우, 상위 선택자부터 모두 써줘야 구분해서 사용이 가능하다.
+
+
+
+ # 반응 선택자 예시.
+
+반응 선택자.
+<style> h1 : active { color : red ; } </style> : 마우스 클릭한 태그의 color 색상이 빨강색.
+<style> h1 : hover { color : red ; } </style> : 마우스 커서를 올린 태그의 color 색상이 빨강색.
+
+
+
+ # 상대 선택자 예시.
+
+상대 선택자.
+<style> input : checked { color : red ; } </style> : input 태그중에 선택된 태그의 color 색상이 빨강색.
+<style> input : enable { color : red ; } </style> : input 태그가 사용가능하면 color 색상이 빨강색.
+
+
+
+ # CSS3 단위.
+
+키워드 단위.
+키워드는 W3C에서 미리 정의한 단어이다. 스타일 속성별로 값으로 사용할 수 있는 키워드가 따로 있다.
+
+크기 단위.
+% - 백분율 , em - 배수 단위, px - 픽셀단위, cm, mm 등의 크기를 나타내는 단위들이 있다.
+
+색상 단위.
+red, blue, orange, rgb( 255,255,255 ), #0094FF 등의 표현 방식이 있다.
+
+URL 단위.
+그림이나 파일 등을 불러올 때 URL 단위를 사용한다.
+
+
+
+
+
+
+
