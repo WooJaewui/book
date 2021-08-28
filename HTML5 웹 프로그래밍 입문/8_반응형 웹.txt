@@ -1,0 +1,90 @@
+
+ 반응형 웹.
+
+
+
+ # 뷰포트 설정.
+
+설명.
+웹 페이지를 컴퓨터로 볼때, 핸드폰으로 볼때 등 장치에 따라 다른 뷰포트를 적용할 수 있다.
+
+사용.
+<meta name="viewport" content="설정">
+
+설정 값.
+content="width=device-width" : 장치의 너비에 맞추어 표시.
+content="height=device-height" : 장치의 높이에 맞추어 표시.
+content="initial-scale=1.0" : 초기 화면 배율을 1.0 ( 100% )로 설정.
+content="minimum-scale=1.0" : 최소 화면 배율을 1.0 ( 100% )로 설정.
+content="maximum-scale=1.0" : 최댜 화면 배율을 1.0 ( 100% )로 설정.
+content="user-scalable=no" : 사용자가 크기 조절을 못하게 함.
+
+참고 사이트.
+https://aboooks.tistory.com/352
+
+
+
+ # 미디어 쿼리 설정.
+
+설명.
+웹 페이지가 장치에 반응하도록 미디어 쿼리를 통해 적용할 수 있다.
+
+사용 방법 2가지.
+1. <style> @ media 미디어쿼리 { body { 실행할문장; }  } </style>
+2. <link 속성들.. media="미디어쿼리">.
+
+미디어 타입.
+all : 모든 장치.
+aural : 음성 장치.
+braille : 표시 전용 점자 장치.
+handheld : 손으로 들고 다니는 작은 장치.
+print : 프린터.
+projection : 프로젝터.
+screen : 화면.
+tty : 터미널 등 그림을 띄울 수 없는 장치.
+ty : 텔리비전.
+embossed : 인쇄 전용 점차 장치.
+
+미디어 특징.
+width : 화면 너비.
+height : 화면 높이.
+device-width : 장치 너비.
+device-height : 장치 높이.
+orientation : 장치 방향.
+device-aspect-ratio : 화면 비율.
+color : 장치 색상 비트.
+color-index : 장치에서 표현 가능한 최대 색상 개수.
+monochrome : 흑백 장치의 픽셀당 비트 개수.
+resolution : 장치 해상도.
+
+1번 사용 예시.
+<script>
+	@media screen and ( min-width : 960px ) { 
+		body { color : blue ; } 
+	}
+</script>
+
+2번 사용 예시.
+<link rel="stylesheet" href="test.css" media="screen and ( max-width : 710px ) >
+
+
+
+ # 반응형 웹 패턴.
+
+설명.
+일반적인 웹에서 레이아웃을 설정하고, @media screen을 통해 장치 값에서의 레이아웃을 설정한다.
+
+
+
+ # 적응형 웹 패턴.
+
+설명.
+데스크톱에서 할 수 있는 것과 모바일 장치에서 할 수 있는 것이 명확하게 구분되어 있을 때,
+아예 서버에서 다른 웹페이지를 제공하는 방법이다.
+모바일 페이지와 일반 페이지를 구분하여 사용.
+
+ 
+
+
+
+

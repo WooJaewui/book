@@ -1,0 +1,110 @@
+
+ 다양한 레이아웃의 구성과 기능.
+
+
+
+ # 수평 정렬 레이아웃.
+
+가로로 배치.
+자손에게 float 속성을 지정하고, 부모에게 overflow hidden 속성을 적용.
+
+예시.
+<style>
+	#parent { overflow : hidden }
+	div.child { float : left } 
+</style>
+<div id="parent">
+	<div class="child">자식1</div>
+	<div class="child>자식2</div>
+</div>
+
+설명.
+div는 인라인 형태로써 한 줄을 차지한다. 
+"parent" div는 한줄을 차지하고 "child" div는 왼쪽으로 쏠려서 공간을 차지한다.
+
+
+
+ # 중앙 정렬 레이아웃.
+
+중앙 배치.
+width 속성을 부여하고, margin : 0 auto로 입력.
+
+사용.
+<style>
+	body { margin : 0 auto ;  width : 960px ; } 
+</style>
+
+
+
+ # One Tue 레이아웃.
+
+설명.
+행을 먼저 나누고, 열을 구성한 후, 레이아웃을 구성한다.
+
+행 구성하기.
+<body>
+	<div id="top"></div>
+	<div id="middle"></div>
+	<div id="bottom"></div>
+</body>
+
+열 구성하기.
+<body>
+	<div id="top"></div>
+	<div id="middle>
+		<div id="left"></div>
+		<div id="right'></div>
+	</div>
+	<div id="bottom"></div>
+</body>
+
+레이아웃 구성하기.
+부모 태그에 고정된 너비를 입력.
+수평 정렬 시 부모 태그에 overflow hidden을 적용.
+두 개 이상으로 나눠지는 행의 경우 자손태그마다 적당한 너비를 입력하고 float속성을 적용.
+
+
+
+ # 절대 위치를 사용한 요소 배치.
+
+절대 위치 사용.
+자손의 position : absolute를 적용하려면 부모의 position : relative를 적용.
+
+
+
+ # 요소를 중앙에 배치.
+
+배치방법.
+position을 absolute로 지정.
+left , top 속성을 50%로 지정.
+margin-left, margin-top 속성에 요소 사이즈의 반큼 ( - ) 입력한다.
+
+
+
+ # 요소를 고정위치에 배치.
+
+배치방법.
+position : fixed를 적용한다.
+left, rright, top , height 등을 설정한다.
+
+
+
+ # 글자 생략.
+
+설명.
+글자가 정해진 범위보다 길게 작성되면 ... 등으로 표현되는 것을 의미한다.
+
+사용.
+<script>
+	div { text-overflow : ellipsis ; }
+</script>
+
+
+
+
+
+
+
+
+
+
