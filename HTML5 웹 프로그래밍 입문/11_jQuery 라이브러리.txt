@@ -1,0 +1,197 @@
+
+ jQuery 라이브러리.
+
+
+
+ # jQuery 설치하기.
+
+jQuety 다운종류.
+compressed : 압축되어있다. ( 내려쓰기가 없고, 함수명, 변수명 등이 줄여서 적혀있다 )
+uncompressed : 압축되어있지않음. 
+other CDNs : 구글, microsoft 등에 library를 저장해놓고 사용자는 가져다가 쓸 수 있다.
+
+주의점.
+CDN를 사용하면 내가 만든 어플리케이션을 사용하는 사용자가 좀 더 좋은 성능으로 사용할 수 있다.
+
+CDN 사용법.
+<script src="cdn주소"></script>
+jQuery 공식 홈페이지에서 복사해서 가져오면 됨.
+
+
+
+ # 문서 객체 조작.
+
+jQuery의 원리.
+DOM을 jQuery 객체로 바꿔서 조작하는 라이브러리이다.
+
+사용.
+jQuery( 태그 또는 이름 ).attr( "속성", "값" ) ;
+$( 태그 또는 이름 ).attr( "속성", "값" ) ;
+
+메소드.
+attr( ) : Document Object의 속성 사용.
+
+속성 값 응용.
+attr( "src", "url" ) ;
+attr( { src : 'url', width:300, height:200 } ) ;
+attr( "src", function ( 매개변수 ) { 실행할 문장 } ) ;
+
+특이점.
+$( img ).attr( "src", "url" ).attr( "width", "300" ).attr( "height", "500" );
+jQuery의 문서 객체를 조작하는 메소드는 호출 이후에 자기 자신을 다시 반환한다.
+
+주의점.
+{ } 는 JS에서 객체를 의미한다.
+
+
+
+ # 기본 이벤트 메소드.
+
+설명.
+window.onload( )처럼 문서 준비가 완료되면 jQuery를 실행하게 할 수 있다. ( 콜백 함수 개념 )
+window.onload( )와 다르게 여러개의 문장을 처리할 수 있다.
+
+메소드.
+ready( ) : 준비 완료시 콜백함수 호출.
+
+사용.
+$( document ).ready( function( ) { 실행할문장 ; } ) ;
+
+
+
+ # CSS 조작.
+
+설명.
+css 메소드를 통해 CSS style태그를 조작할 수 있다.
+
+메소드.
+css( ) : css 문자 조작.
+
+사용.
+$( 'body' ).css( 'backgroundColor', 'red' ) ; 
+$( 'body' ).css( { backgroundColor : 'red' , width : 200 , height : 300 } ) ;
+
+
+
+ # 글자 조작.
+
+설명.
+문서 객체 내부 글자 조작 메소드를 통해 html 글자를 조작할 수 있다.
+ 
+메소드.
+html( ) : 문서 객체 내부의 HTML 태그 조작.
+text( ) : 문서 객체 내부의 글자 조작.
+
+사용.
+$( 'h1' ).html( '<a href="#">hello</a>' ) ;
+var text = $( 'h1' ).text( ) ;   = h1의 문자가 text 변수에 저장됨.
+
+
+
+ # 클래스 조작.
+
+설명.
+반복되는 사용 클래스들을 저장해두었다가 해당 이벤트 발생시 객체를 사용하고 지울 수 있다.
+
+메소드.
+addClass( ) : 클래스 추가.
+removeClass( ) : 클래스 제거.
+toggleClass( ) : 클래스 전환.
+
+사용.
+$( selector ).addClass( '추가할 객체이름' ) ;
+$( selector ).removeClass( '제거할 객체이름 ) ;
+
+
+
+ # 이벤트 조작.
+
+메소드.
+click( )
+load( ) 
+focus( ) 
+mouseover( ) 등 많은 메소드들이 존재한다.
+
+사용.
+$( selector ).메소드이름( function( 매개변수 ) { 실행할 문장 } ) ;
+
+이벤트 연결 메소드.
+on( '이벤트' , 함수 ) ;
+
+이벤트 연결하기.
+$( selector ).메소드이름( 
+	function( 매개변수 ) { 실행할 문장 } ).on( '이벤트이름', function( 매개변수 ) { 실행할문장 ; } ) ;
+ 
+
+
+
+ # 기본 이벤트 제거.
+
+설명.
+지금 일어난 이벤트를 실행하고 태그에 저장되어있는 기본 이벤트를 제거할 수 있다.
+
+메소드.
+event.preventDefault( ) ;
+
+예시.
+$( 'a' ).click( function ( evnet ) { alert( 'click' );   evenet.preventDefault( ); } ) ;
+a 태그를 클릭하면 alert( )이 실행되고 a 태그의 기본 이벤트인 herf가 실행되지 않는다.
+
+
+
+ # 값 확인 메소드.
+
+메소드.
+$( '셀렉터' ).val( ) = 셀럭터의 value 값을 확인 또는 입력가능.
+
+
+
+ # 시각 효과 메소드.
+
+메소드.
+show( 속도 ) : 문서 객체가 커지며 표시.
+hide( 속도 ) : 문서 객체가 작아지며 사라짐.
+toggle( 속도 ) : show( ) 메소드와 hide( ) 메소드를 번갈아 실행.
+slideDown( 속도 ) : 문서 객체가 슬라이드 효과와 함께 표시.
+slideUp( 속도 ) : 문서 객체가 슬라이드 효과와 함께 사라짐.
+slideToggle( 속도 ) : slideDown( ) 메소드와 slideUp( ) 메소드를 번갈아 실행.
+fadeIn( 속도 ) : 문서 객체가 선명해지며 표시.
+fadeOut( 속도 ) : 문서 객체가 흐려지며 사라짐.
+fadeToggle( 속도 ) : fadeIn( ) 메소드와 fadeOut( ) 메소드를 번갈아 실행.
+
+속도 문자열.
+slow : 600밀리초 속도.
+normal : 500밀리초 속도.
+fast : 400밀리초 속도.
+
+사용.
+$( '셀렉터' ).fadeToggle( 'slow' ) ;
+$( '셀렉터' ).toggle( 'fast' );
+
+
+
+ # 애니메이션 효과.
+
+설명.
+jQuery 자신의 메소드가 다 끝나면 다시 자기메소드로 돌아오는데,
+이 원리를 이용해서 메소드가 끝나고 animation( ) 메소드를 통해 형태를 변형해준다.
+
+메소드.
+animation( 객체, 시간 ) ;  
+delay( 시간 ) ; 
+stop( false , false( 어떤 상태로 애니메이션을 중지할지 결정 ) ) ;
+
+예시.
+$( '셀렉터' ).css( { width : 300 ; } ).animation( { width : 500 ; } , 1000 ) ;
+가로 길이가 300에서 500으로 1초동안 바뀜.
+$( '셀렉터' ).css( { width : 300 ; } ).delay( 1000 ).animation( { width : '+= 500' ; } , 1000 ) ; 
+가로 길이가 300에서 1초 쉬었다가 +500으로 1초동안 바뀜.
+
+주의사항.
++= 연산을 사용할때는 ' ' 을 통해 문자로 표현.
+
+
+
+
+ 
+
