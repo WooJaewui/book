@@ -1,0 +1,68 @@
+
+ 자바스크립트와 jQuery 라이브러리 응용.
+
+
+
+ # 입력 양식 포커스.
+
+설명.
+전화번호 또는 주민번호 등을 입력할 때 앞자리를 입력한 후 뒷자리로 자동으로 이동하는 것.
+
+사용.
+input1.onkeydown = function( ) { 
+	if( 6 <= input1.value.length) { 
+		input2.focus( ) ;
+	}
+} 
+
+input2.onkeydown = function( ) { 
+	var event = event || window.event ;
+	if( event.keyCode == 8 && input2.value.length == 0 ) { 
+		input1.focus( ) ;
+	}
+}
+
+추가설명.
+event.keyCode == 8은 백 스페이스를 의미한다.
+
+
+
+ # 프레임 애니메이션.
+
+타이머 함수.
+setInterval( 함수, 시간 ) : 특정한 시간마다 함수 실행.
+clearInterval( 식별번호 ) : setInterval 종료.
+setTimeout( 함수, 시간 ) : 특정한 시간 후에 함수 실행.
+clearTimeout( 식별번호 ) : setTimeout 종료.
+
+
+
+ # 문서 객체 생성과 추가.
+
+객체 추가 메소드.
+$( 대상 ).prepend( 객체 ) : 객체를 대상의 하위태그 앞부분에 추가.
+$( 대상 ).append( 객체 ) : 객체를 대상의 하위태그 뒷부분에 추가.
+$( 대상 ).before( 객체 ) : 객체를 대상태그의 앞쪽에 추가.
+$( 대상 ).after( 객체 ) : 객체를 대상태그의 뒤쪽에 추가.
+
+
+
+ # 플러그인 소개.
+
+LightBox 플러그인.
+배경은 어둡게 하고 강조하고 싶은 부분을 밝게 하는 플러그인.
+
+Masonry 플러그인.
+핀터레스트와 비슷한 타일형 웹 페이지를 만들 때 사용한다.
+
+
+
+ # 갤러리.
+
+과정 설명.
+1. 여러 개의 이미지를 서로 가로로 연결한다.
+2. animate( )를 통해 눌렀을 때 원하는 방향을 눌러서 이동하면서 보이도록 한다.
+
+
+
+
