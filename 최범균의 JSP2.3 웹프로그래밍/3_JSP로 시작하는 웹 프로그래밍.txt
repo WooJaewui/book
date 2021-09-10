@@ -1,0 +1,264 @@
+
+ JSP로 시작하는 웹 프로그래밍.
+
+
+
+ # JSP 페이지의 구성 요소.
+
+디렉티브.
+JSP 페이지에 대한 설정 정보를 지정할 때 사용된다.
+
+디렉티브 종류.
+page : JSP 페이지에 대한 정보를 지정한다. 
+taglib : JSP 페이지에서 사용할 태그 라이브러리를 지정한다.
+include : JSP 페이지의 특정 영역에 다른 문서를 포함시킨다.
+
+스크립트 요소.
+표현식 Expression : 값을 출력한다. <%=자바코드 %>
+스크립트릿 Scriptlet : 자바 코드를 실행한다. <% 자바코드 %>
+선언부 Declaration : 자바 메소드, 전역변수를 만든다. <%! 자바코드 %>
+
+기본객체.
+웹 어플리케이션 프로그래밍을 하는 데 필요한 기능을 가진 객체들.
+예 - request, response, session, application, page 등.
+
+표현언어.
+스크립트 요소를 HTML와 섞어서 사용하면 JSP 코드가 복잡해지는데, 이를 해결하기 위해 만들어졌다.
+예 - ${ param.이름 } ;
+
+표준액션 태그.
+액션 태그 : JSP 페이지에 특별한 기능을 제공하는 것이다.
+
+태그 라이브러리.
+JSTL : 자주 사용하는 태그들을 표준화하여 모아놓은 것.
+커스텀 태그 : JSTL 이외에 필요한 태그를 따로 만들어서 사용하는 것.
+
+
+
+ # page 디렉티브.
+
+설명.
+JSP 페이지에 대한 정보를 입력하기 위해서 사용된다.
+
+주요 속성.
+contentType : JSP가 생성할 문서의 MIME 타입과 캐릭터 인코딩을 지정. ( "text/html; UTF-8" )
+import : JSP 페이지에서 사용할 자바 클래스를 지정한다.
+session : JSP 페이지가 세션을 사용하지 여부를 지정한다. ( true ) 
+buffer : JSP 페이지의 출력 버퍼 크기를 지정한다. ( 최소 8kb ) 
+autoFlush : 출력 버퍼가 다 찼을 경우 자동으로 버퍼에 있는 데이터를 비울지 결정. ( true )
+info : JSP 페이지에 대한 설명을 입력한다. ( "message" )
+errorPage : JSP 페이지를 실행하는 도중에 에러가 발생할 때 보여줄 페이지를 지정.
+isErrorPage : 현재 페이지가 에러가 발생될 때 보여주는 페이지인지의 여부를 지정. ( false )
+pageEncoding : JSP 페이지 소스 코드의 캐릭터 인코딩을 지정한다. ( "UTF-8" )
+isELIgnored : 표현 언어를 해석할지 말지 결정한다. ( false = EL지원 )
+trimDirectiveWhitespaces : 출력 결과에서 템플릿 텍스트의 공백 문자를 제거할지 지정. ( false ) 
+
+
+
+ # contentType 속성과 charset.
+
+속성 사용.
+<%@ page contentType = "MIME" %>
+<%@ page contentType = "MIME ; charset=캐릭터 셋" %>
+
+MIME Multipurpose Interne Mail Extensions.
+이메일의 내용을 설명하기 위해 정의되었는데, 메일뿐만 아니라 HTTP 등에서도 사용된다.
+예 - "text/html" , "text/xml"
+
+추가 설명.
+캐릭터 셋은 대소문자를 구분하지 않는다. ( utf-8, UTF-8 둘다 사용 가능 )
+
+
+
+ # import 속성.
+
+속성 사용.
+<%@ page import = "java.util.Calendar" %>
+<%@ page import = "java.util.Calendar  ,  java.util.Date ">
+
+추가 설명.
+' , '로 구분하여 여러개의 class를 import 할 수 있다.
+' * '를 통해 여러개의 class를 import 할 수 있다. 
+
+주의사항.
+java.util과 java.sql에 서로 다른 똑같은 이름의 클래스가 존재하는데, 잘 구분해서 사용해야된다.
+
+
+
+ # trimDirectiveWhitespaces 속성.
+
+속성 사용.
+<%@ page trimDirectiveWhitespaces="true" %>
+
+설명.
+F12 source창을 통해 코드를 살펴보면 첫 줄에 빈줄이 생성된다. ( page 디렉티브가 있던 공간 )
+trimDirectiveWhitespaces를 사용하면 불필요한 공백이 사라진다.
+공백에 의해 오류가 발생하는 경우 있어서 사용한다.
+
+
+
+ # pageEncoding 속성.
+
+속성 사용.
+<%@ page pageEncoding="utf-8" %>
+
+파일이 BOM일 때,
+BOM을 이용해서 결정된 인코딩을 이용하여 파일을 읽고, pageEncoding을 확인.
+BOM 값과 pageEncoding이 다르면 에러 발생.
+
+파일이 BOM이 아닐때, 
+pageEncoding 속성이 값을 갖고 있다면, 파일을 읽어올 때 속성값을 캐릭터 셋으로 사용.
+pageEncoding 속성이 값을 갖고 있지 않다면, contentType 속성을 검색.
+모두 설정하지 않으면 ISO-8859-1을 사용.
+
+BOM Byte Order Mark.
+유니코드 인코딩에서 바이트의 순서가 어떤 것인지 알려주는 16비트 값이다. ( 자세한 건 따로 공부 )
+
+
+
+ # 스크립트 요소 - 스크립트릿 Scriptlet.
+
+사용.
+<% 자바코드; %>
+
+설명.
+JSP 페이지에서 자바 코드를 실행할 때 사용하는 코드 블록이다.
+Servlet 메소드 영역에서 실행.
+
+
+
+ # 스크립트 요소 - 표현식 Expression.
+
+사용.
+<%=어떠한 값 %>
+
+설명.
+어떤 값을 출력 결과에 포함시키고자 할 때 사용한다.
+자바 변수, 숫자, 문자열 등의 값을 사용할 수 있다.
+Servlet 메소드 영역에서 실행.
+
+
+
+ # 스크립트 요소 - 선언부 Declaration.
+
+사용.
+<%! 자바코드 %>
+
+설명.
+Servlet에서 클래스 영역의 변수나, 메소드를 선언할 때 사용한다.
+Java의 메소드, 변수와 동일하게 선언한다.
+선언부에서 생성된 메소드, 변수는 스크립트릿, 표현식에서 호출하여 사용할 수 있다.
+Servlet 클래스 영역에서 실행.
+
+
+
+ # request 기본 객체.
+
+설명.
+JSP 페이지에서 가장 많이 사용되는 기본 객체로서 웹 브라우저의 요청과 관련이 있다.
+웹 브라우저에서 웹 서버로 요청 정보를 전송할 때 사용한다.
+
+정보 읽기.
+getRemoteAddr( ) : 클라이언트의 IP 주소를 구한다.
+getContentLength( ) : 클라이언트가 전송한 요청 정보의 길이를 구한다.
+getCharacterEncoding( ) : 클라이언트가 요청 정보를 전송할 때 사용한 캐릭터 인코딩을 구한다.
+getContentType( ) : 클라이언트가 요청 정보를 전송할 떄 사용한 컨텐츠의 타입을 구한다.
+getProtocal( ) : 클라이언트가 요청한 프로토콜을 구한다.
+getMethod( ) : 웹 브라우저가 정보를 전송할 때 사용한 방식을 구한다.
+getRequestURI( ) : 웹 브라우저가 요청한 URL에서 경로를 구한다.
+getContextPath( ) : JSP 페이지가 속한 웹 어플리케이션의 컨텍스트 경로를 구한다.
+getServerName( ) : 연결할 때 사용한 서버 이름을 구한다.
+getServerPort( ) : 서버가 실행중인 포트 번호를 구한다.
+
+요청 정보 읽기.
+getParameter( "name" ) : 이름이 name인 파라미터의 값을 String으로 리턴. ( 존재 하지 않을 경우 null )
+getParameterValues( "name" ) : 이름이 name인 파라미터의 값을 배열로 리턴.
+getParameterNames( ) : 웹 브라우저가 전송한 파라미터의 이름 목록을 Enumeration<type>으로 리턴.
+getParameterMap( ) : 웹 브라우저가 전송한 파라미터의 값을 Map<type>으로 리턴. ( name : value )
+
+요청 헤더 정보의 처리.
+reqeust.getHeader( "name" ) : 지정한 이름의 헤더 값을 구한다.
+request.getHeaders( "name" ) : 지정한 이름의 헤더 목록을 구한다. ( Enumeration<type> ) 
+request.getHeaderNames( ) : 모든 헤더의 이름을 구한다.
+reqeust.getIntHeader( "name" ) : 지정한 헤더의 값을 정수 값으로 읽어온다. ( int ) 
+getDateHeader( "name" ) : 지정한 헤더의 값을 시간 값으로 읽어온다.
+
+주의사항.
+웹 브라우저의 종류, OS, 쿠키 정보 등에 따라 약간씩 값이 다르게 나올 수 있다.
+
+
+
+ # GET, POST Method.
+
+설명.
+웹 브라우저에서 파라미터를 전송하는 방식이다.
+
+종류.
+get : URL에 파라미터를 붙여서 전송한다. ( default 값 )
+post : 데이터 영역을 이용해서 파라미터를 전송한다. ( 보안에 유리 )
+
+queryString.
+get 방식으로 데이터를 전송할 시 "URL?이름1=값1&이름2=값2" 형태로 파라미터를 붙여 전송할 때 사용하는 문자열이다.
+
+차이점.
+get 방식은 웹 브라우저, 웹 서버 등 환경에 따라 길이에 제한이 있지만, post는 길이에 제한이 없다.
+
+
+
+ # 인코딩, 디코딩.
+
+설명.
+웹 브라우저는 설정에 맞게 데이터를 인코딩해서 웹 서버에 보낸다. 
+<meta charset="utf-8">
+웹 서버는 데이터를 받아서 웹 서버에서 설정한 디코딩 방식으로 데이터를 디코딩한다. 
+<%@ page request.setCharacterEncoding( "utf-8" ) %>
+웹 브라우저의 인코딩 방식과 웹 서버의 디코딩 방식이 같아야 문제 없이 실행된다.
+
+파라미터 전송 방식.
+<form> 태그 사용.
+<a> 태그의 url주소에 queryString 사용.
+웹 브라우저 주소에 직접 쿼리 문자열을 입력.
+
+주의사항.
+HTTP 표준에 파라미터 값을 인코딩할 때 캐릭터 셋을 정해놓지 않았다.
+그래서 WAS, 브라우저 기본 캐릭터셋이 모두 다르다. ( 직접 설정 해주는 것이 안전하다 )
+
+오류.
+"UTF-8"로 설정해도 한글이 깨지는 경우 "euc-kr"로 설정해서 확인해보자. ( 톰캣은 문제 없음 )
+
+
+
+ # response 기본 객체.
+
+설명.
+웹 브라우저에 보내는 응답 정보를 담는다.
+
+헤더 정보 전송하기.
+addDateHeader( "name", date ) : 헤더에 date를 추가한다.
+addHeader( "name" , "value" ) : name 헤더에 value를 값으로 추가한다.
+addIntHeader( "name", int_value ) : name 헤더에 int_value를 값으로 추가한다.
+setDateHeader( "name", date ) : name 헤더에 값을 date로 지정한다.
+setHeader( "name", "value" ) : name 헤더에 값을 value로 지정한다.
+setIntHeader( "name", int_value ) : name 헤더에 값을 int_value로 지정한다.
+containsHeader( "name" ) : 이름이 name인 헤더를 포함하고 있으면 true를 리턴한다.
+
+헤더 메소드에 사용될 수 있는 속성.
+( "Cache-Control", "no-cache" ) : 응답 결과를 캐시하지 않는다. ( 캐시를 사용하지 않음 )
+( "Cache-Control", "no-store" ) : 응답 결과를 캐시 저장소에 저장을 하지 않는다. ( 캐시를 저장하지 않음 )
+( "Pragma", "No-cache" ) : 응답 결과를 캐시에 저장하지 않는다.
+( "Expires", millisecond ) : 만료일을 millisecond 단위로 지정한다.
+
+리다이렉트 Redirect.
+response.sendRedirect( "url" ) : 웹 브라우저에게 "url"로 이동하라고 응답하는 것이다.
+
+
+
+ # JSP 주석.
+
+사용.
+<%-- 코드 --%>
+<% // 자바코드 %>
+<%! // 자바코드 %>
+
+
+
