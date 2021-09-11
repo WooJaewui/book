@@ -1,0 +1,135 @@
+
+ 기본 객체와 영역.
+
+
+
+ # 기본 객체.
+
+JSP 기본 객체.
+request : 클라이언트 요청 정보를 저장한다.
+response : 응답 정보를 저장한다.
+pageContext : JSP 페이지에 대한 정보를 저장한다.
+session : HTTP 세션 정보를 저장한다.
+application : 웹 어플리케이션에 대한 정보를 저장한다.
+out : JSP 페이지가 생성하는 결과를 출력할 때 사용하는 출력 스트림이다.
+config : JSP 페이지에 대한 설정 정보를 저장한다.
+page : JSP 페이지를 구현한 자바 클래스 인터페이스이다.
+exception : 익센션 객체이다. 에러 페이지에서만 사용가능하다.
+
+
+
+ # out 기본 객체.
+
+out 기본 객체.
+HTML 코드와 텍스트는 out 기본 객체를 통해 자동적으로 출력된다.
+
+메소드.
+out.print( ) : 데이터를 출력한다.
+out.println( ) : 데이터를 출력하고, 줄바꿈 문자를 출력한다.
+out.newLine( ) : 줄바꿈 문자를 출력한다.
+
+out 객체와 버퍼.
+JSP 페이지의 버퍼는 out 기본 객체가 내부적으로 사용하고 있는 버퍼이다.
+
+버퍼 관련 메소드.
+out.getBufferSize( ) : 버퍼의 크기를 구한다.
+out.getRemaining( ) : 현재 버퍼의 남은 크기를 구한다.
+out.clear( ) : 버퍼의 내용을 비운다. 플러시 했으면 IOException 발생.
+out.clearBuffer( ) : 버퍼의 내용을 비운다. 플러시 했어도 IOException 발생하지 않음.
+out.flush( ) : 버퍼를 플러시한다.
+out.isAutoFlush( ) : AutoFlush 설정값을 반환한다. ( true, false ) 
+
+
+
+ # pageContext 기본 객체.
+
+pageContext.
+JSP 페이지와 일대일로 연결된 객체이다.
+다른 기본 객체에 접근할 수 있는 메소드를 제공한다.
+
+pageContext 역할.
+기본 객체 구하기.
+속성 처리하기.
+페이지의 흐름 제어하기. ( 7장에서 배움 )
+에러 데이터 구하기. ( 6장에서 배움 )
+
+메소드.
+getRequest( ) : request 기본 객체를 구한다.
+getResponse( ) : response 기본 객체를 구한다.
+getSession( ) : session 기본 객체를 구한다.
+getServletContext( ) : application 기본 객체를 구한다.
+getServletConfig( ) : config 기본 객체를 구한다.
+getOut( ) : out 기본 객체를 구한다.
+getException( ) : exception 기본 객체를 구한다.
+getPage( ) : page 기본 객체를 구한다.
+
+주의사항.
+실제 리턴되는 class는 request = HttpServletRequest이다. ( 다른 것도 Java에서 객체명을 사용 )
+
+
+
+ # application 기본 객체.
+
+application.
+어플리케이션 전반에 걸쳐서 사용되는 정보를 담고 있다.
+특정 웹 어플리케이션에 포함된 모든 JSP 페이지는 하나의 application 기본 객체를 공유한다.
+web.xml에서 param을 설정하여 필요할때마다 application 메소드를 통해 사용할 수 있다.
+
+web.xml 수정.
+톰캣은 web.xml 파일이 변경되면 웹 어플리케이션을 재시작하도록 기본 설정되어 있다.
+다른 웹 컨테이너는 그렇게 설정되지 않을 수 있어서 변경시 재시작 해주는 것이 좋다.
+
+파라미터 관련 메소드.
+getInitParameter( "name" ) : 웹 어플리케이션 초기화 파라미터의 값을 읽어온다.
+getInitParameterNames( ) : 웹 어플리케이션 초기화 파라미터의 이름 목록을 리턴한다. ( Enumeration ) 
+
+서버 정보 관련 메소드.
+getServerInfo( ) : 서버 정보를 구한다.
+getMajorVersion( ) : 서버가 지원하는 서블릿 규약의 메이저 버전을 리턴한다. ( 서블릿 3.1 = 3을 리턴 )
+getMinorVersion( ) : 서버가 지원하는 서블릿 규약의 마이너 버전을 리턴한다. ( 서블릿 3.1 = 1을 리턴 )
+
+로그 메시지 기록 메소드.
+log( "msg" ) : msg를 로그로 남긴다.
+log( "msg" , throwable ) : msg와 Exception 정보를 로그에 남긴다.
+
+로그 기록 확인.
+tomcat 설치 폴더 -> logs -> localhost.날짜.log로 기록된다.
+
+자원 접근 메소드.
+getRealPath( "path" ) : 지정한 경로에 해당하는 자원의 시스템상에서의 경로를 리턴한다.
+getResource( "path" ) : 지정한 경로에 해당하는 자원에 접근할 수 있는 URL 객체를 리턴.
+getResourceAsStream( "path" ) : 지정한 경로에 해당하는 자원으로부터 읽어올 수 있는 InputStream 리턴.
+
+
+
+ # JSP 기본객체와 영역.
+
+웹 어플리케이션의 영역.
+PAGE 영역 : 하나의 JSP 페이지를 처리할 때 사용되는 영역. ( 하나의 JSP 영역 )
+REQUEST 영역 : 하나의 HTTP 요청을 처리할 때 사용되는 영역. ( 요청을 처리하는데 사용되는 모든 JSP 영역 )
+SESSION 영역 : 하나의 웹 브라우저와 관련된 영역. ( 하나의 웹 브라우저와 관련된 모든 요청 )
+APPLICATION 영역 : 하나의 웹 어플리케이션과 관련된 영역. ( 웹 어플리케이션에 포함된 모든 JSP 페이지 )
+
+REQUEST 영역.
+웹 브라우저가 요청할 때마다 새로운 request 기본 객체가 생성된다.
+웹 브라우저가 결과를 받으면 그 요청과 관련된 reqeust 기본 객체는 사라진다.
+하나의 요청을 처리하는 데 두 개 이상의 JSP가 사용될 수 있다. ( include, forward ) 
+
+영역 객체의 메소드.
+setAttribute( "name" , value ) : 이름이 name인 속성의 값을 value로 지정한다.
+getAttribute( "name" ) : 이름이 name인 속성의 값을 리턴한다.
+removeAttribute( "name" ) : 이름이 name인 속성을 삭제한다.
+getAttributeNames( ) : 속성의 이름 목록을 구한다. ( pageContext는 이 메소드가 없다 )
+
+메소드 사용 예시.
+request.setAttribute( "name", new Date( ) ) ;
+Date now = ( Date ) request.getAttribute( "name" ) ;
+
+속성의 활용.
+pageContext : 하나의 JSP 페이지 내에서 공유할 값을 저장.
+request : 한 번의 요청을 처리하는 데 사용되는 모든 JSP 페이지에서 공유할 값을 저장.
+session : 한 사용자와 관련된 정보를 JSP 사이에 공유하기 위해 사용.
+application : 모든 사용자를 위해 공유할 정보를 저장한다. ( servletContext ) 
+
+
+
