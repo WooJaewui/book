@@ -1,0 +1,82 @@
+
+ 예외처리.
+
+
+
+ # JSP 예외처리.
+
+try - catch문.
+자바와 똑같이 사용한다.
+
+try-catch문 사용.
+<% try { 실행할 문장; } catch( Exception e ) { Exception 발생시 실행할 문장 ; } %>
+
+
+
+ # 에러페이지.
+
+설명.
+a라는 페이지에 에러페이지가 b라면 a에서 Exception 발생 시 b가 호출되고, 
+exception 기본 객체에 a에서 발생한 Exception에 관한 정보가 저장된다.
+
+에러페이지 지정하기.
+<%@ page errorPage ="url" %>
+
+에러페이지 작성하기.
+<%@ page isErrorPage = "true" %>
+
+에러 확인하기.
+<% exception.getClass( ).getName( ) %> : Exception 이름 확인.
+<% exception.getMessage( ) %> : Exception 발생시 메세지 확인.
+
+
+ 
+ # 응답 상태 코드별로 에러페이지 web.xml 설정.
+
+사용.
+<error-page>
+	<error-code> 에러코드( 404, 500 등 ) </error-code>
+	<location> 에러페이지 경로 </location>
+</error-page>
+
+에러코드.
+404 : 잘못된( 존재하지 않는 ) URL을 입력했을 때 사용.
+500 : JSP 코드를 잘못 작성했거나 서버에서 예상하지 못한 에러가 생겼을때 사용.
+
+
+
+ # 익셉션 타입별로 에러 페이지 지정하기.
+
+사용.
+<error-page>
+	<exception-type> java.lang.NullPointerException </exception-type>
+	<location> 에러페이지 경로 </location>
+</error-page>
+ 
+
+
+ # 에러 페이지의 우선순위와 에러 페이지 지정 형태.
+
+우선순위.
+1. page 디렉티브의 errorPage 속성에 지정한 에러 페이지를 보여줌.
+2. web.xml 파일의 <exception-type>에 지정한 에러 페이지를 보여줌.
+3. web.xml 파일의 <error-code>에 지정한 에러 페이지를 보여줌.
+4. 아무것도 해당하지 않는 경우 웹 컨테이너가 제공하는 기본 에러 페이지를 보여준다.
+
+
+
+ # 버퍼와 에러 페이지의 관계.
+
+버퍼의 이해.
+버퍼가 다 차면 플러시를 하는데 최초로 버퍼를 플러시하면 응답 헤더를 전송한다.
+응답 상태 코드는 응답 헤더 앞에 전송해서 최초로 버퍼를 플러시 하면 응답 상태 코드가 가장 먼저 도착. 
+버퍼를 최초로 플러시할 때까지 에러가 발생하지 않으면 웹 브라우저에 200 응답 코드가 전송된다.
+
+에러 페이지와 버퍼.
+버퍼가 플러시 된 이후에 에러가 발생하면 일부 전송된 데이터 + 에러 페이지가 같이 화면에 전송된다.
+
+해결방법.
+버퍼 크기를 늘려서 에러가 발생하기 전에 버퍼가 플러시 되지 않도록 한다.
+
+
+
