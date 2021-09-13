@@ -1,0 +1,92 @@
+
+ 자바빈과 <jsp:useBean> 액션 태그.
+
+
+
+ # 직렬화 역직렬화.
+
+직렬화 Serialize.
+자바 시스템 내부에서 사용되는 Object 또는 Data를 
+외부의 자바 시스템에서도 사용할 수 있도록 byte 형태로 데이터로 변환하는 기술.
+
+역직렬화 Deserialize.
+byte로 변환된 Data를 원래대로 Object나 Data로 변환하는 기술.
+
+
+
+ # 자바빈.
+
+자바빈.
+속성( 데이터 ), 변경 이벤트, 객체 직렬화를 위한 표준이다.
+
+자바빈 클래스.
+자바빈 규약을 따르는 클래스를 자바빈이라고 부른다.
+
+자바빈 클래스의 구성요소.
+데이터를 저장하는 필드(변수) + 데이터를 읽어올 때 사용되는 메소드 + 값을 저장할 때 사용하는 메소드.
+
+자바빈 멤버.
+변수 : 값을 저장하는 변수.
+get변수이름 : 데이터를 읽어올 때 사용되는 메소드.
+set변수이름 : 데이터를 저장할 때 사용되는 메소드.
+
+
+
+ # <jsp:useBean> 액션태그.
+
+설명.
+JSP 페이지에서 사용할 자바빈 객체를 지정할 떄 사용한다. 
+클래스는 직접 만들거나, 자바빈 형태로 만들어진 클래스여야한다.
+
+액션 태그 사용.
+<jsp:useBean id="빈이름" class="자바빈클래스이름" scope="사용할 범위" />
+
+<jsp:useBean> 실행과정.
+1. ClassName id = new ClassName( ) ;
+2. request.setAttribute( "id" , id ) ;
+
+설정한 bean 사용하기.
+빈이름.get변수이름( ) : 빈 클래스에 저장된 변수 값 리턴.
+빈이름.set변수이름( value ) : 빈 클래스에 value를 변수에 저장.
+
+속성.
+id : JSP 페이지에서 자바빈 객체에 접근할 때 사용할 이름을 지정한다.
+class : 패키지 이름을 포함한 자바빈 클래스의 완전한 이름을 입력한다.
+scope : 자바빈 객체를 저장할 영역을 지정한다. ( page, request, session, application - 기본값 page )
+
+
+
+ # <jsp:setProperty> , <jsp:getProperty> 액션태그.
+
+<jsp:setProperty> 사용법.
+<jsp:setProperty name="자바빈ID" property="변수이름" value="변수의 값" />
+
+<jsp:setProperty> 속성.
+name : <jsp:userBean> id 속성에서 지정한 자바빈ID를 입력.
+property : 자바빈 클래스에 변수이름을 입력. 
+value : 변수에 저장한 값을 입력.
+
+<jsp:setProperty> proprerty 속성 추가설명.
+property = " * "를 하면 빈 클래스의 모든 변수를 파라미터 데이터로 지정한다. ( 매우중요 )
+
+<jsp:getProperty> 사용법.
+<jsp:getProperty name="자바빈ID" property=" 변수이름 " />
+
+<jsp:getProperty> 속성.
+name : <jsp:useBean> id 속성에서 지정한 자바빈ID를 입력.
+property : 변수이름을 입력해서 값을 출력받음. 
+
+추가설명.
+<jsp:serProperty>에서 value 값이 property type에 맞지 않을 경우 자동으로 형변환을 해준다.
+value=""을 입력하면 각자의 type의 기본값으로 데이터가 저장된다. ( false, 0 )
+
+
+
+ # <jsp:useBean> 액션 태그의 사용 감소.
+
+설명.
+MVC를 사용하는 경우 로직은 자바 클래스에서 처리하고 그 결과를 JSP를 통해 보여주게 된다.
+로직을 처리하는 자바에서는 <jsp:useBean> 액션 태그를 사용할 수 없기 때문에 사용이 감소되는 추세이다.
+
+
+
