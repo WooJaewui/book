@@ -26,7 +26,7 @@ flush : 지정한 JSP 페이지를 실행하기 전에 출력 버퍼를 플러�
 
 추가설명.
 flush를 true로 설정하면 출력버퍼에 저장된 데이터를 플러시한 후에 page경로로 이동한다.
-flush를 ture로 설정하면 이후에 header 설정을 변경해도 반영되지 않는다. ( 최초 flush에 결정 )
+flush를 true로 설정하면 이후에 header 설정을 변경해도 반영되지 않는다. ( 최초 flush에 결정 )
 
 
 
