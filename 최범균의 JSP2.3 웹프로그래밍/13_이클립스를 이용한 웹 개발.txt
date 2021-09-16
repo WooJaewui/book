@@ -1,0 +1,83 @@
+
+ 이클립스를 이용한 웹 개발.
+
+
+
+ # 이클립스 웹 서버 실행 환경 설정하기.
+
+설정하기.
+Window -> Preferences -> Server -> Runtime Environments -> Add 
+-> Apache Tomcat 버전. -> Browse -> 톰캣 폴더 설정.
+
+인코딩 설정.
+Window -> Preferences -> General -> Workspace -> Text file encoding UTF-8 설정.
+Window -> Preferences -> Web -> CSS, HTML, JSP encoding UTF-8 설정.
+
+
+
+ # 프로젝트 생성하기.
+
+생성.
+Project name : 프로젝트 이름.
+Project location : 프로젝트 생성 폴더 지정.
+Target Runtime : 웹 어플리케이션을 실행할 때 사용할 서버를 선택.
+Dynamic Web Module Version : 서블릿 버전을 선택.
+Context root : 웹 어플리케이션의 컨텍스트 경로를 입력.
+Content directory : WEB-INF 폴더가 위치할 폴더를 입력.
+Generate web.xml deployment descriptor : web.xml 파일을 생성할지 지정.
+
+
+
+ # 파일 생성 장소.
+
+장소.
+JSP, HTML : WebContent 폴더 우클릭하여 생성한다.
+Servlet, Java : 프로젝트 폴더 또는 Java Resources, src에서 우클릭하여 생성한다.
+
+
+
+ # jar 파일 추가하기.
+
+장소.
+WEB-INF/lib 폴더 안에 jar파일들을 추가한다.
+
+설명.
+Dynamic Web Project는 WEB/lib 폴더에 추가한 jar 파일을 자동으로 클래스패스에 추가해준다.
+
+
+
+ # 생성한 파일 실행하기.
+
+프로젝트 실행.
+프로젝트 우클릭 -> Run As -> Run on Server -> 실행할 서버 선택.
+
+단축키.
+Ctrl + f11 : 선택한 파일을 지정한 Server로 실행해준다.
+
+
+
+ # 배포할 WAR 파일 생성하기.
+
+설명.
+이클립스의 동적 웹 프로젝트 폴더 구조는 서블릿 규약에 표준 폴더 구조와 다르다.
+그래서 서블릿 규약에 맞는 폴더 구조를 생성하고 각 폴더에 필요한 파일을 알맞게 복사해야한다.
+
+파일위치.
+서블릿 표준 규약 : WEB-INF/classes 폴더에 클래스 파일 위치.
+이클립스 프로젝트 : [프로젝트]/build 폴더에 클래스 파일 위치.
+
+이클립스 WAR Export.
+프로젝트 우클릭 -> Export -> WAR file.
+
+설정.
+Web project : WAR 파일을 생성할 동적 웹 프로젝트 선택.
+Destination : WAR 파일을 생성할 디렉토리 선택.
+Export source files : 생성된 WAR 파일에 자바 소스 파일을 포함할지 선택. ( 서블릿 규약대로 생성 )
+
+배포.
+생성한 WAR 파일을 [톰캣]\webapps 폴더에 복사하면 배포가 끝난다.
+"localhost:8080/프로젝트이름/파일이름" 을 통해 project를 실행할 수 있다.
+
+
+
+
