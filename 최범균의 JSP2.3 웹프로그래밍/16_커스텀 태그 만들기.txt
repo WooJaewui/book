@@ -1,0 +1,187 @@
+
+ 커스텀 태그 만들기.
+
+
+
+ # 커스텀 태그.
+
+설명.
+JSP의 액션태그, JSTL이 제공하는 태그로 부족한 기능을 직접 만들어서 사용하는 방법이다.
+
+커스텀 태그의 장점.
+재사용 : 한 번 작성한 커스텀 태그는 어떤 JSP 컨테이너에서도 사용 가능하다.
+쉽고 단순한 JSP 코드 작성 : 한 번 만들어 놓으면 간결하게 JSP를 작성할 수 있다.
+코드 가독성 향상 : 코드를 줄여서 JSP 코드의 가독성을 높일 수 있다.
+
+커스텀 태그의 종류.
+JSP 1.2 스타일 커스텀 태그.
+JSP 2.0 이상 SimpleTag를 사용한 커스텀 태그.
+JSP 2.0 이상 태그 파일을 사용한 커스텀 태그.
+
+
+
+ # 태그 파일을 이용한 커스텀 태그 구현.
+
+기존방식.
+자바 코드 작성 -> 컴파일 -> TLD 파일 작성 -> web.xml TLD 관련 정보 기술.
+
+태그파일.
+커스텀 태그 클래스를 만들기 위한 복잡한 과정을 쉽게 처리해 준다.
+JSP 페이지와 동일한 문법을 사용한다. 
+
+태그파일 디렉티브.
+tag : JSP 페이지의 page 디렉티브와 동일하다.
+taglib : JSP 페이지의 taglib와 동일.
+include : JSP 페이지의 include와 동일. ( 태그 파일에 알맞은 문법이여야 사용 가능 )
+attribute : 태그 파일을 커스텀 태그로 사용할 때 입력받을 속성을 명시한다.
+variable : EL 변수로 사용할 변수에 대한 정보를 지정한다.
+
+
+
+ # 태그 파일에서 사용 가능한 기본 객체.
+
+종류.
+jspContext : pageContext와 거의 동일하다.
+request : request와 동일.
+response : response와 동일.
+session : session와 동일.
+application : application와 동일.
+out : out와 동일.
+
+
+
+ # tag 디렉티브.
+
+display-name 속성.
+태그 파일을 도구에서 보여줄 때 사용될 이름을 지정한다.
+확장자 ".tag"를 제외한 태그 파일의 이름이다.
+
+body-content 속성.
+몸체 내용의 종류를 입력한다. 
+empty, tagdependent, scriptless 중 하나 선택. ( 기본값 scriptless )
+
+dynamic-attributes 속성.
+동적 속성을 상요할 때, Map 객체를 page 범위의 속성에 저장할 때 사용할 이름을 지정.
+pageContext와 비슷하게 jspContext를 기본 객체로 지원하고 있다.
+
+description 속성.
+태그에 대한 설명을 입력한다.
+
+import 속성.
+page 디렉티브의 import 속성과 동일하다.
+
+
+
+ # attribute 디렉티브.
+
+desciprtion.
+속성에 대한 설명을 입력한다.
+
+name.
+속성의 이름을 입력한다.
+스크립트 변수나 EL 변수의 이름으로 사용된다. ( 태그 파일 내에 다른 속성이름과 같으면 에러 발생 )
+
+required.
+속성의 필수 여부를 지정한다. 필수 = true.
+
+rtexprvalue.
+속성값으로 표현식을 사용할 수 있는지 여부를 지정한다. 기본값 true.
+
+type.
+속성값의 타입을 명시한다.
+
+fragment.
+<jsp:attribte> 액션 태그로 속성값을 전달할 때 이 값을 true로 지정한다.
+
+
+
+ # 태그 파일 생성.
+
+설명.
+디렉티브와 JSP와 같은 방식으로 파일을 만들어서 WEB-INF/tags 폴더나 그 하위 폴더에 위치.
+.tag 또는 .tagx 확장자를 갖는 파일만 태그 파일로 인식한다.
+
+사용예시.
+WEB-INF/tags/util 폴더에 test.tag 파일을 생성할 때 사용방법.
+<%@ taglib prefix="t1" tagdir="/WEB-INF/tags/util %>
+<t1:test 속성들 > 내용 </t1:test>
+
+
+
+ # <jsp:attribute> 액션 태그.
+
+사용.
+<jsp:attribute name="변수이름"> 실행할 내용 </jsp:attribute>
+
+속성.
+name : 속성의 이름을 지정한다. ( 필수 )
+trim : 속성의 좌우의 공백문자들을 지거할지 여부를 지정한다. ( 기본값 ( true )= 공백제거 )
+
+주의사항.
+<jsp:attribute> 몸체에서는 일반 템플릿 텍스트, EL, 택션 태그를 사용할 수 있다.
+( 스크립트 코드는 사용할 수 없다 )
+
+
+
+ # 커스텀 태그의 몸체 내용 사용.
+
+몸체 내용 적는 2가지 방법. ( jsp파일 )
+<t1:test> 몸체내용 </t1:test>
+<t1:test><jsp:body> 몸체내용 </jsp:body></t1:test>
+
+몸체 사용하기. ( tag파일 )
+<%@ tag body-content="scriptless" %> : 바디 사용 방식 설정.
+<jsp: doBody /> : 몸체로 전달받은 내용을 그대로 출력.
+<jsp: doBody var="변수명" scope="영역" /> : 몸체 내용을 var로 사용.
+
+주의사항.
+몸체 안에는 스크립트 요소를 사용할 수 없다.
+
+
+
+ # variable 디렉티브.
+
+name-given.
+이 태그를 호출한 페이지에 추가할 변수 이름을 정의한다. ( EL로 사용가능 )
+
+variable-class.
+추가할 변수의 타입을 지정한다. 기본값 = String.
+
+scope.
+변수의 범위를 지정한다.
+
+태그적용. ( .tag )
+<%@ variable name-given ="test" %>
+<c:set var="test" value="값" />
+
+사용. ( jsp )
+${ test } 
+
+
+
+ # 변수의 동기화 처리. ( 완벽한 이해가 안됨 다시 공부 )
+
+scope 종류.
+NESTED : 시작 태그와 끝 태그 사이에 변수 사용.
+AT_END : 끝 태그 이후부터 변수를 사용.
+AT_BEGIN : 시작 태그 시점부터 아무대나 사용.
+
+변수 동기화 동작 방식 - 태그 시작.
+NESTED : jsp 변수 값을 저장. 만약 변수가 존재하지 않았다면, 존재하지 않았다는 것도 기억.
+AT_END : 아무것도 안함.
+AT_BEGIN : 아무것도 안함.
+
+변수 동기화 동작 방식 - <jsp: doBody> 실행 전.
+NESTED : 태그 파일에 변수가 존재하면, jsp 파일에 변수를 저장. 존재하지 않으면 jsp 변수 삭제.
+AT_END : 아무것도 안함.
+AT_BEGIN : 태그 파일에 변수가 존재하면, jsp 파일에 변수를 저장. 존재하지 않으면 jsp 변수 삭제.
+
+변수 동기화 동작 방식 - 태그 끝.
+NESTED : 태그 시작에서 저장했던 jsp 변수 값을 다시 jsp 변수에 대입시킨다. ( 되돌려놓음 )
+AT_END : 태그 파일에 변수가 존재하면, jsp 파일에 변수를 저장. 존재하지 않으면 jsp 변수 삭제.
+AT_BEGIN : 태그 파일에 변수가 존재하면, jsp 파일에 변수를 저장. 존재하지 않으면 jsp 변수 삭제.
+
+
+
+
+
