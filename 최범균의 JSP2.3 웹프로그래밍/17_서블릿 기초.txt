@@ -1,0 +1,120 @@
+
+ 서블릿 기초.
+
+
+
+ # 서블릿 기초.
+
+설명.
+JSP 표준이 나오기 전에 만들어진 표준으로 자바로 웹 어플리케이션을 개발할 수 있도록 만들어졌다.
+
+서블릿의 개발과정.
+서블릿 규약에 따라 자바 코드를 작성.
+자바 코드를 컴파일해서 클래스 파일을 생성.
+클래스 파일을 /WEB-INF/classes 폴더에 패키지에 알맞게 위치시킴.
+web.xml 파일에 서블릿 클래스를 설정.
+톰캣 등의 컨테이너를 실행한다.
+웹 브라우저에서 확인한다.
+
+추가설명.
+Servlet에 불편한 과정들을 JSP가 보완해서 나왔다.
+MVC 패턴을 지원하는 프레임워크를 만들어야 하는 경우 서블릿을 사용한다. ( 원리 이해 중요 )
+
+
+
+ # 서블릿 구현.
+
+설명.
+서블릿 클래스를 구현하려면 먼저 HttpServlet 클래스를 상속받은 클래스를 작성해야 한다.
+
+사용설명.
+웹에서 요청 방식에 따라 doGet( )메소드, doPost( )메소드를 재정의해서 사용.
+HttpServletRequest, HttpServletResponse를 매개변수로 받아 사용한다.
+
+웹 브라우저로 출력하기.
+PrintWriter out = response.getWriter( ) ;
+out.println( "출력할 내용" ) ; 
+
+
+
+ # url 매핑하기.
+
+web.xml 매핑.
+<servlet>
+	<servlet-name>변수이름</servlet-name>
+	<servlet-class>패키지이름.클래스이름</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>변수이름</servlet-name>
+	<url-pattern>/지정할 url</url-pattern>
+</servlet-mapping>
+
+추가설명.
+하나의 클래스에 <url-pattern>을 여러개 설정하여 여러개의 url을 사용할 수 있다.
+
+annotation으로 매핑.
+@WebServlet( "/url주소" ) ;
+@WebServlet( urlPatterns="/url주소" ) ;
+
+주의사항.
+annoation과 web.xml을 동시에 매핑하면 annotation 클래스와 web.xml에서 지정한 클래스 두 개가 생성된다.
+둘 다 매핑한 것과 같은 효과를 가진다. 그러나 오류가 발생할 수 있기 때문에 한 가지 방식만 사용한다.
+
+
+
+ # 서블릿 로딩과 초기화.
+
+서블릿 로딩과정.
+웹 브라우저 -> 최초요청 -> 톰캣 -> 객체생성 -> init( ) -> 메소드 -> 서블릿.
+웹 브라우저 -> 두 번째 요청 -> 톰캣 -> 메소드 -> 서블릿.
+
+설명.
+최초 요청에서 서블릿 객체를 생성하고 init( )메소드를 통해 필요한 데이터를 초기화한다.
+
+메소드.
+public void init( ServletConfig config ) throws ServletException { this.config = config ; this.init( ) ; }
+public void init( ) { 초기화 내용; } 
+
+init( ) 메소드 설명.
+ServletConfig를 매개변수로 갖는 메소드는 ServlerConfig를 사용해 초기화할 때 사용하고,
+매개변수가 없는 init( ) 메소드는 일반적으로 초기화할때 사용한다.
+
+web.xml 우선순위 설정.
+<servlet-class>패키지이름.클래스이름</servlet-class>
+<load-on-startup>1</load-on-startup> 
+내가 선택한 클래스의 init( )메소드 실행 순서를 결정해줌. 
+
+annotation 우선순위 설정.
+@WebServlet( urlPattern="/url" loadOnStartup= 1 ) 
+
+
+
+ # 초기화 변수 설정.
+
+web.xml 설정.
+<servlet>
+	<servlet-name>변수이름</servlet-name>
+	<servlet-class>패키지이름.클래스이름</servlet-class>
+	<init-param>
+		<param-name>변수이름</param-name>
+		<param-value>변수값</param-value>
+	</init-para>
+</servlet>
+
+annotation 형식.
+initParam = @WebInitParam( name="변수이름" , value="값" ) ;
+
+annotation 설정.
+@WebServlet( url= { "/url1", "/url2" } , initParam={ @WebInitParam(name="변수이름", value="값" ) } )
+
+
+
+ # URL 매핑 규칙.
+
+규칙.
+마지막 경로에 " * "는 상위 path에 모든 url을 의미한다. ( /test/ * : test path에 하위 모든 url을 매핑 )
+" *. " 이 들어가는 url 패턴은 확장자를 매핑할 때 사용한다. ( *.txt : 모든 txt파일을 매핑 )
+" / " 만 포함하는 경우 어플리케이션의 기본 서블릿으로 매핑한다. 
+
+
+
