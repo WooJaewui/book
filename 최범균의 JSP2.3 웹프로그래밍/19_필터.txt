@@ -1,0 +1,120 @@
+
+ 필터.
+
+
+
+ # 필터.
+
+설명.
+브라우저와 Servlet 사이에 존재하여 응답과 요청을 변경할 수 있는 클래스이다.
+필터는 필요에 따라 원하는 만큼 생성할 수 있다.
+
+과정.
+브라우저 -> 요청 -> 필터1 -> 필터2 -> Servlet( JSP ) -> 필터2 -> 필터1 -> 브라우저.
+
+n개의 필터.
+필터가 여러개 존재하면 첫번째 필터는 브라우저의 요청 데이터를 변경하고,
+그 이후에 필터는 이전 필터가 변경한 데이터를 변경한다.
+
+필터의 기능.
+요청 데이터에 변경.
+흐름 변경. 
+
+
+ # 필터의 구현.
+
+구성 요소.
+javax.servlet.Filter 인터페이스 : Filter 클래스가 구현해야되는 인터페이스.
+javax.servlet.ServletRequestWrapper 클래스 : 필터가 요청을 변경한 결과를 저장하는 래퍼 클래스.
+javax.servlet.ServletResponseWrapper 클래스 : 필터가 응답을 변경하기 위해 사용하는 래퍼 클래스.
+
+
+
+ # Filter 인터페이스 구현.
+
+구성 요소.
+init( FilterConfig fc ) : 필터를 초기화할 때 사용한다.
+doFilter( request, response, FilterChain chain ) : 필터 기능을 수행. chain을 이용해서 다음 필터로 처리.
+destroy( ) : 필터가 웹 컨테이너에서 삭제될 때 호출한다.
+
+FilerConfig 메소드.
+getFilterName( ) : <filter-name>에 지정한 필터의 이름을 리턴.
+getInitParameter( "name" ) : <init-param>에서 지정한 초기화 파라미터의 값을 리턴.
+getInitParameterNames( ) : 초기화 파라미터의 이름 목록을 구한다.
+getServletContext( ) : 서블릿 컨텍스트 객체를 구한다.
+
+web.xml 필터 설정.
+<filter>
+	<filter-name>필터이름</filter-name>
+	<filter-class>패키지이름.클래스이름</filter-class>
+	<init-param>
+		<param-name>변수이름</param-name>
+		<param-value>변수값</param-value>
+	</init-param>
+</filter>
+<filter-mapping>
+	<filter-name>필터이름</filter-name>
+	<url-pattern>/url</url-pattern>
+</filter-mapping>
+
+<dispatcher> 설명.
+url 매핑을 <class-name> 통해 할 경우 필터가 적용되는 시점을 설정할 수 있다.
+REQUEST : 클라이언트의 요청인 경우 필터를 적용한다. ( 기본값 )
+FORWARD : forward( )를 통해 제어 흐름을 이동하는 경우에 필터를 적용한다.
+INCLUDE : include( )를 통해서 포함되는 경우에 필터를 적용한다.
+
+annotation 필터 설정.
+@WebFilter( filterName="필터이름" , urlPattern= "/url" )
+
+@WebFilter 속성.
+urlPattern : URL 매핑.
+servletNames : 필터를 적용할 서블릿 이름 목록을 지정.
+filterName : 필터의 이름을 지정한다.
+initParams : 초기화 파라미터 목록을 지정한다.
+dispatcherTypes : 필터를 적용할 범위를 지정한다.
+
+
+
+ # 요청, 응답 래퍼 클래스.
+
+설명.
+요청이나 응답 데이터를 변경하는 로직을 만들어야되는 경우,
+ServletRequestWrapper, ServletResponseWrapper 클래스를 상속 받아서 구현한다.
+구현한 래퍼클래스들은 filter에서 호출되어 사용한 후 doFilter( )에 매개변수로 넣어준다.
+
+
+
+ # 필터의 응용.
+
+설명.
+필터를 사용하는 방법에는 제한이 없으며, 얼마나 잘 활용하느냐에 따라 필터의 응용 범위가 달라질 수 있다.
+( 사용자 인증, 캐싱 필터, 자원 접근에 대한 로깅, 공통 기능 실행, 데이터의 변환 등 )
+
+사용.
+doFilter( ServletRequest request, ServletResponse response ) {
+	HttpServletRequest req = ( HttpServletRequest ) request ; 
+	HttpSession session = req.getSession( false ) ;
+}
+
+getSession( ) 메소드.
+getSession( false ) : 존재하면 존재하는 HttpSession을 리턴. 존재하지 않으면 null 리턴.
+getSession( true ) : 존재하면 존재하는 HttpSession을 리턴. 존재하지 않으면 HttpSession을 생성해서 리턴.
+
+
+
+ # 캐릭터 인코딩 필터.
+
+설명.
+모든 Servlet에서 request.SetCharacterEncoding( "utf-8" ) 코드를 사용하는 것은 좋은 방법은 아니다.
+필터를 통해 request와 response 인코딩을 설정하여 중복 코드를 줄여 줄 수 있다.
+
+사용.
+request.setCharacterEncoding( "UTF-8" ) ; 
+chain.foFilter( request, response ) ;
+response.setContentType( "text/html; charset=utf-8" ) ;
+
+
+
+
+
+
