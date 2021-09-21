@@ -1,0 +1,80 @@
+
+ 게시판 구현 - 회원 관련 기능.
+
+
+
+ # 회원 관련 주요 기능.
+
+주요기능.
+회원 가입.
+회원 정보 수정하기.
+로그인하기.
+로그아웃하기.
+로그인한 사람만 특정 기능 실행하기.
+
+
+
+ # try-with-resources.
+
+설명.
+AutoCloseable 인터페이스를 구현한 resource를 ( )안에서 초기화하면 자동으로 close( ) 됨.
+
+사용.
+try( resource ) { 실행할문장; } catch( Exception e ) { 실행할문장; } 
+
+
+
+ # 회원가입 기능구현.
+
+기능.
+회원가입 요청을 하면 회원가입을 위한 폼을 보여준다.
+입력 폼에 아이디, 이름, 암호, 암호 확인을 입력하고 전송하면 가입에 성공한다.
+동일한 아이디를 가진 회원이 존재하면 에러 메시지와 함께 다시 폼을 보여준다.
+입력한 암호와 암호 확인이 일치하지 않으면 에러 메시지와 함께 다시 폼을 보여준다.
+
+MVC2.
+모델 : DAO Class, Connection Class( 따로 없어도 됨 ), Filter, DataModel Class.
+뷰 : join JSP.
+컨트롤러 : CommandHandler.
+
+
+
+ # 로그인 기능 구현.
+
+인증.
+로그인은 인증( Authentication )의 한 방법이다. 서비스를 사용하는 사람이 본인이 맞는지 확인.
+
+기능.
+로그인 요청을 하면 로그인을 위한 폼을 보여준다.
+입력 폼에 아이디와 암호를 입력하고 전송하면 검사한다.
+아이디나 암호가 맞지 않으면 에러 메시지와 함께 다시 폼을 보여준다.
+아이디와 암호가 일치하면 첫 화면으로 이동한다.
+
+MVC2.
+모델 : LoginSevice Class, DAO Class, LoginCheckFilter Class
+뷰 : login JSP.
+컨트롤러 : LoginHandler Servlet, LogoutHandler Servlet.
+
+
+
+ # 암호 변경 기능 구현.
+
+오류발생.
+암호를 변경할 회원 데이터가 존재하지 않는 경우.
+현재 암호가 일치하지 않는 경우.
+
+
+
+ # 추가정보.
+
+구조.
+핸들러와 뷰. ( Controller - View )
+서비스-DAO 구조. ( LogicModel - DataModel )
+
+MVC 프레임워크.
+구조 : MVC 구조와 MVC 프레임워크의 사용하는 구조는 동일하다.
+차이점 : MVC 프레임워크가 더 다양한 기능을 제공한다.
+
+
+
+
