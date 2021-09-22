@@ -1,0 +1,90 @@
+
+ 커넥션 풀 정리. ( 416page ~ 425page )
+
+
+
+ # 커넥션 풀.
+
+커넥션 풀 설명.
+데이터베이스와 연결된 커넥션을 미리 만들어서 풀( pool )속에  저장해 두고 필요할 때 가져다 쓰는 방식.
+
+특징.
+미리 커넥션을 생성하기 때문에 커넥션을 생성하는 데 드는 연결 시간을 줄일 수 있다.
+커넥션을 계속해서 재사용하기 때문에 생성되는 커넥션 수가 일정하게 유지된다.
+
+필요한 라이브러리.
+commons-dbcp2-2.1-bin.zip.
+commons-pool2-2.4.1-bin.zip.
+commons-logging-1.2-bin.zip.
+commons.apache.org 사이트에서 다운로드 가능.
+
+사용.
+Class.forName( 오라클 JDBC 드라이버 ) ;
+String url = jdbc url ;
+String user = Username ;
+String pw = password ;
+
+ConnectionFactory confac = new DriverManagerConnectionFactory( url, usr, pw ) ;
+PoolableConnectionFactory poolConFac = new PoolableConnectionFactory( confac, null ) ;
+
+GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig( ) ;
+poolConfig.setTimeBetweenEvictionRunsMillis( 1000L * 60L * 5L ) ;
+poolConfig.setTestWhileIdle( true ) ;
+poolConfig.setMinIdle( 4 ) ;
+poolConfig.setMaxTotal( 50 ) ;
+
+GenericObjectPool<PoolableConnection> connectionPool 
+				= new GenericObjectPool<>( poolConFac, poolConfig ) ;
+poolConFac.setPool( coonectionPool ) ;
+
+Class.forName( "org.apache.commons.dbcp2.PoolingDriver" ) ; 
+PoolingDriver driver = ( PoolingDriver ) DriverManager.gerDriver( "jdbc:apache:commons:dbcp:" ) ;
+driver.registerPool( "pool이름" ,  coonectionPool ) ; 
+
+GenericObjectPoolConfig 메소드.
+setTimeBetweenEvictionRunsMillis( 초 ) : 유휴 커넥션 검사 주기.
+setTestWhileIdle( ture ) : 풀에 보관 중인 커넥션이 유효한지 검사할지 여부.
+setMinIdle( 갯수 ) : 커넥션 최소 개수.
+setMaxIdle( 갯수 ) : 커넥션 최대 개수.
+
+
+
+ # ConnectionPool 사용하기.
+
+사용.
+String url = "jdbc:apache:commons:dbcp:pool이름";
+String sql = "select * from 테이블이름" ;
+Connection con = DriverManager( url ) ;
+Statement st = con.createStatemet( ) ;
+ResultSet rs = st.executeQuery( sql ) ;
+while( rs.next( ) ) { 
+	String d1 = rs.getString( "d1" ) ;
+	...
+}
+
+
+
+ # 정리.
+
+Connection Pool 생성 과정.
+
+1. ConnectionFactory conFac = new DriverManagerConnectionFactory( driver, user, passwd ) ;
+   PoolableConnectionFactory poolConFac = new PoolableConnectionFactory( conFac, null ) ;
+
+2. GenericObjectPoolConfig config = new GenericOBjectPoolConfig( ) ;
+   config.set설정들.
+
+3. GenericObjectPool<PoolableConnection> conPool = new GenericObjectPool<>( poolConfac, config );
+   poolconFac.setPool( conPool ) ;
+
+4. Class.forName( "PoolingDriver" ) ;
+   PoolingDriver driver = ( PoolingDriver ) DriverManager.getDriver( "~~~:dbcp:" ) ;
+   driver.registerPool( "pool이름" , conPool ) ; 
+
+Pool 사용.
+Connection con = DriverManager.getConnection( "jdbc:apache:commons:dbcp:pool이름" ) ;
+
+
+
+
+
