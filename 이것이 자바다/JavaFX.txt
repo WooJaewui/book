@@ -1,0 +1,445 @@
+
+ JavaFX - 850 ~ 
+
+
+
+ # 메인 클래스.
+
+Application 상속.
+JavaFx 애플리케이션을 시작시키는 메인 클래스는 Application 추상 클래스를 상속해야된다.
+start( ) 메소드 override하고, main( ) 메소드에서 launch( args )를 호출한다.
+
+launch( ) 메소드.
+JavaFX의 메인 클래스의 객체를 생성하고, 메인 윈도우를 생성한 다음 start( )를 호출.
+JavaFx 윈도우는 javafx.stage.Stage 클래스로 표현한다.
+launch에서 생성된 메인 윈도우는 start( ) 메소드의 매개값으로 전달되고, primaryStage.show( )로 실행한다.
+
+
+ # JavaFX 라이프사이클.
+
+Application 실행 순서.
+Application.launch( ) -> 기본생성자 -> init( ) -> start( ) -> 사용 -> platform.ext( ) -> stop( ) -> 종료.
+
+Application이 종료되는 경우.
+마우스로 마지막 윈도우( Stage )의 우측 상단 닫기 버튼을 클릭했을 때.
+자바 코드로 마지막 윈도우( Stage )의 close( ) 메소드를 호출했을 때.
+자바 코드로 Platform.exit( ) 또는 System.exit( 0 )을 호출했을 때.
+
+Application.launch( ) 호출 시 실행되는 쓰레드.
+JavaFx-Launcher : init( ) 실행.
+JavaFx Application Thread : 메인 클래스 기본 생성자, start( ) 및 stop( ) 실행. ( 이벤트 처리 등 )
+
+
+
+ # Stage - 무대와 Scene - 장면.
+
+Stage.
+윈도우를 의미한다.
+메인 윈도우는 start( ) 메소드의 매개값 primaryStage로 전달되어 생성된다.
+
+Scene.
+javafx.scene.Scene
+무대에서 한 번에 하나의 장면을 가지는데, 그 때의 장면을 의미한다.
+직접 생성해야 된다.
+
+Scene 생성방법.
+Scene scene = new Scene( Parent root ) ;
+
+Parent.
+Parent는 추상 클래스이기 때문에 구현 클래스를 제공해야 된다. ( 주로 layout 패키지의 컨테이너 사용 )
+UI 컨트롤들이 추가되는 곳이다.
+Parent의 폭과 높이가 장면의 폭과 높이가 된다.
+
+Scene을 Stage에 올리기.
+primaryStage.setScene( scene ) ;
+
+
+
+ # JavaFX 레이아웃.
+
+레이아웃.
+Scene에는 다양한 컨트롤이 포함되는데 이들을 배치하는 것이 레이아웃이다.
+
+레이아웃 작성방법.
+프로그램적 레이아웃 - 자바 코드로 작성.
+선언적 레이아웃 - FXML로 작성.
+
+프로그램적 레이아웃.
+자바 코드로 UI 컨트롤을 배치하는 것을 말한다.
+컨트롤 배치, 스타일 지정, 이벤트 처리 등을 모두 자바 코드로 작성한다.
+
+프로그램적 레이아웃 단점.
+레이아웃이 복잡해지면 코드가 복잡해져 난해한 프로그램이 될 확률이 높아진다.
+수정이 필요하면 소스 코드를 재컴파일 해야된다.
+
+FXML 레이아웃.
+XML 기반의 마크업 언어로, UI 레이아웃을 태그로 선언하는 방법.
+디자이너와 협업하기에 유리하다.
+수정이 필요한 경우 자바 소스를 수정할 필요가 없다.
+
+
+
+ # 레이아웃 여백 : 패딩과 마진.
+
+padding 패딩.
+안쪽 여백을 의미한다.
+setPadding( ) 메소드로 설정.
+
+margin 마진.
+바깥쪽 여백을 의미한다.
+setMargin( ) 메소드로 설정.
+
+공통점.
+적용 위치에 따라 top, right, bottom, left로 구분된다.
+
+설정하기 위한 클래스 생성.
+new Insets( top, right, bottom, left ) : 각각의 값을 입력 받아서 설정.
+new Insets( topRightBottomLeft ) : 모두 동일한 값으로 설정.
+
+예시.
+HBox hbox = new HBox( ) ;
+hbox.setPadding( new Insets( 10,20,30,10 ) ) ;
+
+FXML 레이아웃 태그.
+<HBox xmlns~~~~~ >
+<padding>
+	<Insets top="10", right="10", bottom="20", left="15">
+</padding>
+</Hbox>
+
+
+
+ # FXML.
+
+FXML 패키지 선언.
+<? import 패키지이름. * ?>
+<? import 패키지이름.클래스이름 ?>
+
+FXML 패키지 선언 위치.
+<? XML version="1.0" encoding="UTF-8" ?>
+---------------- 여기 ----------------
+<루트컨테이너 xmlns:fx = "~~~ " >
+
+태그 선언.
+<태그이름> </태그이름>
+태그이름은 JavaFX의 클래스명이거나, Setter 메소드명이 될 수 있다.
+
+태그 선언 예시.
+<Button>
+	<text>확인</text>
+</Button>
+Button은 클래스이름, text는 setText( ) 메소드이름.
+
+속성 선언.
+<태그이름 속성명="값"></태그이름>
+속성명은 매개변수가 기본형 + String인 Setter 메소드명만 사용할 수 있다.
+
+객체 선언.
+<클래스 매개변수="값"> 
+	<Setter 메소드명>
+		<값>
+	</Setter 메소드명>
+</클래스>
+
+
+
+ # FXML 로딩과 Scene 생성.
+
+FXML 로딩.
+FXML 파일을 작성을 완료 후, FXML 파일을 읽어드려 선언된 내용을 객체화하는 작업.
+
+FXMLLoader 클래스.
+javafx.fxml.FXMLLoder.
+
+FXMLLoader 로더 클래스 2가지.
+정적 메소드 load( ) : FXML 파일이 클래스와 동일한 패키지에 있을 경우 load하는 방법.
+인스턴스 메소드 load( ) : 동일한 패키지에 있지 않을 경우 load하는 방법.
+
+Load 하기.
+Parent root = FXMLLoader.load( getClass( ).getResource( "~~~.fxml" ) ) ;
+FXMLLoader loader = new FXMLLoader( getClass( ).getResource( "~~~.fxml" ) ) ;
+Parent root = ( Parent ) loader.load( ) ;
+
+로드한 Parent 파일 사용하기.
+Scene scene = new Scene( root ) ;
+
+
+
+ # JavaFX Scene Builder.
+
+Java Scene Builder.
+Oracle에서 제공하는 FXML을 자동으로 생성해주는 툴이다.
+
+
+
+ # JavaFX 컨테이너.
+
+JavaFX 컨테이너.
+레이아웃을 작성할 때 컨트롤들을 쉽게 배치할 수 있도록 도와주는 클래스를 의미한다.
+접미사가 Pane으로 끝나는 클래스. ( AnchorPane, BorderPane, FlowPane, GridPane, ... 등 )
+
+
+
+ # 이벤트 핸들러 EventHandler.
+
+이벤트 핸들러.
+JavaFx는 이벤트 발생 컨트롤과 이벤트 핸들러를 분리하는 위임형 Delegation 방식을 사용한다.
+이벤트가 발생하면 컨트롤이 직접 처리하지 않고 이벤트 핸들러에게 처리를 위임하는 방식이다.
+
+EventHandler 추상 클래스.
+new EventHandler<ActionEvent>( ) { 
+	@Override
+	public void handle( ActionEvent event ) { ... } 
+} 
+
+예시.
+Button button = new Button( );
+button.setOnAction( new EventHandler<ActionEvent>( ) {
+	@Override
+	public void handle( ActionEvent event ) { ... } 
+} ) ;
+
+람다식 사용예.
+Button button = new Button( ) ;
+button.setOnAction( event -> { ... } ) ;
+
+
+
+ # FXML 컨트롤러.
+
+설정.
+<루트컨테이너 xmlns:fx = "htt~~~ " 
+	fx : controller = "패키지이름.컨트롤러이름" >
+	...
+</루트컨테이너>
+
+fx : id 속성 FXML 설정.
+<children>
+	<Button fx:id = "btn1" text="버튼1" />
+	<Button fx:id = "btn2" text="버튼2" />
+</children>
+
+자바클래스에서 FXML Controller 사용.
+public class 컨트롤러클래스 implements Initializable { 
+	@FXML private Button btn1;
+	@Override
+	public void initialize( ~~~~~~ ) { 
+		....
+	}
+}
+
+EventHandler 등록.
+@Override
+public void initialize ( ~~~~ ) { 
+	btn1.setOnAction( event -> handleBtn1Action( event ) ) ;
+	
+}
+public void handleBtn1Action( ActionEvent event ) { 
+	실행할 로직 ;
+}
+
+이벤트 처리 메소드 매핑.
+<Button ~~~ onAction="#handleBtnAction" />
+public void handleBtnAction( ActionEvent event ) { ... } 
+
+
+
+ # JavaFX 속성 감시와 바인딩.
+
+설명.
+JavaFX 컨트롤에 값이 변경되면 
+컨트롤.값Property( ).addListener( new ChangeListener<클래스>( ) )를 통해 값의 변화에 실행하는 메소드 오버라이드.
+
+
+JavaFX 컨트롤 속성의 메소드.
+private StringProperty text = new SimpleStringProperty( ) ;
+public void setText( String newValue ) { text.set(newValue ) ; }
+public void getText( ) { return text.get( ) ; } 
+public StringProperty textProperty( ) { return text ; } 
+
+ChangeListener 설정.
+Slider slider = new Slider( ) ;
+slider.valueProperty( ).addListener( new ChangeListener<Number>( ) { 
+	@Override
+	public void changed( ObservableValue<? extends Number> observable, Number old, Number new ) {
+		실행할 내용.
+	}
+}
+
+속성 바인드 설정.
+Slider slider1 = new Slider( ) ;
+Slider slider2 = new Slider( ) ;
+slider1.값Property( ).bind( slider2.값Property( ) ) : slider2에서 입력된 내용이 slider1에 자동입력된다.
+
+양방향 바인드 설정.
+slider1.값Property( ).bindBidirectional( slider2.값Property( ) ) : 양방향 바인드.
+
+바인드 해제.
+slider1.값Property( ).unbind( ) : 단방향 해제.
+slider1.값Property( ).unbindBidirectional( slider2.값Property( ) ) : 양방향 해제.
+Bindings.unbindBidirectional( slider1.값Property( ) , slider2.값Property( ) ) : 양방향 해제.
+
+
+
+ # Bindings 클래스.
+
+설명.
+어떠한 속성을 원하는 값을 만들기 위해 연산 작업을 수행할 수 있는 정적 메소드를 가지는 클래스.
+
+사용.
+circle.centerYProperty( ).bind( Bindings.divide( root.heightProperty( ), 2 ) ;
+
+
+
+ # JavaFX 컨트롤.
+
+버튼 컨트롤.
+마우스로 클릭할 수 있는 컨트롤로 ButtonBase를 상속하는 하위 컨트롤을 말한다.
+Button, CheckBox, RadioButton, ToggleButton, Hyperlink 등이 있다.
+
+Button.
+단순한 글자로 구성된다.
+
+CheckBox, RadioButton, ToggleButton.
+선택과 미선택 두 가지 상태를 가질 수 있다.
+selected 속성이 true이면 선택, false이면 미선택이다.
+
+입력컨트롤.
+TextField : 한 줄 입력 컨트롤.
+TextArea : 다중 행 입력 컨트롤.
+PasswordField : 패스워드 입력 컨트롤.
+ComboBox : 제한된 항목에서 선택 컨트롤.
+DatePicker : 날짜 선택 컨트롤.
+ColorPicker : 색상 선택 컨트롤.
+HTMLEditor : HTML 입력 컨트롤.
+Label : 입력 컨트롤의 제목을 표시할 때 사용.
+
+뷰 컨트롤.
+ListView : 이미지를 목록 형태로 보여주는 컨트롤.
+TableView : 이미지를 테이블 형태로 보여주는 컨트롤.
+ImageView : 이미지를 보여주는 컨트롤.
+
+미디어 컨트롤.
+MediaView : 비디오를 재생할 수 있는 컨트롤.
+Slider : 볼륨 조절 및 재생 위치 조절 컨트롤.
+ProgressBar, ProgressIndicator : 현재 상태를 보여주는 컨트롤.
+
+
+
+ # MediaPlayer와 MediaView 컨트롤.
+
+MediaPlayer.
+MediaPlayer는 비디오 오디오를 재생하는 기능을 가지고 있다.
+MediaView를 통해 레이아웃상에서 비디오가 위치할 영역을 표시해준다.
+
+MediaPlayer 사용.
+Media media = new Media( "미디어 소스 경로" ) ;
+MediaPlayer mediaPlayer = new MediaPlayer( media ) ;
+
+상대 경로를 통해 파일 사용하기.
+Media media = new Media( getClass( ).getResource( "상대 경로" ).toString( ) ) ;
+현재 클래스 기준에서 상대경로를 통해 파일을 얻어온다.
+
+MediaPlayer 상태.
+media.getStatus( )를 통해 확인할 수 있다.
+UNKNOWN : 생성된 직후 상태. 준비가 완료되면 READY로 자동 변경.
+READY : 실행을 할 수 있는 상태. setAutoPlay( true ) 또는 play( )를 호출하면 PLAYING.
+PLAYING : 실행이 되고 있는 상태. pause( ) -> PAUSED, stop( ) -> STOPPED
+STALLED : PLAYING 상태에서 버퍼에 충분한 데이터가 없을 경우 발생하는 상태.
+PAUSED : 일시 정지 상태. play( ) -> PLAYING , stop( ) -> STOPPED.
+STOPPED : 정지 상태. play( ) -> PLAYING.
+EndOfMedia : 미디어 소스를 모두 재생한 상태. seek( )을 통해 재생 위치를 처음으로 바꿔줘야 실행 가능.
+
+Slider 컨트롤.
+Track과 Thumb로 구성되어 있다.
+value 속성에는 현재 Thumb의 위치값이 저장되는데 0 ~ 100 나타낸다.
+
+마지막 재생 시간과 전체 재생 시간이 다를 경우 설정.
+mediaPlayer.setOnEndOfMedia( ( ) -> { 
+	progressBar.setProgress( 1.0 ) ;
+	progressIndicator.setProgress( 1.0 ) ;
+} ) ;
+
+
+
+ # 차트 컨트롤.
+
+차트 컨트롤 종류.
+PieChart : x, y 축이 없는 동그란( 파이 ) 형태의 차트 컨트롤.
+LineChart : 그래프형 차트 컨트롤.
+AreaChart : 그래프형 차트 컨트롤.
+BarChart : 바형 차트 컨트롤.
+BubbleChart : x, y 축이 있는 동그란 형태의 차트 컨트롤.
+ScatterChart : 분포도를 보여주는 차트 컨트롤.
+
+
+
+ # 메뉴바와 툴바.
+
+MenuBa 컨트롤.
+컨테이너 상단에 배치되어, 다양한 작업을 쉽게 선택하도록 해준다.
+Menu들을 계층적으로 배치할 수 있다.
+
+Toolbar 컨트롤.
+컨테이너 상단에 배치되어, 다양한 작업을 쉽게 선택하도록 해준다.
+Button형태로 어떠한 값을 선택하도록 배치한다.
+
+
+
+ # JavaFX 다이얼로그.
+
+다이얼로그.
+주 윈도우에서 알림 또는 사용자의 입력을 위해서 실행되는 서브 윈도우.
+자체적으로 실행될 수 없고 주 윈도우를 통해서만 실행할 수 있다.
+주 윈도우는 다이얼로그의 소유자( owner ) 윈도우라고 한다.
+
+다이얼로그의 종류.
+모달 다이얼로그 : 다이얼로그를 닫기 전까지 주 윈도우를 사용할 수 없음.
+모딜리스 다이얼로그 : 주 윈도우를 계속 사용할 수 있다.
+
+
+
+ # FileChooser, DirectoryChooser 다이얼로그.
+
+FileChooser.
+로컬 PC의 파일을 선택할 수 있는 다이얼로그이다.
+FXML에 작성할 수 없다.
+ActionEvent를 통해 생성하고, showOpenDialog( ), showSaveDialog( )를 호출해서 사용.
+
+DirectChooser.
+파일이 아니라 디렉토리 폴더를 선택할 때 사용하는 다이얼로그.
+
+
+
+ # Popup 다이얼로그.
+
+Popup.
+투명한 컨테이너를 제공하는 모달리스 다이얼로그.
+FXML 파일로 작성할 수 있다.
+메시지 알림, 툴팁, 드롭다운 박스 등에서 사용한다.
+
+
+
+ # JavaFX 쓰레드 동시성.
+
+설명.
+JavaFX Application Thread가 UI 생성, 이벤트 처리 등 모든 것들을 담당한다.
+JavaFX Application Thread에서 시간을 요하는 작업을 하지 않는 것이 좋다. 
+작업시간 동안 다른 UI가 반응하지 않고 멈춰있는 상태가 된다.
+
+문제점 해결 방안.
+파일 읽기 등과 같은 시간을 요하는 작업 수행시에는 Thread를 생성해서 작업해줘야된다.
+
+Worker 인터페이스.
+쓰레드 동시성에 관련된 API이다.
+
+Task 클래스.
+Worker를 구현하고, JavaFx 애플리케이션에서 비동기 작업을 표현한 클래스.
+
+Service.
+Worker를 구현하고, Task를 간편하게 시작, 취소, 재시작할 수 있는 기능을 제공.
+
+
+
+
+
