@@ -1,0 +1,92 @@
+
+ JoinPoint와 바인드 변수.
+
+
+
+ # JoinPoint 인터페이스.
+
+JoinPoint 인터페이스.
+비즈니스 메소드의 관련된 정보를 담고 있다.
+
+JoinPoint 메소드.
+getSignature( ) : 비즈니스 메소드의 시그니처( 리턴타입, 이름, 매개변수 ) 정보가 저장된 Signature 객체 리턴.
+getTarget( ) : 비즈니스 메소드를 포함하는 비즈니스 객체 리턴.
+getArgs( ) : 비즈니스 메소드의 매개변수의 인자 목록을 Object 배열로 리턴.
+
+ProceedingJoinPoint 추가설명.
+Around의 매개변수 ProceedingJoinPoint는 JoinPoint를 implements한 인터페이스이다.
+JoinPoint에 proceed( )메소드만 추가되었다.
+Around에서만 ProceedingJoinpoint를 사용하고 나머지 어드바이스는 JoinPoint를 사용.
+
+
+
+ # JoinPoint - Before 어드바이스.
+
+설명.
+Before 어드바이스 메소드에 매개변수로 JoinPoint jp를 작성하고 메소드 내부에서 사용할 수 있다.
+
+jp 활용하기.
+String method = jp.getSignature( ).getName( )
+Object[ ] args = jp.getArgs( );
+
+
+
+ # JoinPoint - After Returning 어드바이스.
+
+설명.
+After Returning은 JoinPoint이외에 비즈니스 메소드의 결과값을 받는 바인드 변수를 사용해야된다.
+매개변수로 JoinPoint jp와 Object returnObj를 작성해야된다.
+
+메소드 작성.
+public void 메소드이름( JoinPoint jp, Object returnObj ) { 
+	실행할 공통 로직 ;
+}
+
+사용.
+<aop:aspect ref="어드바이스id">
+	<aop:after-returning pointcut-ref="~" method="~" returning="바인드변수이름( returnObj )" />
+</aop:aspect>
+
+주의사항.
+returning 속성에서 사용한 바인드변수이름과 어드바이스 메소드에서 매개변수로 받는 변수명이 같아야한다.
+
+
+
+ # JoinPoint - After Throwing 어드바이스.
+
+설명.
+어떤 예외가 발생했는지 확인하기 위한 바인드 변수를 받아야된다.
+매개변수로 JoinPoint jp, Exception exceptObj를 작성.
+
+메소드 작성.
+public void 메소드이름( JoinPoint jp , Exception exceptObj ) { 
+	실행할 공통 로직 ;
+}	
+
+사용.
+<aop:aspect ref="어드바이스id">
+	<aop:after-throwing pointcut-ref="~" method="~" throwing="바인드변수이름( exceptObj )" />
+</aop:aspect>
+
+주의사항.
+throwing 속성에서 사용한 바인드변수이름과 어드바이스 메소드에서 매개변수로 받는 변수명이 같아야한다.
+
+
+
+ # ProceedingJoinPoint - Around 어드바이스.
+
+설명.
+기존에 하던 방식으로 ProceedingJoinPoint pjp를 매개변수로 받아서 JoinPoint처럼 사용하면 된다.
+
+메소드 작성.
+public Object 메소드이름( ProceedingJoinPoint pjp ) { 
+	before 로직 ;
+	Object result = pjp.proceed( );
+	after 로직;
+	return result ;
+}
+
+
+
+
+

@@ -1,0 +1,34 @@
+
+ 비즈니스 컴포넌트 실습1 , 2
+
+
+
+ # BoardService 컴포넌트 구조.
+
+구성 클래스.
+BoardService 인터페이스, BoardServiceImp 구현클래스, BoardDAO DAO클래스, BoardVO VO클래스.
+
+VO 클래스.
+관련된 데이터를 한번에 주고받을 목적으로 사용되는 클래스.
+DTO( Data Transfer Obejct ) 라고 부르기도 한다.
+DB에 column이름과 변수의 이름을 똑같이 맞춰야 사용하기 편리하다.
+모든 변수는 private처리하고, 생성자, getter, setter 메소드를 통해 조작한다.
+VO는 bean( 모듈 )로 저장하지 않는다. 
+
+DAO 클래스.
+데이터베이스 연동을 담당하는 클래스.
+CRUD를 작성하여 DB데이터를 조작한다.
+@Repository 어노테이션 사용.
+
+Service 인터페이스.
+DAO에서 실행하는 SQL문 메소드를 거의 그대로 사용한다. ( 이름은 필요에 따라 바꾼다 )
+
+ServiceImp 구현클래스.
+Service 인터페이스를 구현하는 클래스로 SQL문 메소드를 오버라이딩한다.
+구현클래스에 @Service 어노테이션을 사용한다.
+DAO 클래스를 @Autowired해서 DAO의 SQL 메소드를 그대로 사용해서 값을 얻는다.
+
+
+
+
+
