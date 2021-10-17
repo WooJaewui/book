@@ -1,0 +1,100 @@
+
+ 어노테이션 기반 설정.
+
+
+
+ # 어노테이션 설정 기초.
+
+Context 네임스페이스 추가.
+루트 엘리먼트인 <beans>에 Context 관련 네임스페이스와 스키마 문서의 위치를 등록해야된다.
+xml 설정에서 Namespace에서 Context 체크하기.
+
+컴포넌트 스캔 component-scan 설정.
+<beans>에 context가 추가했을 경우, <context:component-scan />을 사용할 수 있다.
+<text-component-scan class="패키지이름.클래스이름"/>을 통해 설정하면,
+클래스이름 + 클래스이름 하위 클래스들에서 설정한 어노테이션을 읽어준다. ( @Component )
+<bean>설정을 하지 않아도 <bean>과 같은 설정을 할 수 있다.
+
+
+
+ # @Component.
+
+사용방법.
+XML에서 component-scan 설정이 완료됐다고 가정하에 진행.
+@Component
+public class 클래스이름 { 
+	클래스 정의 ;
+}
+
+@Component.
+클래스를 bean으로 등록해 컨테이너에 객체를 생성한다.
+@Component( "bean이름" ) 으로 bean이름을 설정할 수 있다.
+따로 bean설정을 하지 않으면 클래스이름으로 bean이름이 설정된다.
+
+주의사항.
+기본생성자는 꼭 만들어줘야된다.
+클래스이름을 bean이름으로 설정할 경우 첫글자를 소문자로 바꿔서 설정된다.
+
+
+
+ # 의존성 주입 설정.
+
+어노테이션 종류.
+@Autowired : 변수에 타입의 객체를 찾아서 자동으로 할당한다.
+@Qualifier : 특정 객체의 bean이름을 이용하여 의존성 주입할 때 사용한다. 
+@Inject : @Autowired와 동일한 기능을 제공한다.
+@Resource : @Autowired + @Qualifier를 합친 기능.
+
+주의사항.
+@Qualifier는 @Autowired가 있는 곳에만 사용가능하다.
+@Inject, @Resource는 스프링에서 제공하지 않는다. ( 따로 설정해야 된다 )
+
+@Autowired.
+변수, 생성자, setter메소드 위에 사용할 수 있다. ( 대부분 멤버 변수 위에 사용 )
+변수 타입을 체크한 후 그 타입의 객체가 컨테이너에 존재하는지 확인 후 변수에 주입한다.
+존재하지 않으면 NoSuchBeanDefinitionException이 발생한다. 
+
+@Qualifier.
+인터페이스 타입의 변수에 @Autowired를 했을때, 구현 클래스가 여러개인 경우 사용.
+둘 중 어떤 클래스를 Injection해야 할지 모호하기 때문에 "bean이름"을 통해 구분.
+클래스에 @Component( "bean이름" )으로 적고, @Qualifier( "bean이름" )으로 구분해준다.
+@Autowired가 붙은 변수에만 @Qualifier를 사용할 수 있다.
+Injection할 클래스가 여러개면 NoUniqueBeanDefinitionException이 발생한다.
+
+@Resouce.
+@Autowired + @Qualifier 능력을 가졌다.
+@Resource( name="bean이름" )으로 검색하여 Injection을 처리한다.
+
+
+
+ # XML방식과 어노테이션 방식.
+
+장단점.
+XML 방식은 자바 소스코드를 고치지 않아도 되기 때문에 유지보수가 편리하다.
+어노테이션 방식은 자바코드를 고쳐야하지만, 작성이 편리하다 
+XML 방식은 작성이 어렵지만 한눈에 bean 설정을 볼 수 있기 때문에 응집도가 좋다.
+
+정리.
+서로 장단점이 존재하기 때문에 두 가지 방식을 적절하게 사용하는 것이 중요하다.
+
+
+
+ # MVC에 사용되는 Component.
+
+Component 어노테이션 종류.
+@Component : 기본 Component.
+@Service : Service 클래스에 사용.
+@Controller : Controller 클래스에 사용.
+@Repository : DAO 클래스에 사용.
+
+설명.
+단순히 클래스를 분류하기 위해서만 사용하는 것은 아니다. ( 기능을 가짐 )
+@Controller는 MVC 아키텍처에서 컨트롤러 객체로 인식하도록 해줌. 
+@Repository는 DB 연동 과정에서 발생하는 예외를 변환해주는 특별한 기능이 있다.
+추가 설명은 뒤에서 배움.
+
+
+
+
+
+
