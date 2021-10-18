@@ -1,0 +1,67 @@
+
+ 스프링 JDBC.
+
+
+
+ # 스프링의 JDBC.
+
+기존 JDBC.
+DAO클래스에 엄청나게 많은 양의 소스코드를 작성해야된다.
+Spring에서는 DB 연동 프로그램을 쉽게 개발할 수 있도록 JdbcTemplate 클래스를 지원한다.
+
+
+
+ # JdbcTemplate 클래스.
+
+Template 디자인 패턴.
+복잡하고 반복되는 알고리즘을 캡슐화해서 재사용하는 패턴이다.
+
+스프링 JDBC pom 설정.
+DBCP관련 라이브러리 추가.
+
+DataSource - spring.xml 설정.
+<bean id="dataSource" class="패키지.BasicDataSource" destroy-method="close">
+	<property name="driverClassName" value="oracle.~~~"/>
+	<property name="url" value="jdbc:~~~" />
+	<property name="username" value="DB아이디" />
+	<property name="password" value="DB비밀번호" />
+</bean>
+
+DataSource - properties 설정.
+jdbc.driver=oracle.~~
+jdbc.url=jdbc:~~
+jdbc.username=DB아이디
+jdbc.password=DB비밀번호
+
+JdbcTemplate - update.
+jdbcTemplate.update( Update_SQL , 데이터1, 데이터2, ... ) ;
+
+JdbcTemplate - select.
+jdbcTemplate.query( Select_SQL, new BoardRowMapper( ) ) ;
+RowMapper 인터페이스를 구현한 BoardRowMapper에 mapRow( )를 실행한다.
+
+
+
+ # JdbcTemplate 객체 얻기.
+
+JdbcDaoSupport 클래스 상속.
+@Repository
+public class 클래스이름Dao extends JdbcDaoSupport { 	
+	@Autowired.
+	private DataSource dataSource;
+	inset문_메소드( ) { 
+		getJdbcTemplate( ).update( ~~~ ) ;
+	}
+}
+
+JdbcTemplate 클래스 bean 생성.
+<bean id="jdbcTemplate" class="패키지이름.JdbcTemplate">
+	<property name="dataSource" ref="dataSource" />
+</bean>
+@Autowired
+private JdbcTemplate jdbcTemplate ;
+
+
+
+
+

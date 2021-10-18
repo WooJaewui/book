@@ -1,0 +1,114 @@
+
+ 어노테이션 기반 AOP.
+
+
+
+ # 어노테이션 기반 AOP 설정.
+
+컨테이너.xml 설정하기.
+어드바이스 클래스를 bean으로 등록해야 된다. ( @Service 사용 )
+AOP 관련 어노테이션은 어드바이스에 등록한다.
+<aop:aspectj-autoproxy/>을 통해 AOP 관련 어노테이션들을 인식하게 만든다.
+
+포인트컷 설명.
+어드바이스에서 참조메소드를 생성해서 위에 @Pointcut( "execution( 설정 ) " ) 해준다.
+참조메소드는 구현 로직이 없는 메소드로 포인트컷을 식별하는 기능만 가진다.
+
+포인트컷 사용예시.
+@Service
+public class 어드바이스이름 { 
+	@Pointcut( "execution( * 패키지이름..클래스.메소드이름( 매개변수 ) " ) 
+	public void 참조메소드( ) { } 	
+}
+
+어드바이스 설명.
+어드바이스 클래스에 @Service를 해주고, @Pointcut 참조메소드를 생성해준다.
+어드바이스 메소드를 구현하고 동작시점이름으로 어노테이션을 설정한다.
+@Before( "포인트컷 참조메소드 이름( )" )을 통해 어드바이스 메소드를 사용할 포인트컷 설정.
+
+어드바이스 설정.
+@Service.
+public class 어드바이스이름 {
+	@Pointcut( "execution( * 패키지이름..클래스.메소드이름( 매개변수 ) " ) 
+	public void 참조메소드( ) { } 	
+
+	@Before( "참조메소드( )" ) 
+	public void 어드바이스메소드( ) { 
+		실행할 로직 ; 
+	}
+}
+
+Aspect 설명.
+Aspect는 Pointcut + 어드바이스 메소드이기 때문에 둘 다 존재할때만 사용가능하다.
+어드바이스 클래스에 설정을 한다.
+어드바이스 클래스 내에 @Pointcut 설정과 @Before, @After 등 어드바이스 메소드 설정이 있어야된다.
+
+Aspect 사용.
+@Service
+@Aspect
+public class 어드바이스이름 { 
+	@Pointcut 참조메소드 설정 ;
+	@Before( "참조메소드" ) 등 어드바이스 메소드 설정.
+}
+
+
+
+ # 어드바이스 메소드 어노테이션.
+
+@Before 예시.
+@Before( "포인트컷 참조메소드( )" )
+public void 어드바이스메소드( JoinPoint jp ) { 
+	실행할 로직 ;
+}
+
+@After-returning 예시.
+@AfterReturning( pointcut="포인트컷 참조메소드( )", returning="returnObj" ) 
+public void 어드바이스메소드( JoinPoint jp, Object returnObj ){
+	실행할 로직 ;
+}
+
+@After-Throwing 예시.
+@AfterThrowing( pointcut="포인트컷 참조메소드( )" , Throwing="exceptObj" )
+public void 어드바이스메소드( JoinPoint jp, Object exceptObj ) { 
+	실행할 로직 ;
+}
+
+@After 예시.
+@After( "포인트컷 참조메소드( )" )
+public void 어드바이스메소드( JoinPoint jp ) { 
+	실행할 로직 ;
+}
+
+@Arround 예시.
+@Arround( "포인트컷 참조메소드( )" )
+public Object 어드바이스메소드( ProceedingJoinPoint pjp ) { 
+	Before에서 실행할 로직 ;
+	Object result = pjp.proceed( ) ;
+	After에서 실행할 로직 ;
+	return result ;
+}
+
+
+
+ # Pointcut 클래스 생성하기.
+
+설명.
+Pointcut을 모든 어드바이스 클래스에 반복해서 작성해야 되는 어노테이션의 불편함이 생겼다.
+이 문제점을 해결하고자 하나의 클래스의 Pointcut을 생성하여 사용할 수 있게 만들었다.
+
+Pointcut 클래스 생성.
+@Aspect
+public class 클래스이름 { 
+	@Pointcut( "execute( 리턴타입 패키지이름.클래스이름.메소드이름( 매개변수 ) " )
+	public void 참조메소드이름( ) { } 	
+
+	... n개의 Pointcut 메소드 ...
+}
+
+어드바이스 메소드에서 사용하기.
+@Before( "클래스이름.참조메소드이름( )" )
+public void 어드바이스메소드( JoinPoint jp ) { 
+	실행할 로직 ;
+}
+
+
