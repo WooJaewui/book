@@ -1,0 +1,126 @@
+
+ Spring MVC 구조 및 적용.
+
+
+
+ # Spring MVC의 실행과정.
+
+과정.
+1. DispatcherServlet이 모든 url 요청을 받는다.
+2. url에 맞는 Controller에 요청을 forward한다.
+3. Controller는 비즈니스 로직을 수행하고, Model과 View데이터를 ModelAndView에 담는다.
+4. DispatcherServlet은 ModelAndView에서 View정보를 추출한다.
+5. 추출한 View정보는 ViewResolver와 함께 view를 완성한다.
+6. View에서 Model에 대한 정보를 사용해서 웹 브라우저에 응답한다.
+
+일반적인 MVC와 다른점.
+ModelAndView를 통해 Model의 정보와 View정보를 담아서 View로 전송한다.
+
+
+
+ # DispatcherServlet.
+
+설명.
+web.xml에 등록하여 모든 url에 반응하도록 매핑한다.
+
+등록.
+<servlet>
+	<servlet-name>변수이름</servlet-name>
+	<servlet-class>~~~~.DispatcherServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>변수이름</servlet-name>
+	<url-pattern>/ * </url-pattern>
+</servlet-mapping>
+
+추가기능.
+요청이 발생하여 DispatcherServlet이 실행되면 init( )를 실행한다.
+init( )는 XmlWebApplicationContext라는 스프링 컨테이너가 구동된다.
+XmlWebApplicationContext는 ApplicationContext를 구현한 클래스 중 하나이다.
+
+
+
+ # Spring 설정 파일 등록.
+
+xml 생성.
+File -> New -> Spring Bean Configuration File.
+
+Spring xml 매핑 web.xml에서 설정.
+<servlet>
+	<servlet-name>변수이름</servlet-name>
+	<servlet-class>~~~~.DispatcherServlet</servlet-class>
+	<init-param>
+		<param-name>contextConfigLocation( 변수이름 )</param-name>
+		<param-value>/경로/spring.xml이름</param-value>
+	</init-param>
+</servlet>
+
+init-param 설정.
+web.xml에서 init-param을 설정하면 init( )호출 시 자동으로 XmlWebApplicationContext 생성한다.
+
+
+
+ # 인코딩 설정.
+
+web.xml 설정.
+<filter>
+	<filter-name>변수이름</filter-name>
+	<filter-class>패키지이름.CharacterEncodingFilter</filter-class>
+	<init-param>
+		<param-name>encoding</param-name>
+		<param-value>UTF-8</param-value>
+	</init-param>
+</filter>
+<filter-mapping>
+	<filter-name>변수이름</filter-name>
+	<url-pattern>filter를 적용할 url</url-pattern>
+</filter-mapping>
+
+
+
+ # Spring MVC Controller 구현하기.
+
+Controller 인터페이스 작성.
+ModelAndView handleRequest( request, response ) ; 로 메소드를 정의한다.
+
+Controller 구현 객체 생성.
+@Override
+public ModelAndView handleRequest( request, response ) { 
+	실행할 로직 ;
+}
+
+Controller 구현 객체 설명.
+ModelAndView에 데이터와 view 정보를 담는다.
+
+HandlerMapping하기.
+SimpleUrlHandlerMapping 클래스와 Controller 구현 객체를 <bean>으로 한다.
+SimpleUrlHandlerMapping props로 Controller 구현 객체를 넣어서 url 매핑해준다.
+
+
+
+ # Controller 실행 순서 이해하기.
+
+실행순서.
+1. 클라이언트로부터 요청을 받으면 DispatcherServlet이 요청을 받는다.
+2. SimpleHandlerMapping을 통해 요청을 처리할 Controller를 검색한다.
+3. DispatcherServlet은 검색된 Controller를 호출한다.
+4. Controller는 주요 로직을 실행하고, ModelAndView에 데이터를 저장해서 리턴한다.
+5. DispatcherServlet은 Controller의 리턴값을 가지고 ViewResolver를 활용해서 View를 찾는다.
+6. View에서 ModelAndView의 데이터를 활용해서 응답한다.
+
+
+
+ # ViewResolver.
+
+InternalResourceViewResolver.
+JSP를 view로 사용하는 경우 거의 대부분 사용하는 ViewResolver 종류이다.
+
+redirect : url.
+url로 redirect를 수행한다.
+
+forward : url.
+url로 forward를 수행한다.
+
+
+
+

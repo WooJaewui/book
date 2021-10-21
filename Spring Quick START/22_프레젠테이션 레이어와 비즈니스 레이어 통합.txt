@@ -1,0 +1,58 @@
+
+ 프레젠테이션 레이어와 비즈니스 레이어 통합.
+
+
+
+ # Service 클래스의 필요성.
+
+DAO 클래스 교체.
+Controller 메소드에서 DAO의 메소드를 직접 호출하면 DAO 클래스를 유지, 보수하기 어렵다.
+DAO 클래스의 매개변수 등의 수정이 발생하면 DAO 클래스를 사용하는 모든 코드를 수정해야된다.
+
+해결방법.
+Service 인터페이스를 만들어서 DAO를 사용하도록 만든다. ( 의존성을 낮춘다 )
+
+AOP를 적용하기 위해.
+DAO를 직접 Controller에서 사용하는 경우에는 AOP를 적용할 수 없다.
+
+해결방법.
+ServiceImpl 메소드가 실행될 때 AOP가 실행된다.
+
+
+
+ # 2-Layered 아키텍처.
+
+2-Layered 아키텍처.
+Presentation Layer와 Business Layer 두 개의 Layer로 나누어서 개발하는 방법이다.
+
+ContextLoaderListener 등록.
+web.xml 파일을 읽어서 구동될 때 자동으로 메모리에 생성된다.
+context-param을 설정하지 않으면 WEB-INF 폴더에 applicationContext.xml 파일을 읽어 구동한다.
+applicationContext.xml파일이 없으면 FileNotFoundException이 발생한다.
+
+web.xml에 설정하기.
+<context-param>
+	<param-name>contextConfigLocation</param-name>
+	<param-value>파일경로/파일이름.xml</param-value>
+</context-param>
+<listener>
+	<listener-class>
+		org.~~~~~.ContextLoaderListener
+	</listener-class>
+<listener>
+
+
+
+ # 스프링 컨테이너 관계.
+
+실행순서.
+1. Tomcat Container ( Servlet Container ) 실행.
+2. ContextLoaderListener로 실행된 Container 실행. ( Root Container라고 불린다 )
+3. DispatcherServlet Container 실행.
+
+관계.
+Root Container에서 생성한 bean 객체들은 DispatcherServlet Container에서 참조 사용할 수 있다.
+
+
+
+

@@ -1,0 +1,67 @@
+
+ MVC 프레임워크 개발.
+
+
+
+ # MVC 프레임워크.
+
+단일 Servlet 문제점.
+하나의 Servlet에 너무 많은 양의 Controller가 존재해서 로직을 수행함으로 코드가 너무 복잡하다.
+프레임워크는 좀 더 쉽게 Controller를 구현할 수 있도록 도와준다.
+
+클래스.
+DispatcherServlet : 유일한 서블릿 클래스. 모든 클라이언트의 요청을 처리하는 Front-Controller.
+HandlerMapping : 클라이언트의 요청을 처리할 Controller 매핑.
+Controller : 실질적인 클라이언트의 요청 처리.
+ViewResolver : Controller가 리턴한 View 이름으로 실행될 JSP 경로 완성.
+
+
+
+ # 클래스 자세한 설명.
+
+Controller 인터페이스 설정.
+Controller들을 관리하기 위한 Controller인터페이스를 만들어준다.
+메소드의 매개변수로 request, response를 가진다.
+
+Controller 인터페이스 구현 클래스 생성.
+Controller 인터페이스에 정의된 메소드를 override하고, 그 안에서 로직을 수행한다.
+
+HandlerMapping 클래스.
+HashMap안에 url 정보를 키로 하고, Controller의 이름을 value로 하는 정보를 담는다.
+getController를 통해 url을 매개변수로 받아서 Controller를 얻는다.
+DispatcherServlet init( )메소드가 호출될 때 생성된다.
+
+ViewResolver 클래스.
+Controller가 리턴한 View이름에 prefix와 suffix를 결합하여 view 경로와 파일명을 완성한다.
+DispatcherServlet init( )메소드가 호출될 때 생성된다.
+getView( String viewName ) 을 통해 prefix + viewName + suffix해서 view를 완성한다.
+
+DispatcherServler.
+init( )메소드에서 handlerMapping, viewResolver 객체를 생성 및 prefix, suffix 설정을 한다.
+url로 요청이 오면 handlerMapping.getController를 통해 Controller를 매핑해준다.
+
+
+
+ # 클래스 실행 과정.
+
+실행 과정.
+1. 클라이언트가 url로 요청을하면 DispatcherServlet에서 요청을 받는다.
+2. DispatcherServlet은 HandlerMapping 객체에서 url을 통해 Controller를 찾아준다.
+3. Controller는 구현한 로직을 수행한다.
+4. Controller 로직을 수행한 후에 view의 이름을 리턴한다.
+5. DispatcherServlet은 viewResolver의 prefix, suffix를 호출하여 view의 경로와 파일이름을 완성한다.
+6. view를 실행하고 브라우저에 응답한다.
+
+
+
+ # EL과 JSTL.
+
+EL.
+기존의 표현식 <%=자바코드 %>를 대체하는 표현 언어이다.
+
+JSTL.
+HTML( JSP )에서 if, for, switch와 같은 제어문을 사용할 수 있도록 도와준다.
+
+
+
+

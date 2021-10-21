@@ -1,0 +1,59 @@
+
+ 어노테이션 기반 MVC 개발.
+
+
+
+ # 어노테이션 관련 설정.
+
+xml 설정.
+xml 네이스페이스에 context를 추가한다.
+<context:component-scan>을 통해 어노테이션을 읽을 위치를 선정해준다.
+
+component-scan 예시.
+<context:component-scan base-package="패키지이름" />
+
+
+
+ # Controller.
+
+@Controller.
+@Controller는 @Component를 상속받은 어노테이션이다.
+<component-scan>패키지안에 @Controller가 존재할 경우 자동으로 context안에 객체를 생성해준다.
+@Controller가 없다면 모든 Controller 클래스는 Controller 인터페이스의 handleRequest를 구현해야된다.
+
+@RequestMapping.
+@Controller를 붙인 클래스 메소드에 @RequestMapping( "/url" )를 추가해서 매핑할 수 있다.
+여러 Controller 메소드를 묶어서 한 클래스로 선언한 후 공통 url Path를 클래스 단위에서 처리할 수 있다.
+@RequestMapping( method=RequestMethod.get )을 통해 method에 따라 Controller를 실행할 수 있다.
+
+파라미터.
+대부분의 Controller는 사용자의 입력 정보를 추출하여 Vo 객체에 저장한다.
+비즈니스 컴포넌트의 인자로 데이터를 전송할 때도 Vo를 많이 사용한다.
+Vo를 사용해서 데이터를 받는 경우 setter메소드의 이름과, input name이 일치해야된다. ( 매우중요 )
+
+리턴 타입.
+String : view이름을 문자열로 리턴.
+ModelAndView : Model 데이터와 view 이름을 모두 저장하여 리턴.
+ModelAndView보다 String이 간결하기 때문에 대부분 String을 사용한다.
+String으로 해서 리턴하면 기본 리턴방식이 forward이므로 자동으로 forward된다.
+리다이렉트 하려면 return "redirect: /url"; 해주면 된다.
+String으로 리턴할 때 Model관련 데이터는 매개변수로 Model을 받아서 데이터는 넣어서 forward해준다.
+
+@RequestParam.
+value : 전달될 파라미터의 이름.
+defaultValue : 파라미터 정보가 없을 때, 설정할 기본값.
+required : 파라미터의 생략 여부.
+
+@ModelAttribute.
+메소드 위에 사용하여 리턴값이 Model.addAttribute의 값과 같은 역할을 한다.
+Model의 값을 사용할 키는 @ModelAttribute( "키" )이다.
+@RequestMapping 어노테이션이 적용된 메소드보다 먼저 호출되어 Model로 사용된다.
+Session에 데이터를 저장하는 방식이다.
+
+@SessionAttributes.
+@SessionAttributes( "변수이름" )을 통해 사용한다.
+@ModelAttribute( "변수이름" ) 매개변수와 함께사용하여 null을 방지할 때 사용한다.
+
+
+
+
