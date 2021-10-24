@@ -1,0 +1,103 @@
+
+ Mybatis 프레임워크.
+
+
+
+ # Mybatis 특징.
+
+주요 특징.
+1. 한두 줄의 자바 코드로 DB 연동을 처리한다.
+2. SQL 명령어를 자바 코드에서 분리하여 XML 파일에 따로 관리한다.
+
+자바 버전 설정.
+project 우클릭 -> properties -> Project Facets -> Java 버전 변경.
+
+POM.xml 설정.
+dbcp 검색 -> commons-dbcp ( commons-dbcp )
+mybatis 검색 -> org.mybatis ( mybatis )
+mybatis 검색 -> org.mybatis ( mybatis-spring )
+spring-jdbc 검색 -> org.springframework ( spring-jdbc ) - org.springframework-version과 맞추기.
+
+root.xml 설정.
+<mybatis-spring:scan base-package="패키지명. * . mapper"/>
+<bean id="dataSource" class="패키지이름.BasicDataSource">
+	url, 아이디, 비밀번호, driver 설정.
+</bean>
+<bean id="sqlSessionFacttory" class="패키지이름.SqlSessionFactoryBean">
+	<property name="dataSource" ref="dataSource"/>
+</bean>
+
+mapper.xml 생성.
+src/main/resources에 xml을 생성하고, mybatis.org에서 mybatis.xml 설정 내용을 복붙한다.
+
+mapper.xml 작성.
+<mapper namespace="패키지이름.mapper인터페이스이름">
+	실행할 SQL ;
+</mapper>
+
+
+
+ # Mapper.xml 파일 구조.
+
+DTD Document Type Definition.
+문서 형식을 정의하는 것.
+
+구조.
+DTD : 이 xml파일이 Mybatis인지 알려주는 역할.
+<mapper> namespace : SQL DAO를 연결해주는 속성이다. ( 패키지이름.DAO인터페이스 )
+SELECT : parameterType과 resultType 속성을 사용할 수 있다. ( resultType은 필수 )
+insert, update, delete : id로 메소드를 구분한다. 
+
+CDATA Section 사용. - Character Data
+<![ CDATA[ > ]]> : xml에서 <>와 같은 부등호를 사용해야 하는 경우 구분하기 위해 사용한다.
+
+
+
+ # SqlSessionFactoryBean 클래스.
+
+설명.
+SqlSession 객체는 Mapper XML에 등록된 SQL을 실행하기 위한 다양한 API를 제공한다.
+
+selectOne( ) 메소드.
+하나의 데이터를 검색하는 SQL 구문을 실행할 때 사용한다.
+두 개 이상의 레코드가 리턴될 때는 예외가 발생한다.
+
+selectList( ) 메소드.
+여러 개의 데이터가 검색되는 SQL 구문을 실행할 때 사용한다.
+
+insert( ), update( ), delete( ) 메소드.
+insert, update, delete SQL 구문을 실행할 때 사용한다.
+int 값으로 몇개의 데이터가 처리되었는지를 리턴한다.
+
+
+
+ # Mybatis와 Spring 연동하기.
+
+라이브러리 추가.
+dbcp 검색 -> commons-dbcp ( commons-dbcp )
+mybatis 검색 -> org.mybatis ( mybatis )
+mybatis 검색 -> org.mybatis ( mybatis-spring )
+spring-jdbc 검색 -> org.springframework ( spring-jdbc ) - org.springframework-version과 맞추기.
+
+스프링 연동 설정.
+SqlSessionFactoryBean 클래스를 bean으로 설정해야된다.
+
+
+
+ # Dynamic SQL.
+
+설명.
+SQL문 안에 <if test="조건">등을 통해 SQL문을 좀 더 활용할 수 있다.
+
+사용.
+<select ~~~ >
+	SELECT * FROM 테이블이름
+	<if text="조건">
+		조건이 true이면 실행할 문장 
+	</if>
+</select>
+
+
+
+
+

@@ -1,0 +1,92 @@
+
+ 다국어 & 데이터 변환.
+
+
+
+ # properties 파일 생성.
+
+설명.
+원하는 언어로 메시지를 출력하려면 언어에 따라 다른 메시지 파일을 작성해야된다.
+.properties 파일로 만들며, Locale 정보를 결합하여 작성한다.
+resources -> message -> 파일을 만들어 놓는다.
+
+container.xml 설정하기.
+<bean id="messageSource" class="~~~~.ResourceBundleMessageSource" >
+	<property name="basenames">
+		<list>
+			<value>패키지이름.파일이름</value>
+		</list>
+	</property>
+</bean>
+
+
+생성 과정.
+1. 언어에 따른 .properties 파일을 작성한다.
+2. ResourceBundleMessageSource 클래스 bean을 생성한다. ( 항상 id = messageSource )
+
+
+
+ # LocaleResolver.
+
+설명.
+웹 브라우저가 서버에 요청하면 브라우저의 locale 정보가 HTTP 요청 메시지 헤더에 자동으로 설정되어 전송.
+따로 설정하지 않으면 AcceptHeaderLocaleResolver가 적용된다.
+bean으로 등록할 때 id는 무조건 localeResolver로 한다.
+
+종류.
+AcceptHeaderLocaleResolver : 요청 헤더에서 Accept-Language에 설정된 Locale로 메시지를 적용.
+CookieLocaleResolver : Cookie에 저장된 Locale 정보를 추출하여 메시지를 적용.
+SessionLocaleResolver : Session에 저장된 Locale 정보를 추출하여 메시지를 적용.
+FixedLocaleResolver : 웹 요청과 무관하게 특정 Locale로 고정.
+
+Locale 변경하기.
+LocaleChangeInterceptor 클래스를 통해 언어를 변경해 줄 수 있다.
+HandlerInterceptor 인터페이스를 구현한 것이다.
+<mvc> namespace를 등록해야된다.
+
+container.xml 설정.
+<mvc:interceptors>
+	<bean class="~~~~.LocaleChangeInterceptor">
+		<property name="paramName" value="lang" />
+	</bean>	
+</mvc:interceptors>
+
+xml 설명.
+"lang" 이라는 파라미터로 특정 locale이 전송되면 해당 Locale로 변경하겠다는 설정이다.
+
+
+
+ # 다국어 JSP 파일 설정.
+
+태그 설정하기.
+<%@ taglib prefix="spring" uri="~~~//springframework.org/tags" %>
+
+언어 설정 버튼 만들기.
+<a href="url?lang=ko"><spring:message code="properties에 적어놓은 한국어의 키값"/></a>
+<a href="url?lang=en"><spring:message code="properties에 적어놓은 영어의 키값" /></a>
+
+
+
+ # JSON으로 데이터 변환.
+
+Jackson 라이브러리.
+POM.xml -> jackson 검색 -> com.fasterxml.jackson.core ( jackson-databind 2.9.5 )
+
+브라우저의 서버의 요청 응답.
+브라우저에서 서블릿이나 JSP 파일을 요청하면, 서버는 클라이언트가 요청한 파일을 실행한다.
+실행 결과를 Http응답 프로토콜 Message Body에 저장하여 브라우저에 전송한다.
+
+HttpMessageConvertor.
+응답 결과를 HTML이 아닌 JSON이나 XML로 변환하여 메시지 보디에 저장하는 방법이다.
+HttpMessageConvertor를 구현한 클래스는 여러개이며, 
+JSON은 MappingJackson2HttpMessageConverter를 사용.
+<mvc:annotation-driven>을 설정하면 HttpMessageConverter를 구현한 모든 변환기가 생성. ( xml , JSON 포함 )
+
+데이터 변환.
+완벽하게 이해하지 못했다. - 다시 공부해볼 것.
+
+
+
+
+
+
