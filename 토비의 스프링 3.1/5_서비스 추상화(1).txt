@@ -1,0 +1,104 @@
+
+ 서비스 추상화(1)
+ 317 ~ 375page.
+
+
+
+ # 사용자 레벨 관리 기능 추가.
+
+enum 열거형.
+클래스처럼 보이게 하는 상수.
+서로 관련 있는 상수들을 모아 집합으로 정의한 것.
+
+update, delete 테스트 코드 작성 주의사항.
+where절을 빼먹었을 때에 대한 test 오류 코드를 작성해야된다.
+1. SQL 실행 후 영향받은 로우의 개수를 통해 에러 확인.
+2. 수정할 사용자와 수정하지 않을 사용자의 수정 후 결과를 확인.
+
+테스트 코드의 필요성.
+아무리 간단한 코드라도 실수할 수 있음을 인지하고 테스트를 만들어서 직접 동작 모습을 확인하자.
+
+배열을 리스트로 바꾸기.
+List<type> 변수이름 = Arrays.asList( 리스트에 넣을 데이터 , ...  ) ;
+
+코드 개선 질문.
+1. 코드에 중복된 부분은 없는가 ?
+2. 코드가 무엇을 하는 것인지 이해하기 불편하지 않은가 ?
+3. 코드가 자신이 있어야 할 자리에 있는가 ? 
+4. 앞으로 변경이 일어난다면 어떤 것이 있을 수 있고, 그 변화에 쉽게 대응할 수 있게 작성되어 있는가?
+
+switch문 사용.
+하나의 변수에 대한 값으로 다른 코드를 실행해야 된다면 if문보다 switch가 편리할 수 있다.
+
+픽스처 Fixture
+실행하기 위해 해줘야 하는 모든 것을 의미.
+
+
+
+ # 트랜잭션 서비스 추상화.
+
+트랜잭션 용어.
+rollback : 문제가 발생해 SQL 작업을 취소.
+commit : 수행 작업이 모두 완료되어 SQL 작업을 확정.
+
+트랜잭션 경계설정 transaction demarcation.
+JDBC의 트랜잭션은 하나의 Connection을 가져와 사용하다가 닫는 사이에서 일어난다.
+자동커밋 옵션을 false로 만들어주면 commit( ), rollback( ) 메소드 실행전까지 하나의 트랜잭션으로 인식된다.
+Connection.setAutoCommit( false )를 통해 자동커밋 옵션을 false로 만들 수 있다.
+
+트랜잭션 동기화 저장소.
+스프링은 TransactionSynchronizations 클래스를 통해 Connection을 저장하여 트랜잭션을 관리해준다.
+
+트랜잭션 동기화 예시.
+private DataSource dataSource ;
+TransactionsSynchronizationManager.initSynchronization( ) ;
+Connection c = DataSourceUtils.getConnection( dataSource ) ;
+c.setAutoCommit( false ) ;
+... // 필요한 코드 작성.
+DataSourceUtils.releaseConnection( c , dataSource ) ;
+TransactionsSynchronizationManager.unbindResource( this.dataSource ) ; 
+TransactionsSynchronizationManager.clearSynchronization( ) ;
+
+JdbcTemplate 트랜잭션 동기화.
+트랜잭션이 없는 경우 DB Connection을 생성하고 트랜잭션을 시작한다.
+트랜잭션이 있는 경우 트랜잭션 동기화 저장소에 있는 DB 커넥션을 가져와서 사용한다.
+
+JTA Java Transaction API.
+로컬 트랜잭션 : 하나의 DB Connection에 종속된 방식.
+글로벌 트랜잭션 : 트랜잭션 관리자를 통한 여러 트랜잭션을 관리하는 방식.
+JTA는 글로벌 트랜잭션 방식을 구현할 수 있도록 트랜잭션 매니저를 지원하는 API.
+하나 이상의 DB를 사용하는 트랜잭션은 JTA를 사용해야된다.
+
+JTA 코드 예시.
+InitialContext ctx = new InitialContext( ) ;
+UserTransaction tx = ( UserTransaction )ctx.lookup( USER_TX_JNDI_NAME ) ;
+tx.begin( ) ;
+// JNDI로 가져온 dataSource 
+Connection c = dataSOurce.getConnection( ) ; 
+... 실행할 코드.
+tx.commit or tx.rollback( ) ;
+c.close( ) ;
+
+하이버네이트 트랜잭션.
+Connection을 직접 사용하지 않고 Session을 사용하고, 독자적인 트랜잭션 관리 API를 사용한다.
+
+스프링 트랜잭션 추상화 계층구조.
+PlatformTransactionManager : 추상화를 담당하는 트랜잭션 인터페이스.
+DataSOurceTxmanager : JDBC/Connection 트랜잭션 구현클래스.
+JtaxManager : JTA 트랜잭션 구현클래스.
+HibernateTxManager : Hibernate 트랜잭션 구션클래스.
+
+스프링 트랜잭션 추상화 예시.
+PlatformTransactionManager transactionManager = new JTATransactionManager( ) ;
+PlatformTransactionManager transactionManager = new HibernateTransactionManager( ) ;
+PlatformTransactionManager transactionManager = new JPATransactionManager( ) ;
+PlatformTransactionManager transactionManager = new DataSOurceTransactionManager( ) ;
+...
+
+스프링 빈 등록 주의사항.
+싱글톤으로 만들어져 여러 스레드에서 동시에 사용해도 괜찮은지 확인하기.
+PlatformTransactionManager 구현클래스들은 싱글톤으로 사용가능.
+
+
+
+
