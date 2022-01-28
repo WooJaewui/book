@@ -1,0 +1,120 @@
+
+ 스프링 핵심 기술의 응용(1)
+ 557 ~ 616page.
+
+
+
+ # SQL과 DAO의 분리.
+
+변수 setter메소드 방식.
+DAO에 SQL 변수를 만들고 setter메소드를 통해 xml에서 값을 설정해준다.
+
+맵 프로퍼티 setter메소드 방식.
+DAO에 Map 변수를 만들고 setter메소드를 통해 xml에서 map에 sql을 넣어준다.
+해당 메소드가 실행되기 전에는 오류를 확인하기 힘들다는 단점이 있다.
+
+스프링 XML에 SQL 저장 단점.
+SQL과 DI 설정정보가 섞여 있으면 가독성이 떨어지고 관리도 힘들어진다.
+스프링 설정파일로부터 생성된 오브젝트와 정보는 애플리케이션 재시작 전에는 변경이 매우 어렵다.
+
+SQL 서비스 인터페이스.
+DAO에서 키 값을 입력받으면 그에 해당하는 SQL을 돌려주는 인터페이스.
+SQL을 가져오다가 실패하는 경우 SqlRetrievalFailureException 예외를 던지도록 만든다.
+예외의 원인을 구분해야 한다면 SqlRetrievalFailureException의 서브클래스를 만든다.
+
+SQL 서비스 구현클래스.
+SQL 서비스 인터페이스를 상속받는다.
+변수로 sqlMap을 만들고 getSqlMap과 setSqlMap을 구현한다.
+xml에서 setSqlMap을 통해 sql을 입력한다.
+
+
+
+ # 인터페이스의 분리와 자기참조 빈.
+
+JAXB Java Architecture for XML Binding.
+XML에 담긴 정보를 파일에서 읽어오는 방법 중 하나이다.
+JAVB의 장점은 XML 문서정보를 거의 동일한 구조의 오브젝트로 직접 매핑해준다.
+XML을 모두 작성하였으면 JAXB 컴파일러로 컴파일하고, 생성되는 클래스의 저장위치를 설정.
+
+JAXB 용어.
+언마샬링 unmarshalling : XML 문서를 읽어서 자바의 오브젝트로 변환하는 것.
+마샬링 marshalling : 바인딩 오브젝트를 XML 문서로 변환하는 것.
+
+자바.
+직렬화 serialization : 자바 오브젝트를 바이트 스트림으로 바꾸는 것.
+역질렬화 deserialization : 바이트 스트림을 자바 오브젝트로 바꾸는 것.
+
+context 네임스페이스.
+<context:annotation-config />를 설정파일에 넣어주면 빈 후처리기들이 등록된다.
+
+@PostConstruct.
+메소드에 붙여주면 DI 작업을 마친 뒤에 메소드를 자동으로 실행해준다.
+메소드를 통한 초기화 작업을 할 때 사용된다.
+
+책임에 따른 인터페이스 정의.
+1. SQL 정보를 외부의 리소스로부터 읽어오기. 
+2. 읽어온 SQL을 보관해두고 있다가 필요할 때 제공. 
+3. SQL을 등록하고 필요에 따라 SQL 수정가능. ( SqlUpdater )
+
+SqlService 인터페이스.
+SqlRegisty와 SqlRegistry를 DI 받는 인터페이스.
+
+SqlRegistry 인터페이스.
+SQL을 제공받아 등록해뒀다가 키로 검색해서 돌려주는 기능을 담당.
+SQL을 등록하고 검색하는 두 가지 기능을 메소드로 정의.
+
+SqlReader 인터페이스.
+SqlRegistry 오브젝트를 파라미터로 DI 받아서 SQL을 등록하는 데 사용.
+
+SQL 구현.
+SqlService, SqlRegistry, SqlReader를 모두 implements한 구현 클래스를 생성한다.
+loadSql @PostContruct와 SqlReader를 활용해서 DI 후 sql을 읽어오도록 만든다.
+실제적으로 빈은 하나만 등록했지만 세 개의 인터페이스를 사용한다.
+
+DI 팁.
+property는 자기 자신을 참조할 수 있다. 수정자 메소드로 주입만 가능하면 된다.
+
+모든 인터페이스 구현 객체 만들기.
+Sqlservice, sqlReader, sqlRegistry 각각 구현객체를 따로 만들 수 있다.
+확장성이 좋다는 장점이 있지만, 빈을 여러개 등록해줘야 한다는 단점이 있다.
+
+디폴트 의존관계.
+BaseSqlService에 기본 골격을 갖춘 클래스를 만든다.
+BaseSqlService를 상속한 DefaultSqlService라는 구현객체를 만든다..
+DefaultSqlService에 실행 시 꼭 필요한 모든 값들에 디폴트 값을 넣어서 사용할 수 있다.
+확장성을 고려했을 때 큰 장점을 가진다.
+
+
+
+ # 서비스 추상화 적용.
+
+OXM Object XML Mapping 종류.
+Caster XML : 설정파일이 필요 없는 인트로스펙션 모드를 지원하기도 하는 가벼운 바인딩 프레임워크.
+JiBX : 뛰어난 퍼포먼스를 자랑하는 XML 바인딩 기술.
+XmlBeans : 아파치 XML 프로젝트의 하나로 XML의 정보셋을 효과적으로 제공.
+Xstream : 관례를 이용해서 설정이 없는 바인딩을 지원하는 XML 바인딩 기술의 하나.
+
+OXM 추상화 인터페이스.
+Marshaller 인터페이스 : 자바 오브젝트를 XML로 변환.
+Unmarshaller 인터페이스 : XML을 자바 오브젝트로 변환.
+
+Jaxb2Mashaller 클래스.
+JAXB를 이용하도록 Unmarshaller, Marshaller 모두 구현하고 있는 클래스.
+contextPath를 통해 빈으로 등록될 위치만 설정해주면 된다.
+unmarshaller.unmarshal( xml파일 )만 해주면 xml파일을 자바 오브젝트로 읽어온다.
+
+라이브러리.
+OXM : org.springframework.oxm-버전.RELEASE.jar ;
+Castor : org.springsource.org.castor-버전.jar ;
+
+리소스 추상화.
+자바에는 다양한 위치에 존재하는 리소스에 대해 단일화된 접근 인터페이스가 없다.
+URL을 이용해 웹상의 리소스에 접근할 대 사용할 수 있는 java.net.URL 클래스가 있다.
+
+리소스 로더.
+접두어를 이용해 Resource 오브젝트를 선언하는 방법.
+Resource 오브젝트가 실제 리소스는 아니고, 리소스에 접근할 수 있는 추상화된 핸들러이다.
+
+
+
+
