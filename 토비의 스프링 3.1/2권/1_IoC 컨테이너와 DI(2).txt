@@ -1,0 +1,226 @@
+
+ IoC 컨테이너와 DI(2)
+
+
+
+ # IoC/DI를 위한 빈 설정 메타정보 작성. 
+
+BeanDefinition. ( 83 ~ 85 )
+빈을 만들기 위한 설정 메타정보들을 저장하는 오브젝트.
+몇 가지 필수항목을 제외하면 컨테이너에 미리 설정된 디폴트 값이 그대로 적용된다. 
+컨테이너에 빈의 메타정보가 등록될 때 꼭 필요한 것은 클래스 이름과 빈의 아이디 또는 이름이다.
+
+XML : <bean> 태그. ( 86 )
+<bean id="빈이름" class="패키지.클래스이름">
+	...
+</bean>
+<property> 태그를 통해 내부 빈을 정의할 수 있다.
+
+XML : 네임스페이스와 전용 태그. ( 86 ~ 89 )
+네임스페이스 : 개체를 구분할 수 있는 범위를 나타내는 말이다.
+애플리케이션에서 반복적으로 자주 사용되면서 기술적인 설정을 담당하거나 공통적인 서비스를
+선언하는 데 사용되는 빈을 위해 네임스페이스를 통해 수십 개의 전용 태그를 제공한다.
+
+자동인식을 이용한 빈 등록 : 스테레오타입 애노테이션과 빈 스캐너. ( 89 ~ 90 )
+빈 스캐닝 scanning : 특정 애노테이션이 붙은 클래스를 자동으로 찾아서 빈으로 등록해주는 방식.
+스테레오타입 애노테이션 : 빈 스캐너에 내장된 디폴트 필터에 적용되는 애노테이션. ( @Component )
+
+빈 스캐너의 특징. ( 90 ~ 92 )
+빈 스캐너는 기본적으로 클래스 이름을 첫 글자만 소문자로 바꿔서 빈의 아이디로 사용한다. 
+모든 클래스 패스에서 애노테이션을 찾는 것이 아닌 빈으로 등록될 클래스 패키지를 설정하는 것이 효율적이다.
+
+빈 스캐너 예시 코드. ( 91 )
+@Test
+public void simpleBeanScanning( ) { 
+	ApplicationContext ctx = new AnnotationConfigApplicationContext( "패키지" ) ;
+	AnnotatedHello hello = ctx.getBean( "annotatedHello" , AnnotatedHello.class ) ;
+}
+
+XML을 이용한 빈 스캐너 등록. ( 92 )
+<context:component-scan base-package="패키지이름" />
+
+스테레오타입 애노테이션 종류. ( 93 )
+@Repository : 데이터 액세스 계층의 DAO 또는 리포지토리 클래스에 사용.
+@Service : 서비스 계층의 클래스에 사용.
+@Controller : MVC 컨트롤러에 사용된다.
+
+자바 코드에 의한 빈 등록 : @Configuration 클래스의 @Bean 메소드. ( 94 ~ 100 )
+@Configuration
+public class AnnotatedHelloConfig {
+	@Bean
+	public AnnotatedHello annotatedHello( ) {
+		return new AnnotatedHello( ) ;
+	}
+}
+@Configuration 클래스와 @Bean 메소드 리턴 타입이 빈으로 등록된다.
+@Configuration은 메타 어노테이션으로 @Component를 가지기 때문에 빈 스캐닝을 통해 자동등록 된다.
+
+@Bean 메소드 특징. ( 97 )
+이미 한 번 호출이 된 @Bean 메소드는 빈을 생성하고, 빈을 생성한 후에 @Bean 메소드를 호출하면
+더 이상 빈을 생성하지 않고, 컨테이너에 생성된 빈을 가져다가 사용한다. ( 싱글톤 )
+
+자바 코드 설정의 장점. ( 100 ~ 101 )
+1. 컴파일러나 IDE를 통한 타입 검증이 가능하다. ( XML은 클래스 오류 등을 잡지 못한다 )
+2. 자동완성과 같은 IDE 지우너 기능을 최대한 이용할 수 있다.
+3. 이해하기 쉽다.
+4. 복잡한 빈 설정이나 초기화 작업을 손쉽게 적용할 수 있다.
+
+자바 코드에 의한 빈 등록 : 일반 빈 클래스의 @Bean 메소드. ( 101 ~ 104 )
+@Configuration을 제거하고 @Bean 메소드를 사용할 수 있다.
+@Bean 메소드를 가진 클래스는 @Configuration이 아닌 다른 방법으로 빈으로 등록해야 된다.
+@Configuration이 붙지 않은 @Bean은 싱글톤이 적용되지 않는다. ( 중요! )
+
+빈 등록 메타 정보 구성 전략. ( 104 ~ 108 )
+XML 단독 사용 : 모든 빈을 명시적으로 XML에 등록하는 방법.
+XML과 빈 스캐닝의 혼용 : 애플리케이션 3계층의 클래스는 어노테이션으로 나머지는 XML로 등록.
+빈 스캐닝 단독 사용 : - 모든 빈을 자동스캔만으로 등록. 
+		   - 자바 코드에 의한 빈 등록 방법이 반드시 필요.
+		   - param-value를 AnnotationConfigWebApplicationContext로 변경해야 된다.
+
+다중 컨테이너 주의사항. ( 107 )
+두 컨테이너에 스캐너를 통해 같은 빈을 등록하고 다른 설정으로 사용할 경우, 
+자식 컨테이너에 우선권을 가지기 때문에 설정에 유의해서 사용해야 된다.
+
+XML : <property> , <constructor-arg> ( 110 ~ 116 )
+<property> : <bean>을 등록한 후 프로퍼티를 통한 XML에 DI방식이다.
+<constructor-arg> : <bean>을 등록한 후 생성자를 통한 XML에 DI방식이다.
+
+XML : 자동와이어링.
+빈 이름 자동와이어링 : autowired="byName"을 통해 setter메소드 이름과 빈이름을 매핑하여 DI.
+타입 자동와이어링 : - autowired="byType"을 통해 setter메소드 매개변수 타입과 매핑하여 DI.
+		 - 같은 타입이 두 개 이상 존재하면 적용되지 않는다.
+		 - 이름 자동와이어링에 비해 상대적으로 느리다.
+단점 : 빈 스캐닝 방식을 통해 등록되는 빈은 XML <property>를 지정하거나 자동와이어링할 수 없다.
+
+어노테이션 : @Resouce. ( 118 )
+setter메소드 뿐만 아니라 필드에도 붙여서 자동와이어링 해준다.
+setter메소드에서 다른 작업을 하는 경우라면 필드 주입을 사용하면 안 된다.
+
+어노테이션 DI 방법. ( 118 ~ 119 )
+1. XML의 <context:annotation-config /> : 새로운 빈을 등록하진 않고, DI만 추가해준다.
+2. XML의 <context:component-scan /> : 빈 설정, DI 추가해준다.
+3. AnnotationConfigApplicationContext 또는 AnnotationConfigWebApplicationContext.
+
+어노테이션 : @Autowired ( 122 ~ 129 )
+XML의 타입에 의한 자동와이어링 방식을 생성자, 필드, setter메소드, 일반 메소드 네 가지로 확장한 것이다.
+@Autowired는 단 하나의 생성자에만 사용할 수 있다는 제한이 있다.
+@Autowired를 이용하면 같은 타입의 빈이 하나 이상 존재할 때 컬렉션을 통해 모두 받을 수 있다.
+@Qualifier를 통해 자동와이어링을 세밀하게 제어할 수 있다.
+
+어노테이션 : @Inject. ( 130 )
+필드, 생성자, 수정자와 임의의 설정용 메소드에 사용돼서 타입에 의한 자동와이어링 한다.
+required같은 세부적인 기능이 존재하지 않는다.
+
+자바 코드에 의한 의존관계 설정. ( 134 )
+@Configuration
+public class config {
+	@Bean
+	public Hello hello( Printer printer ) {
+		Hello hello = new Hello( );
+		hello.setPrinter( printer );
+		return hello ;
+	}	
+	@Bean
+	public Printer printer( ) {
+		return new Printer( );
+	}
+}
+
+빈 의존관계 설정 전략. ( 136 ~ 137 )
+XML 단독 : 빈 등록과 의존관계 설정까지 모두 XML만으로 구성하는 방법.
+XML 어노테이션 혼합 : 빈은 XML로 등록하고, @Autowired 같은 애노테이션을 사용하는 방법.
+어노테이션 단독 : 어노테이션만을 사용해서 빈, 의존관계를 모두 설정하는 방법.
+
+프로퍼티 값 설정 방법. ( 137 )
+1. value : 스프링이 관리하는 빈이 아닌 모든 것을 의미한다.
+2. reference : 다른 빈 오브젝트를 의미한다.
+
+@Value.
+1. 환경에 따라 매번 달라질 수 있는 값을 주입할 때 사용.
+2. 클래스의 필드에 초기값을 설정해두고 특별한 경우에 값을 주입할 때 사용.
+@Value 어노테이션의 주요 용도는 자바 코드 외부의 리소스나 환경정보에 값을 사용하는데 있다.
+@Value( "#{systemProperties['os.name']}" ) ;
+@Value( "${database.username}" ) ;
+
+PropertyEditor.
+@Value의 스트링 값에서 빈 오브젝트의 프로퍼티 타입으로 변경하는 데 활용한다.
+String으로 입력했을 때 setter메소드에 지정된 매개변수의 타입으로 자동변환해 준다.
+
+ConversionService. ( 144 )
+스프링이 직접 제공하는 타입 변환 API이다.
+<bean id="conversionService" class="패키지이름.ConversionServiceFactoryBean">
+	<property name="converters">
+		<list>
+			// 직접 정의한 타입 변환기를 등록할 수 있다.
+			<bean class="패키지이름.MyTypeConverter" /> 
+		</list>
+	</property>
+</bean>
+
+컬렉션 적용하기. ( 145 )
+<list>
+	<value>값</value>
+	...
+</list>
+<map>
+	<entry key="키" value="값"/>
+	...
+</map>
+<props>
+	<prop key="키">값</prop>
+	...
+<props>
+// List를 빈으로 선언해서 사용하는 방식.
+<util:list>
+	<value>값</value>
+	...
+</util:list>
+
+Null과 빈 문자열. ( 147 )
+빈 문자열
+<property name="name" value="" />
+Null
+<property name="name"><null /></property>
+
+프로퍼티 파일을 이용한 값 설정. ( 149 )
+db.driverclass=com.mysql.jdbc.Driver
+db.url=jdbc:mysql://localhost/testdb
+db.username=spring
+db.password=book
+<context:property-placaholder location="classpath:프로퍼티파일경로" />
+<bean id="dataSource" class="패키지이름.SimpleDriverDataSource">
+	<property name="driverClass" value="${db.driverclass}" />
+	<property name="url" value="${db.url}" />
+	<property name="username" value="${db.username}" />
+	<property name="password" value="${db.password}" />
+</bean>
+
+빈 후처리기와 빈 팩토리 후처리기. ( 150 )
+빈 후처리기 : 매 빈 오브젝트가 만들어진 직후에 오브젝트의 내용이나 오브젝트를 변경할 때 사용.
+빈 팩토리 후처리기 : 빈 설정 메타정보가 모두 준비됐을 때 빈 메타정보 자체를 조작할 때 사용.
+<context:property-placeholder ... >를 하면 PropertyPlaceHolderConfigurer 빈 팩토리 후처리기가 동작.
+PropertyPlaceHolderConfigurer는 프로퍼티 파일 내용을 읽은 뒤에 ${ }에 작성된 값을 치환해준다.
+
+SpEL Spring Expression Language.
+다른 빈 오브젝트에 직접 접근할 수 있느 ㄴ표현식을 이용해 원하는 프로퍼티 값을 능동적으로 가져오는 방법.
+<util:properties id="dbprops" location="classpath:프로퍼티스파일경로" />
+<bean id="dataSource" class="패키지이름.SimpleDriverDataSource">
+	<property name="driverClass" value="#{dbprops[ 'db.driverclass' ] }" />
+	<property name="url" value="#{dbprops[ 'db.url' ] }" />
+	<property name="username" value="#{dbprops[ 'db.username' ] } " />
+	<property name="password" value="#{dbprops[ 'db.password' ] } " />
+</bean>
+
+컨테이너가 자동등록하는 빈. ( 153 ~ 156 )
+ApplicationContext : ApplicationContext 인터페이스를 구현한 것.
+BeanFactory : ApplicationContext 상위 인터페이스.
+ResouceLoader : 서블릿 컨텍스트의 리소스를 읽어오고 싶을 때 사용. ( ApplicationContext가 상속 )
+ApplicationEventPublisher : 빈 사이에 이벤트를 발생시키고 전달받을 수 있는 기능. ( ApplicationContext 상속 )
+systemProperties : JVM이 생성해주는 시스템 프로퍼티 값을 읽을 수 있다. ( Map 형태로 되어 있어 SpEL 사용 )
+systemEnvironment : 환경변수가 담긴 Map 오브젝트.
+컨테이너가 존재한다면 언제든지 @Autowired 가능하다. ( 직접 사용하는 것은 권장 하지 않음 )
+
+
+
+
+
