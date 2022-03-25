@@ -1,0 +1,131 @@
+
+ IoC 컨테이너와 DI(3)
+
+
+
+ # 프로토타입과 스코프.
+
+빈 스코프. ( 156 )
+빈 스코프는 빈 오브젝트가 만들어져 존재할 수 있는 범위이다. ( 생명주기 )
+
+싱글톤 스코프. ( 157 ~ 158 )
+컨텍스트당 한 개의 빈 오브젝트만 만들어지게 된다.
+
+프로토타입 스코프. ( 158 ~ 159 )
+컨테이너에게 빈을 요청할 때마다 매번 새로운 오브젝트를 생성해준다.
+DI에서도 매번 새로운 오브젝트가 만들어져서 주입된다.
+
+프로토타입 빈의 생명주기와 종속성. ( 159 ~ 160 )
+프로토타입 빈 오브젝트는 컨테이너 밖으로 전달된 후에는 더 이상 스프링이 관리하는 빈이 아니다.
+프로토타입 빈을 DI 한 후에는 DI 받은 오브젝트가 관리해야 한다.
+	- 따라서 프로토타입 빈은 이 빈을 주입받은 오브젝트에 종속적이다.
+	- 프로토타입 빈을 주입받은 오브젝트가 싱글톤이면 프로토타입 빈도 싱글톤으로 유지된다.
+
+프로토 타입 빈의 용도. ( 160 ~ 162 )
+new로 오브젝트를 생성하는 것을 대신하기 위해 사용된다.
+	- 사용자의 요청별로 독립적인 정보나 작업 상태를 저장해둘 오브젝트가 필요한 경우.
+	- 코드에서 일일이 수동으로 DI 해줄 것이 아니라면 프로토 타입을 사용하는 것이 편리하다.
+
+프로토 타입 빈 설정. ( 166 )
+@Component
+@Scope( "prototype" )
+public class 클래스이름 {
+	...
+}
+
+프로토 타입의 DI와 DL. ( 169 )
+DI : DI는 DI할 오브젝트에 종속적이여서, DI할 오브젝트가 싱글톤인 경우 프로토 타입의 특징을 사용할 수 없다.
+DL : 프로토 타입을 사용해야 될 오브젝트가 싱글톤인 경우 DL 방식을 사용.
+
+프로토타입 빈의 DL 전략. ( 169 ~ 17 )
+ApplicationContext, BeanFactory.
+	- @Autowired를 이용해 DI 받은 뒤에 getBean( ) 메소드를 호출해서 빈을 가져오는 방법.
+	- 테스트 작성시 목 오브젝트 생성하기 어려운 단점이 있다.
+ObjectFactory, ObjectFactoryCreatingFactoryBean.
+	- 스프링의 ObjectFactory 인터페이스는 getOBject( )라는 팩토리 메소드를 갖고 있다.
+	- ObjectFactoryCreatingFactoryBean 구현 객체를 통해 생성할 객체를 지정해 준다.
+ServiceLocatorFactoryBean.
+	- 새로운 팩토리 인터페이스를 정의하고 ServiceLocationFactoryBean을 통해 사용한다.
+Provider<T>.
+	- JSR-330에 추가된 표준 인터페이스이다.
+	- JSR-330을 사용하는 데 문제가 없다면 가장 깔끔한 선택이다.
+
+ObjectFactory 예시 코드. ( 171 )
+@Autowired
+private ObjectFactory<ServiceRequest> serviceRequestFactory ;
+public void serviceRequestFormSubmit( HttpServletRequest request ) {
+	ServiceRequest serviceRequest = this.serviceRequestFactory.getObject( ) ;
+	...
+}
+
+ServiceLocatorFactoryBean 예시 코드. ( 173 )
+@Autowired
+ServiceRequestFactory serviceRequestFactory ; // 직접 만든 인터페이스.
+public void serviceRequestFormSubmit( HttpServletRequest request ) { 
+	ServiceRequest serviceRequest = this.serviceRequestFactory.getServiceFactory( ) ;
+	...
+}
+
+Provider<T> 예시 코드. ( 175 )
+@Autowired
+Provider<ServiceRequest> serviceRequestProvider ;
+public void serviceRequestFormSubmit( HttpServletRequest request ) {
+	ServiceRequest serviceRequest = this.serviceRequestProvider.get( ) ;
+	...
+}
+
+요청 스코프 request. ( 176 )
+하나의 웹 요청 안에서 만들어지고 해당 요청이 끝날 때 제거된다. ( request 생성주기와 동일 )
+	- 각 요청별로 독립적인 빈이 만들어지기 때문에 빈 오브젝트 내에 상태 값 저장 가능.
+	- 하나의 웹 요청을 처리하는 동안에 요청 스코프 빈은 항상 동일한 오브젝트임이 보장.
+주요 용도.
+	- 애플리케이션 코드에서 생성한 정보를 프레임워크 레벨의 서비스나 인터셉터 등에 전달하는 것.
+
+세션 스코프, 글로벌세션 스코프. ( 177 )
+HTTP 세션과 같은 존재 범위를 갖는 빈으로 만들어주는 스코프다.
+	- 사용자별로 만들어지고 브라우저를 닫거나 세션 타임이 종료될 때까지 유지. 
+글로벌세션 스코프.
+	- 포틀릿에만 존재하는 글로벌 세션에 저장되는 빈이다.
+
+애플리케이션 스코프. ( 177 )
+서블릿 컨텍스트에 저장되는 빈 오브젝트다.
+	- 웹 애플리케이션마다 만들어진다.
+	- 컨텍스트가 존재하는 동안 유지되는 싱글톤 스코프와 비슷한 존재 범위를 갖는다.
+사용 용도.
+	- 드물지만 웹 애플리케이션과 컨텍스트의 존재 범위가 다른 경우 사용한다.
+	
+세션 스코프 빈 Provider 방식. ( 178 ~ 179 )
+@Scope( "session" ) 
+public class LoginUser { 
+	...
+}	
+public class LoginService {
+	@Autowired 
+	Provider<LoginUser> loginUserProvider ;
+	public void login( Login login ) {
+		LoginUser loginUser = loginUserProvider.get( ) ;
+		...
+	}
+}
+
+세션 스코프 빈 프록시 방식. ( 180 )
+@Scopre( value = "session" , proxyMode=ScopeProxyMode.TARGET_CLASS )
+public class LoginUser { 
+	...
+}	
+public class LoginService {
+	@Autowired
+	LoginUser loginUser ;
+	public void login( Login login ) {
+		...
+	}
+}
+
+
+
+
+
+
+
+
+
