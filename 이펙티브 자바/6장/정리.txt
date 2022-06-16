@@ -1,0 +1,43 @@
+
+ # 정리.
+
+열거 타입 특징.
+- 열거 타입은 참조 값이므로 NULL을 가질 수 있다.
+
+Dynamic method dispatch.
+- 런타임 시에 어떤 메서드를 호출할지 결정하는 것을 의미한다.
+- dynamic => runtime.
+
+
+
+ # @Retention 정리.
+
+RetentionPolicy.
+- @Retention의 라이프사이클을 결정하는데 사용하는 enum 클래스다.
+
+
+SOURCE 정책.
+- 어노테이션이 컴파일 전에 소스 파일까지 존재한다. ( 컴파일할 때 사라짐 )
+- @Getter, @Setter 같은 경우에 사용. ( 어노테이션을 붙이면 소스 코드를 직접 생성 )
+
+CLASS 정책.
+- 어노테이션이 컴파일 후에 class 파일까지 존재한다. ( 런타임 때 사라짐 )
+- Maven/Gradle에서 라이브러리들을 가져올 때 jar를 파일들은 일반적으로 class 파일에 묶음이다. ( 직접 다운로드 받은건 X )
+- class 파일만 존재하는 라이브러리에 어노테이션을 사용하려면 CLASS 정책이 필요하다.
+
+RUNTIME 정책.
+- 어노테이션이 RUNTIME 시점까지 존재한다.
+- @Controller, @Service 처럼 런타임에 어떠한 영향을 주거나 받는 어노테이션들.
+
+
+
+ # @Target 정리.
+
+@Target
+- Java Compiler가 annotation이 어디에 적용될지 결정하기 위해 사용한다. ( 어디에 부착될지 )
+- 예를 들어, ElementType.TYPE의 의미는 해당 Annotation은 "타입 선언시" 에 사용한다는 의미.
+- 한번에 여러가지를 선언할 수 있다. @Target( { ElementType.TYPE, ElementType.XXX } )
+
+ElementType.
+- @Target의 대상을 결정하는데 사용하는 enum 클래스이다.
+
