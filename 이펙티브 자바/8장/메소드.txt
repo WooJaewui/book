@@ -173,8 +173,8 @@ Optional 사용 시기.
 
 참고.
 문서화 주석 작성법 : https://www.baeldung.com/javadoc
-
-
+Objects.reqruieNonNull : https://emgc.tistory.com/124
+Optional : https://mangkyu.tistory.com/203
 
 
 
