@@ -1,0 +1,7 @@
+
+ 키워드.
+
+라이브러리를 익히고 사용하라.
+- Random 클래스
+- java.lang, java.util, java.io 와 하위 패키지.
+
