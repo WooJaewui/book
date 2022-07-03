@@ -5,3 +5,9 @@
 - Random 클래스
 - java.lang, java.util, java.io 와 하위 패키지.
 
+Cloneable
+- https://velog.io/@suky/Java-Cloneable%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0
+
+클로저
+- https://poiemaweb.com/js-closure
+
