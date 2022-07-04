@@ -1,13 +1,48 @@
 
- 키워드.
+ 정리.
 
-라이브러리를 익히고 사용하라.
-- Random 클래스
-- java.lang, java.util, java.io 와 하위 패키지.
 
-Cloneable
-- https://velog.io/@suky/Java-Cloneable%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0
 
-클로저
-- https://poiemaweb.com/js-closure
+ # 기본 패키지.
+
+java.lang 패키지.
+- 자바 프로그램의 기본적인 클래스를 담고 있는 패키지.
+- java.lang 패키지에 있는 클래스와 인터페이스는 import 없이 사용할 수 있다.
+
+java.lang 패키지 종류.
+- object : 모든 클래스의 최상위 클래스.
+- System : 데이터를 입력 출력할 때 사용, JVM을 종료시킬 때 사용, GC 실행 요청시 사용.
+- Class : 클래스를 메모리로 로딩할 때 사용.
+- String : 문자열을 저장하고 여러 가지 정보를 얻을 때 사용.
+- StringBuffer, StringBuilder : 문자열을 저장하고 내부 문자열을 조작할 때 사용.
+- Math : 수학 함수를 이용할 때 사용.
+- 래퍼 클래스 : 기본 타입의 값을 갖는 객체를 만들 때 사용.
+
+java.util. 패키지.
+- 자료 구조, 날짜와 관련된 클래스, 지역화 관련 클래스 등.
+
+java.util 패키지 종류.
+- Arrays : 배열을 조작할 때 사용.
+- Calendar : 운영체제의 날짜와 시간을 얻을 때 사용.
+- Date : 날짜와 시간 정보를 저장하는 클래스.
+- Objects : 객체 비교, null 여부 등을 조사할 때 사용.
+- StringTokenizer : 특정 문자로 구분된 문자열을 뽑아낼 때 사용.
+- Random : 난수를 얻을 때 사용.
+- Pattern : 정규식에 사용되는 패턴 기호를 저장.
+- Scanner : 화면, 파일, 문자열과 같은 문자데이터를 읽어오는데 도움을 줌.
+- BigInteger : int, long 정수형 타입보다 큰 값을 사용할 수 있다.
+- BigDecimal : 정수를 이용해서 실수를 표현한다.
+
+java.io 패키지.
+- java.nio 패키지와 함께 파일이나 통신 등 디지털 정보 입출력을 처리하는 클래스가 정의된 패키지.
+
+java.io 패키지 이름 규칙.
+- byte 단위 입출력은 Stream으로 끝나고, 문자 단위 입출력은 Reader/Writer로 끝난다.
+- 중간에는 입력과 출력을 구분하기 위해 Input/Output을 작성한다.
+- 접두어 부분에는 입출력의 데이터 종류를 확인할 수 있도록 Data, File, Object, Buffered 등으로 나타낸다.
+
+출처.
+https://koey.tistory.com/241
+https://jammdev.tistory.com/136
+http://www.incodom.kr/java/java.io#h_71e41b4d61cd038fbaa44a51d0511b1f
 
