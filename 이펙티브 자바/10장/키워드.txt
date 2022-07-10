@@ -1,6 +1,9 @@
 정리.
 
 - Error, Exception, RuntimeException 정리.
+- 예외 번역.
+
+
 - Native Method 정리.
 - Reflection 정리.
 - Java Security 정리.
