@@ -31,7 +31,7 @@ Exception.
 출처.
 - 롤백 실습 : https://techblog.woowahan.com/2606/
 - Transaction/Exception : https://pjh3749.tistory.com/269
-
+- Optional 반환 : https://taeu.kr/m/34
 
 
 
