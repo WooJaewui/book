@@ -1,0 +1,30 @@
+
+ 키워드.
+
+- volatile.
+- 안전 실패 safety failure.
+- AutomicLong.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
