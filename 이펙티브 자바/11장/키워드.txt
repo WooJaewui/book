@@ -4,6 +4,24 @@
 - volatile.
 - 안전 실패 safety failure.
 - AutomicLong.
+- java.util.concurrent. ( 포크/조인, 태스트, 실행자 서비스, 동시성 컬렉션, 동기화 장치 )
+- java wait/notify.
+- JMH 프레임워크 ( 시간 )
+- 허위 각성 spurious wakeup 
+- 쓰레드 안전성 수준. ( 일반적으로 나누는 방식 / 어노테이션 방식 )
+- 비공개 락 객체.
+
+- 지연 초기화 Lazy Initialization.
+- 초기화 순환성 initialization circularity.
+- 지연 초기화 홀더 클래스 lazy initialization holder class.
+- 이중 검사 double-check.
+
+- Thread.yield
+- 이식성.
+
+
+
+
 
 
 
