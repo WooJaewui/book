@@ -1,0 +1,21 @@
+
+85.
+
+- 임의 객체 그래프.
+- OjbectInputStream.readObject( ) 생성자 역할.
+- RMI Remote Method Invocation.
+- JMX Java Management Extension.
+- JMS Java Messaging System.
+- gadget 가젯.
+- 역직렬화 폭탄 deserialization bomb.
+- 크로스-플랫폼 구조화된 데이터 표현. ( cross-platform structured-data representation.
+- 객체 역직렬화 필터링 ( ObjectInputFilter )
+
+
+
+86.
+- 
+
+
+
+
