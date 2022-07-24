@@ -1,6 +1,5 @@
 
 85.
-
 - 임의 객체 그래프.
 - OjbectInputStream.readObject( ) 생성자 역할.
 - RMI Remote Method Invocation.
@@ -14,7 +13,50 @@
 
 
 86.
-- 
+- SerialVersionUID : https://blog.naver.com/kkson50/220564273220 , https://haranglog.tistory.com/4
+- readObjectNoData 메서드 ( 불변식이 있을 때 추가해야 될 메서드 )
+
+
+
+87.
+- readObject 메서드 : https://madplay.github.io/post/what-is-readobject-method-and-writeobject-method
+- transient : https://nesoy.github.io/articles/2018-06/Java-transient
+- serialver 유틸리티 : https://www.codejava.net/java-core/tools/using-serialver-command-examples
+
+
+
+88.
+- 자바 직렬화 : https://wildeveloperetrain.tistory.com/97
+- ObjectInputValidation 인터페이스
+
+
+
+89.
+- readResolve 메서드.
+
+
+
+90.
+- writeReplace( ) 메서드. ( 직렬화 프록시 )
+- 직렬화 프록시 방식 자세히 알기.
+- EnumSet.
+
+
+
+이해가 안된 부분.
+- 어떻게 readObject, writeObject가 자동으로 호출되는지??
+- clone과 방어적 복사.
+
+
+
+
+
+
+
+
+
+
+
 
 
 
