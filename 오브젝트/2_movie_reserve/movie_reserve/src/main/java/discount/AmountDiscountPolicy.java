@@ -3,7 +3,7 @@ package discount;
 import reservation.Screening;
 import util.Money;
 
-public class AmountDiscountPolicy extends DiscountPolicy {
+public class AmountDiscountPolicy extends DefaultDiscountPolicy {
 
     private Money discountAmount;
 

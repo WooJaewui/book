@@ -3,7 +3,7 @@ package discount;
 import reservation.Screening;
 import util.Money;
 
-public class PercentDiscountPolicy extends DiscountPolicy {
+public class PercentDiscountPolicy extends DefaultDiscountPolicy {
 
     private double percent;
 
