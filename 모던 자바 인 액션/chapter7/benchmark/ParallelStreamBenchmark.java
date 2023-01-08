@@ -1,0 +1,44 @@
+package chapter7.benchmark;
+
+import org.openjdk.jmh.annotations.*;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
+
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
+
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@Fork(value = 2, jvmArgs = {"-Xms4G", "-Xmx4G"})
+public class ParallelStreamBenchmark {
+
+    private static final long N = 100L;
+
+    @Benchmark
+    public long sequentialSum() {
+        return Stream.iterate(1L , i -> i + 1)
+                .limit(N)
+                .reduce(0L, Long::sum);
+    }
+
+    /*@TearDown(Level.Invocation)
+    public void tearDown() {
+        System.gc();
+    }*/
+
+    public static void main(String[] args) throws RunnerException {
+
+        Options opt = new OptionsBuilder()
+                .include(ParallelStreamBenchmark.class.getSimpleName())
+                .warmupIterations(10)
+                .measurementIterations(10)
+                .forks(1)
+                .build();
+
+        new Runner(opt).run();
+
+    }
+
+}
