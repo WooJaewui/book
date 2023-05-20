@@ -1,0 +1,45 @@
+
+78page ANSI SQL 찾아보기
+
+
+83 DAS, SAN	https://cheershennah.tistory.com/168
+
+
+83 버퍼링 기능
+
+
+95 ibd 파일		
+
+
+98 레코드 기반의 잠금	https://steady-coding.tistory.com/553
+
+
+99 클러스터링
+
+
+99 세컨더리 인덱스		https://velog.io/@ymh92730/MySQL-Index-%EC%9D%98-%EC%A2%85%EB%A5%98
+
+
+103 격리 수준 isolation level
+
+
+105 page 참고??
+
+
+109 세마포어 === 잠금 ?? 
+
+
+110 어댑티브 인덱스
+
+
+110 B-Tree
+
+
+111 별표 ?? 체크포인트
+
+
+
+
+
+
+
