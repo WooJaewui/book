@@ -1,0 +1,37 @@
+
+ 키워드 정리.
+
+
+
+ # 예외.
+
+Error.
+- 시스템에 비정상적인 상황이 생겼을 때 발생한다.
+- 시스템 레벨에서 발생하기 때문에 심각한 수준의 오류이다.
+- 애플리케이션에서 오류에 대한 처리를 해줄 수 없다. ( 예외 처리하면 로깅 남기는 것 외에 어떠한 처리를 해줄 수 없다 )
+
+Exception.
+- 개발자가 구현한 로직에서 발생한 오류이다.
+- 처리를 해줄 수 있는 Cheched Exception( Exception )과 처리를 해줄 수 없는 Unchecked Exception( RuntimeException )이 있다.
+
+@Transactional과 Exception.
+- @Transactional( rollbackFor = { RuntimeException.class } )와 같이 rollback할 상황을 설정할 수 있다.
+- rollbackFor를 설정하지 않으면 스프링은 디폴트로 UnCheckedException 과 Error에 대해서 롤백 정책을 설정한다.
+
+롤백 특징.
+- 참여 중인 트랜잭션이 실패하면 기본정책이 전역롤백이다.
+- globalRollbackOnParticipactionFailure 설정이 존재한다. ( 기본설정은 true )
+- PROPAGATION_REQUIRED 또는 PROPAGATION_SUPPORTS인 참여 중인 트랜잭션이 실패하면 전역적으로 rollback-only로 마킹된다.
+- 그런데 주의할 점은, 이게 가능하려면 참여중인 모든 자원이 데이터접근이 안되더라도 커밋에 지장이 없다는 게 보장되어야한다는 것이다.
+- 일반적으로 하이버네이트 세션의 경우는 그렇지 않다. JDBC insert_update_delete의 경우도 마찬가지다.
+
+왜 default 전략을 RuntimeException과 Error로 만들었을까 ?
+- CheckedException은 예상한 에러고, UncheckedException은 예상치 못한 예외이기 때문에
+
+출처.
+- 롤백 실습 : https://techblog.woowahan.com/2606/
+- Transaction/Exception : https://pjh3749.tistory.com/269
+- Optional 반환 : https://taeu.kr/m/34
+
+
+
